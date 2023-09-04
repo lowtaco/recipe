@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "overflow-wrap: anywhere",
+          "@property",
+          "@property",
+          "aspect-ratio"
+        ]
+      }
+    ]
+  }
+}

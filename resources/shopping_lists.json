@@ -1,0 +1,118 @@
+[
+     {
+       "name": "Манка на молоке",
+       "type": "recipe",
+       "bg_color": "#ccccc",
+       "icon": "🍕",
+       "list": [
+         {
+           "name": "Манная крупа",
+           "amount": "800",
+           "unit": "гр.",
+           "checked": false
+         },
+         {
+           "name": "Чеснок",
+           "amount": "6",
+           "unit": "зубчиков",
+           "checked": false
+         },
+         {
+           "name": "Соль",
+           "amount": "100",
+           "unit": "гр.",
+           "checked": false
+         },
+         {
+           "name": "Перец",
+           "amount": "100",
+           "unit": "гр.",
+           "checked": false
+         },
+         {
+           "name": "Сахар",
+           "amount": "По вкусу",
+           "unit": "",
+           "checked": false
+         }
+       ]
+     },
+     {
+       "name": "Манка на молоке",
+       "type": "recipe",
+       "bg_color": "#000101",
+       "icon": "🍕",
+       "list": [
+         {
+           "name": "Манная крупа",
+           "amount": "800",
+           "unit": "гр.",
+           "checked": false
+         },
+         {
+           "name": "Чеснок",
+           "amount": "6",
+           "unit": "зубчиков",
+           "checked": false
+         },
+         {
+           "name": "Соль",
+           "amount": "100",
+           "unit": "гр.",
+           "checked": false
+         }
+       ]
+     },
+     {
+       "name": "Манка на молоке P",
+       "type": "personal",
+       "bg_color": "#ccc",
+       "icon": "🍕",
+       "list": [
+         {
+           "name": "Манная крупа",
+           "amount": "800",
+           "unit": "гр.",
+           "checked": false
+         },
+         {
+           "name": "Чеснок",
+           "amount": "6",
+           "unit": "зубчиков",
+           "checked": false
+         },
+         {
+           "name": "Соль",
+           "amount": "100",
+           "unit": "гр.",
+           "checked": false
+         }
+       ]
+     },
+     {
+       "name": "Манка на молоке P",
+       "type": "personal",
+       "bg_color": "#000101",
+       "icon": "🍕",
+       "list": [
+         {
+           "name": "Манная крупа",
+           "amount": "800",
+           "unit": "гр.",
+           "checked": false
+         },
+         {
+           "name": "Чеснок",
+           "amount": "6",
+           "unit": "зубчиков",
+           "checked": false
+         },
+         {
+           "name": "Соль",
+           "amount": "100",
+           "unit": "гр.",
+           "checked": false
+         }
+       ]
+     }
+   ]
