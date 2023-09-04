@@ -304,40 +304,75 @@ body,
 /* END Authorization */
 
 /* Account */
-.account-details {
-  .profile-header {
-    display: inline-flex;
-    align-items: center;
+.profile {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  .profile-top {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    margin: 20px 0 20px 0;
+    height: 350px;
+    background-color: var(--accent-color);
+    margin-bottom: -30px;
     padding: 0 20px;
-    gap: 20px;
+    justify-content: flex-end;
+    padding-bottom: 54px;
+    gap: 48px;
+    box-sizing: border-box;
 
-    .ph-avatar {
-      display: flex;
-      height: 70px;
-      border-radius: 50%;
-      overflow: hidden;
-    }
+    .main-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
 
-    .ph-info {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-
-      span {
-        font-weight: 700;
-        margin: 0;
+      img {
+        width: 100px;
+        border-radius: 50%;
       }
 
-      a {
-        margin: 0;
-        color: var(--secondary-text-color);
+      .name {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .additional-info {
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+      box-sizing: border-box;
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: -webkit-fill-available;
+
+        span {
+          margin: 0;
+          font-size: 24px;
+          font-weight: 700;
+        }
+
+        p {
+          margin: 0;
+        }
       }
 
     }
   }
-  
+
+  .profile-content {
+    position: relative;
+    width: 100%;
+    height: 200%;
+    border-radius: 30px 30px 0 0;
+    background-color: green;
+    z-index: 4;
+  }
 }
 /* END Account */
 
@@ -358,9 +393,7 @@ body,
     font-weight: normal;
   }
 
-  .switchbox {
-    height: 60px;
-  }
+  
 }
 /* END Settings */
 
@@ -707,6 +740,14 @@ body,
   padding-top: 8px;
 }
 
+.page-wrapper.no-gap {
+  gap: 0;
+}
+
+.page-wrapper.no-padding {
+  padding: 0;
+}
+
 /* UI ELEMENTS */
 /* Text */
 h1, h2, h3, h4, h5, h6 {
@@ -811,6 +852,18 @@ button.link, .button.link {
   }
 }
 
+button.line {
+  padding: 0 20px;
+  height: 56px;
+  justify-content: flex-start;
+  background: none;
+  border-radius: 0;
+}
+
+button.logout {
+  color: red;
+}
+
 .goBackButton {
   display: flex;
   align-items: center;
@@ -833,6 +886,7 @@ button.link, .button.link {
   align-items: center;
   justify-content: space-between;
   height: 56px;
+  padding: 0 16px;
   box-sizing: border-box;
   font-size: 16px;
   -webkit-touch-callout: none;
