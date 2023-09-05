@@ -19,12 +19,14 @@ class UsersController extends Controller
         $nickname = $request->input('nickname');
         $first_name = $request->input('first_name');
         $last_name = $request->input('last_name');
+        $picture = $request->input('picture');
 
         $id = DB::table('app_users')->insertGetId([
             'email' => $email,
             'nickname' => $nickname,
             'first_name' => $first_name,
-            'last_name' => $last_name
+            'last_name' => $last_name,
+            'picture' => $picture
         ]);
 
         return $id;

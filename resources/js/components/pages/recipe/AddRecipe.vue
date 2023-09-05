@@ -116,7 +116,7 @@ export default {
       })
 
       axios.post('/create-recipe', {
-        author: this.user.email,
+        author: this.user.id,
         name: this.name,
         description: this.description,
         main_banner: this.main_banner,

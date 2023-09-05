@@ -17,7 +17,7 @@
   --mobile-menu-border: 1px solid rgb(245, 245, 245);
   --page-header-border: var(--mobile-menu-border);
   --text-color: black;
-  --secondary-text-color: gray;
+  --secondary-text-color: #BDBDBD;
   --text-color-invert: white;
   --main-icons-color: var(--text-color);
   --divider-bg-color: rgb(245, 245, 245);
@@ -72,7 +72,7 @@ body,
   justify-content: space-between;
   align-items: center;
   height: var(--page-header-size);
-  padding: 0 4px 0 16px;
+  padding: 0 16px 0 16px;
   background-color: var(--page-header-bg);
   border-bottom: var(--page-header-border);
   box-sizing: border-box;
@@ -86,18 +86,6 @@ body,
   align-items: center;
   height: 100%;
   padding: 0 10px;
-}
-.food-app .page .page-header .header-buttons {
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-}
-.food-app .page .page-header .header-buttons .item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 100%;
 }
 .food-app .page .page-header .header-w-button {
   display: inline-flex;
@@ -194,6 +182,19 @@ body,
   padding: 0;
 }
 
+.header-buttons {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+.header-buttons .item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 100%;
+}
+
 /* MODULES */
 /* Mobile Menu */
 .mobile-menu {
@@ -263,32 +264,123 @@ body,
 
 /* END Authorization */
 /* Account */
-.account-details .profile-header {
+.profile {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.profile .profile-top {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 360px;
+  background-color: var(--accent-color);
+  margin-bottom: -30px;
+  padding: 0 24px;
+  justify-content: flex-start;
+  padding-bottom: 54px;
+  gap: 18px;
+  box-sizing: border-box;
+}
+.profile .profile-top .header {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 56px;
+  margin-right: -14px;
+}
+.profile .profile-top .header svg path {
+  fill: var(--text-color);
+}
+.profile .profile-top .main-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+.profile .profile-top .main-info img {
+  width: 100px;
+  border-radius: 50%;
+}
+.profile .profile-top .main-info .name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.profile .profile-top .additional-info {
   display: inline-flex;
   align-items: center;
   width: 100%;
-  margin: 20px 0 20px 0;
-  padding: 0 20px;
-  gap: 20px;
+  gap: 12px;
+  box-sizing: border-box;
 }
-.account-details .profile-header .ph-avatar {
-  display: flex;
-  height: 70px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-.account-details .profile-header .ph-info {
+.profile .profile-top .additional-info .item {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  width: -webkit-fill-available;
 }
-.account-details .profile-header .ph-info span {
+.profile .profile-top .additional-info .item span {
+  margin: 0;
+  font-size: 24px;
   font-weight: 700;
+}
+.profile .profile-top .additional-info .item p {
   margin: 0;
 }
-.account-details .profile-header .ph-info a {
-  margin: 0;
-  color: var(--secondary-text-color);
+.profile .profile-top .additional-info .item:nth-child(3) {
+  width: 40%;
+  flex-shrink: 0;
+}
+.profile .profile-top .additional-info .item:nth-child(3) button {
+  width: 100%;
+}
+.profile .profile-top button {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.profile .profile-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 12px;
+  width: 100%;
+  border-radius: 30px 30px 0 0;
+  background-color: var(--main-bg-color);
+  z-index: 4;
+  box-sizing: border-box;
+}
+.profile .profile-content h2 {
+  color: var(--accent-color);
+}
+.profile .profile-content .posts {
+  display: grid;
+  padding-top: 12px;
+  gap: 16px;
+  grid-template-areas: "a a b" "a a c";
+}
+.profile .profile-content .posts .post {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secondary-text-color);
+  aspect-ratio: 1/1;
+  flex-shrink: 0;
+  float: none;
+  border-radius: 10px;
+  transition: 0.3s all ease;
+  overflow: hidden;
+}
+.profile .profile-content .posts .post img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.profile .profile-content .posts .post:nth-child(1) {
+  grid-area: a;
 }
 
 /* END Account */
@@ -307,9 +399,6 @@ body,
   padding: 20px 20px !important;
   justify-content: flex-start;
   font-weight: normal;
-}
-.settings-menu .switchbox {
-  height: 60px;
 }
 
 /* END Settings */
@@ -614,6 +703,14 @@ body,
   padding-top: 8px;
 }
 
+.page-wrapper.no-gap {
+  gap: 0;
+}
+
+.page-wrapper.no-padding {
+  padding: 0;
+}
+
 /* UI ELEMENTS */
 /* Text */
 h1, h2, h3, h4, h5, h6 {
@@ -709,6 +806,18 @@ button.link .icon svg path, .button.link .icon svg path {
   fill: var(--accent-color);
 }
 
+button.line {
+  padding: 0 20px;
+  height: 56px;
+  justify-content: flex-start;
+  background: none;
+  border-radius: 0;
+}
+
+button.logout {
+  color: red;
+}
+
 .goBackButton {
   display: flex;
   align-items: center;
@@ -732,6 +841,7 @@ button.link .icon svg path, .button.link .icon svg path {
   align-items: center;
   justify-content: space-between;
   height: 56px;
+  padding: 0 16px;
   box-sizing: border-box;
   font-size: 16px;
   -webkit-touch-callout: none;
@@ -918,6 +1028,46 @@ textarea {
 }
 
 /* END Inputs */
+.highlights-slider {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  margin-bottom: -10px;
+  margin-left: -24px;
+  margin-right: -24px;
+  padding: 0 24px;
+}
+.highlights-slider .item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--secondary-text-color);
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: 0.3s all ease;
+}
+.highlights-slider .item .indicator {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: 0.3s all ease;
+}
+.highlights-slider .item.selected {
+  color: var(--accent-color);
+}
+.highlights-slider .item.selected .indicator {
+  background-color: var(--accent-color);
+}
+
+.highlights-slider::-webkit-scrollbar {
+  width: 0;
+}
+
 /* Selects */
 .r-select {
   position: relative;
