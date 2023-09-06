@@ -267,13 +267,12 @@ body,
 .profile {
   display: block;
   width: 100%;
-  height: 100%;
 }
 .profile .profile-top {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 360px;
+  height: 340px;
   background-color: var(--accent-color);
   margin-bottom: -30px;
   padding: 0 24px;
@@ -299,13 +298,16 @@ body,
   gap: 16px;
 }
 .profile .profile-top .main-info img {
-  width: 100px;
+  width: 80px;
   border-radius: 50%;
 }
 .profile .profile-top .main-info .name {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+.profile .profile-top .main-info .name h4 {
+  font-size: 16px;
 }
 .profile .profile-top .additional-info {
   display: inline-flex;

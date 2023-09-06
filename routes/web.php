@@ -27,7 +27,7 @@ Route::post('/update-list', [ShoppingListsController::class, 'updateList']);
 Route::post('/update-list-info', [ShoppingListsController::class, 'updateListInfo']);
 Route::post('/delete-list', [ShoppingListsController::class, 'deleteList']);
 
-Route::get('/get-recipes', [RecipesController::class, 'getRecipes']);
+Route::post('/get-recipes', [RecipesController::class, 'getRecipes']);
 Route::get('/get-recipes-kitchens', [RecipesController::class, 'getRecipesKitchens']);
 Route::get('/get-recipes-categories', [RecipesController::class, 'getRecipesCategories']);
 Route::get('/get-cooking-methods', [RecipesController::class, 'getCookingMethods']);

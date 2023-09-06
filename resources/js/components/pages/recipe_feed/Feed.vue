@@ -16,18 +16,37 @@ export default {
   props: ['checked', 'isText', 'text'],
   data() {
     return {
-      recipes: null
+      recipes: [],
+      scrollBox: null
     }
   },
   mounted() {
     this.getRecipes();
+
+    this.scrollBox = document.getElementById('home-scroll-box')
+    this.scrollBox.addEventListener("scroll", _.debounce(this.scrollHandler, 200))
   },
   methods: {
-    getRecipes() {
-      axios.get('/get-recipes').then((response) => {
-        console.log(response.data)
-        this.recipes = response.data
+    async getRecipes(offset = 0) {
+      axios.post('/get-recipes', {
+        offset: offset
+      }).then((response) => {
+        this.recipes = this.recipes.concat(response.data) 
       })
+    },
+
+    scrollHandler() {
+      let reference = document.getElementById('home-reference')
+
+      let scrollTop = this.scrollBox.scrollTop;
+      let viewportHeight = window.innerHeight;
+      let totalHeight = reference.offsetHeight + 104 + 57 + 24 + 24;
+
+      const atTheBottom = scrollTop + viewportHeight == totalHeight
+
+      if(atTheBottom) {
+        this.getRecipes(this.recipes.length)
+      }
     }
   }
 

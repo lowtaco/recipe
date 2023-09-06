@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class RecipesController extends Controller
 {
     public function getRecipes(Request $request) {
-        $recipes = DB::table('recipes')->get();
+        $offset = $request->input('offset');
+        $recipes = DB::table('recipes')->offset($offset)->take(9)->get();
         return $recipes;
     }
 

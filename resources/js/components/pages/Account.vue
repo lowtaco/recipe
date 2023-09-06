@@ -1,8 +1,8 @@
 <template>
   <div class="page no-padding" v-if="!isSettingsOpen">
 
-    <div class="page-content">
-      <div class="profile">
+    <div class="page-content" id="profile-scroll-box">
+      <div class="profile" id="profile-reference">
         <div class="profile-top">
           <div class="header">
             <h1>Профиль</h1>
@@ -37,38 +37,8 @@
           <h2>Рецепты</h2>
           <profile-folders-slider />
           <div class="posts">
-            <div class="post">
-              1
-            </div>
-            <div class="post">
-              2
-            </div>
-            <div class="post">
-              3
-            </div>
-            <div class="post">
-              4
-            </div>
-            <div class="post">
-              5
-            </div>
-            <div class="post">
-              6
-            </div>
-            <div class="post">
-              2
-            </div>
-            <div class="post">
-              3
-            </div>
-            <div class="post">
-              4
-            </div>
-            <div class="post">
-              5
-            </div>
-            <div class="post">
-              6
+            <div class="post" v-for="recipe in recipes">
+              <img :src="recipe.main_banner_url">
             </div>
 
           </div>
@@ -78,7 +48,7 @@
     </div>
 
   </div>
-
+  
   <div class="page p-settings" v-if="isSettingsOpen">
     <settings @goBack="isSettingsOpen = false" @debug="$emit('debug')"/>
   </div>
@@ -101,13 +71,42 @@ export default {
   data() {
     return {
       isSettingsOpen: false,
+      recipes: [],
+      scrollBox: null
     }
   },
-  mounted() {
-    console.log(this.user)
+  async mounted() {
+    console.log(this.user);
+    this.getRecipes();
+
+    this.scrollBox = document.getElementById('profile-scroll-box')
+    this.scrollBox.addEventListener("scroll", _.debounce(this.scrollHandler, 200))
+  },
+  unmounted() {
+    this.scrollBox.removeEventListener("scroll", _.debounce(this.scrollHandler, 200))
   },
   methods: {
-    
+    async getRecipes(offset = 0) {
+      axios.post('/get-recipes', {
+        offset: offset
+      }).then((response) => {
+        this.recipes = this.recipes.concat(response.data) 
+      })
+    },
+
+    scrollHandler() {
+      let reference = document.getElementById('profile-reference')
+
+      let scrollTop = this.scrollBox.scrollTop;
+      let viewportHeight = window.innerHeight;
+      let totalHeight = reference.offsetHeight + 57;
+
+      const atTheBottom = scrollTop + viewportHeight == totalHeight;
+
+      if(atTheBottom) {
+        this.getRecipes(this.recipes.length)
+      }
+    }
   },
 };
 </script>

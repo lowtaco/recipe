@@ -1,6 +1,6 @@
 <template>
   <div class="page home">
-    <div class="page-content">
+    <div class="page-content" id="home-scroll-box">
       <div class="home-header">
         <div class="home-title-buttons">
           <h1>recipe</h1>
@@ -13,7 +13,7 @@
         <p>Война войной, а обед — по <i>расписанию</i></p>
       </div>
 
-      <div class="home-content">
+      <div class="home-content" id="home-reference">
         <search-bar :filters="true"/>
         <mp-categories />
         <mp-slider />
