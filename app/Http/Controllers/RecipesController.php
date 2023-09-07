@@ -10,7 +10,13 @@ class RecipesController extends Controller
 {
     public function getRecipes(Request $request) {
         $offset = $request->input('offset');
-        $recipes = DB::table('recipes')->offset($offset)->take(9)->get();
+        $category = $request->input('category');
+
+        if ($category) {
+            $recipes = DB::table('recipes')->where('category', $category)->offset($offset)->take(9)->get();
+        } else {
+            $recipes = DB::table('recipes')->offset($offset)->take(9)->get();
+        }
         return $recipes;
     }
 
@@ -93,4 +99,20 @@ class RecipesController extends Controller
         $recipe = DB::table('recipes')->where('id', $id)->get();
         return $recipe;
     }
+
+    public function getRecipeKitchen(Request $request) {
+        $id = $request->input('id');
+        
+        $kitchen = DB::table('national_kitchens')->where('id', $id)->get();
+        return $kitchen;
+    }
+
+    public function getRecipeCategory(Request $request) {
+        $id = $request->input('id');
+        
+        $category = DB::table('recipe_categories')->where('id', $id)->get();
+        return $category;
+    }
+
+    
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="page add-shopping-list no-padding">
+  <div class="page no-padding">
     
     <div class="page-header no-border absolute" style="background-color: transparent;" id="slv-parent">
       <div class="header-w-button between">
@@ -11,10 +11,17 @@
 
     
     <div class="page-content" id="scroll-box">
+      <loader v-if="loading"/>
 
       <div class="recipe" >
         <div class="banner">
-          <img src="https://w.forfun.com/fetch/00/00c3d0bc0617f22de4af13e6322b6e58.jpeg" id="scalable">
+          <img src="https://w.forfun.com/fetch/00/00c3d0bc0617f22de4af13e6322b6e58.jpeg" id="scalable" >
+          <div class="category">
+            <div class="icon">
+              <span>{{ category.icon }}</span>
+            </div>
+            <span>{{ category.short_name }}</span>
+          </div>
         </div>
 
         <div class="content" id="ref-box">
@@ -23,8 +30,8 @@
           <div class="recipe-info">
             <div class="info-header">
               <div class="title">
-                <h1>Сочная курица с мясом</h1>
-                <span>Русская кухня</span>
+                <h1>{{ recipe.name }}</h1>
+                <span>{{ kitchen }} кухня</span>
               </div>
               <div class="like-buttons">
                 <div class="item">
@@ -35,6 +42,44 @@
                 </div>
               </div>
             </div>
+            <div class="description">
+              <p>{{ recipe.description }}</p>
+            </div>
+            <div class="author">
+              <div class="picture">
+                <img :src="author.picture">
+              </div>
+              <div class="name">
+                <h4>{{ this.author.first_name }} {{ this.author.last_name }}</h4>
+                <span>@{{ this.author.nickname }}</span>
+              </div>
+            </div>
+
+
+            <div class="difficulty-spiciness">
+              <div class="card">
+                <div class="icon-row">
+                  <span>🌶️</span>
+                  <span>🌶️</span>
+                  <span>🌶️</span>
+                  <span>🌶️</span>
+                  <span>🌶️</span>
+                </div>
+                <span>Острота</span>
+              </div>
+              <div class="card">
+                <div class="icon-row">
+                  <span>👨🏻‍🍳</span>
+                  <span>👨🏻‍🍳</span>
+                  <span>👨🏻‍🍳</span>
+                  <span>👨🏻‍🍳</span>
+                  <span>👨🏻‍🍳</span>
+                </div>
+                <span>Сложность</span>
+              </div>
+            </div>
+
+
 
           </div>
 
@@ -55,9 +100,13 @@ export default {
   props: ['checked', 'isText', 'text'],
   data() {
     return {
-      recipes: null,
+      recipe: {},
+      author: {},
+      kitchen: null,
+      category: {},
       scrollBox: null,
-      recipe_id: 44
+      recipe_id: 44,
+      loading: false
     }
   },
   mounted() {
@@ -68,12 +117,48 @@ export default {
   unmounted() {
     this.scrollBox.removeEventListener("scroll", this.handleScroll);
   },
+  computed: {
+    
+  },
   methods: {
     getRecipe() {
+      this.loading = true;
       axios.post('/get-recipe', {
         id: this.recipe_id
       }).then((response) => {
         console.log(response.data[0])
+        this.recipe = response.data[0]
+        this.loading = false;
+        this.getUserInfo();
+        this.getKitchen();
+        this.getCategory();
+      })
+    },
+    getUserInfo() {
+      this.loading = true;
+      axios.post('/get-user-info', {
+        id: this.recipe.author
+      }).then((response) => {
+        this.author = response.data[0];
+        this.loading = false;
+      })
+    },
+    getKitchen() {
+      this.loading = true;
+      axios.post('/get-recipe-kitchen', {
+        id: this.recipe.kitchen
+      }).then((response) => {
+        this.kitchen = response.data[0].name
+        this.loading = false;
+      })
+    },
+    getCategory() {
+      this.loading = true;
+      axios.post('/get-recipe-category', {
+        id: this.recipe.category
+      }).then((response) => {
+        this.category = response.data[0]
+        this.loading = false;
       })
     },
     handleScroll () {

@@ -636,6 +636,12 @@ body,
 
 /* END Shopping List */
 /* Home */
+
+.home {
+  display: block;
+  width: 100%;
+}
+
 .home-header {
   display: flex;
   flex-direction: column;
@@ -698,7 +704,7 @@ body,
 .recipe {
   height: 100%;
   width: 100%;
-  background-color: red;
+  background-color: rgb(0, 0, 0);
 
   .header {
     position: absolute;
@@ -727,12 +733,45 @@ body,
     margin-bottom: -30px;
     z-index: 1;
     overflow: hidden;
+    transition: .5s all ease-out;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: .5s all ease;
+      transition: .5s all ease-out;
+    }
+
+    .category {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      border-radius: 15px;
+      padding-top: 8px;
+      bottom: 46px;
+      right: 16px;
+      width: 72px;
+      height: 88px;
+      background-color: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(2.5px);
+      z-index: 99999;
+
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+          font-size: 36px;
+          margin-bottom: 4px;
+        }
+      }
+
+      span {
+        font-size: 12px;
+      }
     }
   }
 
@@ -746,7 +785,7 @@ body,
     padding: 16px 24px;
     background-color: var(--main-bg-color);
     border-radius: 30px 30px 0 0;
-    transition: .5s all ease;
+    transition: .5s all ease-out;
     z-index: 3;
     box-sizing: border-box;
 
@@ -788,6 +827,77 @@ body,
           .item.active .icon svg path {
             fill-rule: nonzero;
             fill: red ;
+          }
+        }
+
+        
+      }
+
+      .author {
+        padding: 10px;
+        border-radius: 20px;
+        //border: 1px solid grey;
+        background-color: var(--input-text-border-color);
+
+        .picture {
+          width: 48px;
+          height: 48px;
+          background-color: grey;
+          border-radius: 50%;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        } 
+
+        .name {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          h4 {
+
+          }
+
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .difficulty-spiciness {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 16px;
+
+        .card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          height: 68px;
+          width: -webkit-fill-available;
+          border-radius: 20px;
+          background-color: var(--input-text-border-color);
+
+          .icon-row {
+            display: inline-flex;
+            align-items: center;
+
+            span {
+              font-size: 18px;
+            }
+          }
+
+          span {
+            font-size: 14px;
           }
         }
       }
@@ -1355,7 +1465,8 @@ textarea {
       font-size: 14px;
       padding: 6px 12px;
       border-radius: 20px;
-      width: 48px;
+      width: 50px;
+      transition: .2s all ease-in-out;
     }
 
     span.checked {

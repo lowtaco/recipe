@@ -31,4 +31,12 @@ class UsersController extends Controller
 
         return $id;
     }
+
+    public function getUserInfo(Request $request) {
+        $id = $request->input('id');
+
+        $user = DB::table('app_users')->where('id', $id)->get();
+
+        return $user;
+    }
 }

@@ -27,6 +27,8 @@ Route::post('/update-list', [ShoppingListsController::class, 'updateList']);
 Route::post('/update-list-info', [ShoppingListsController::class, 'updateListInfo']);
 Route::post('/delete-list', [ShoppingListsController::class, 'deleteList']);
 
+
+
 Route::post('/get-recipes', [RecipesController::class, 'getRecipes']);
 Route::get('/get-recipes-kitchens', [RecipesController::class, 'getRecipesKitchens']);
 Route::get('/get-recipes-categories', [RecipesController::class, 'getRecipesCategories']);
@@ -35,9 +37,13 @@ Route::get('/get-cooking-dishes', [RecipesController::class, 'getCookingDishes']
 Route::get('/get-ingredients-units', [RecipesController::class, 'getIngredientsUnits']);
 Route::post('/create-recipe', [RecipesController::class, 'createRecipe']);
 Route::post('/updateRecipePhotosUrl', [RecipesController::class, 'updateRecipePhotosUrl']);
+
 Route::post('/get-recipe', [RecipesController::class, 'getRecipe']);
+Route::post('/get-recipe-kitchen', [RecipesController::class, 'getRecipeKitchen']);
+Route::post('/get-recipe-category', [RecipesController::class, 'getRecipeCategory']);
 
 Route::post('/auth', [UsersController::class, 'authorize']);
 Route::post('/registration', [UsersController::class, 'registerUser']);
+Route::post('/get-user-info', [UsersController::class, 'getUserInfo']);
 
 Route::post('/upload-image', [PhotoUploadController::class, 'store']);

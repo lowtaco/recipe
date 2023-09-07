@@ -1,25 +1,28 @@
 <template>
-  <div class="page home">
+  <div class="page">
     <div class="page-content" id="home-scroll-box">
-      <div class="home-header">
-        <div class="home-title-buttons">
-          <h1>recipe</h1>
-          <div class="header-buttons">
-            <div class="item" @click="$emit('addRecipe')">
-              <icon icon="new" />
+      <div class="home" id="home-reference">
+        <div class="home-header">
+          <div class="home-title-buttons">
+            <h1>recipe</h1>
+            <div class="header-buttons">
+              <div class="item" @click="$emit('addRecipe')">
+                <icon icon="new" />
+              </div>
             </div>
           </div>
+          <p>Война войной, а обед — по <i>расписанию</i></p>
         </div>
-        <p>Война войной, а обед — по <i>расписанию</i></p>
-      </div>
 
-      <div class="home-content" id="home-reference">
-        <search-bar :filters="true"/>
-        <mp-categories />
-        <mp-slider />
-        <feed />
+        <div class="home-content">
+          <search-bar :filters="true"/>
+          <mp-categories />
+          <mp-slider v-model="category"/>
+          <feed :category="category"/>
 
+        </div>
       </div>
+      
     </div>
   </div>
 </template>
@@ -34,7 +37,7 @@ export default {
 
   data() {
     return {
-      
+      category: 0
     }
   },
   mounted() {

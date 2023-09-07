@@ -97,13 +97,14 @@ export default {
     scrollHandler() {
       let reference = document.getElementById('profile-reference')
 
-      let scrollTop = this.scrollBox.scrollTop;
-      let viewportHeight = window.innerHeight;
-      let totalHeight = reference.offsetHeight + 57;
+      let scrollTop = Math.round(this.scrollBox.scrollTop);
+      let rect = this.scrollBox.getBoundingClientRect();
+      let viewportHeight = Math.round(rect.height);
+      let totalHeight = reference.offsetHeight;
 
-      const atTheBottom = scrollTop + viewportHeight == totalHeight;
+      let currentHeight = scrollTop + viewportHeight;
 
-      if(atTheBottom) {
+      if(currentHeight >= (totalHeight * 0.75)) {
         this.getRecipes(this.recipes.length)
       }
     }

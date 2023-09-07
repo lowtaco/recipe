@@ -541,6 +541,11 @@ body,
 
 /* END Shopping List */
 /* Home */
+.home {
+  display: block;
+  width: 100%;
+}
+
 .home-header {
   display: flex;
   flex-direction: column;

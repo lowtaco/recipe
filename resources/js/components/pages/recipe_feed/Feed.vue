@@ -13,11 +13,17 @@
 <script>
 
 export default {
-  props: ['checked', 'isText', 'text'],
+  props: ['category'],
   data() {
     return {
       recipes: [],
       scrollBox: null
+    }
+  },
+  watch: {
+    category() {
+      this.recipes = [];
+      this.getRecipes();
     }
   },
   mounted() {
@@ -29,6 +35,7 @@ export default {
   methods: {
     async getRecipes(offset = 0) {
       axios.post('/get-recipes', {
+        category: this.category,
         offset: offset
       }).then((response) => {
         this.recipes = this.recipes.concat(response.data) 
@@ -38,13 +45,14 @@ export default {
     scrollHandler() {
       let reference = document.getElementById('home-reference')
 
-      let scrollTop = this.scrollBox.scrollTop;
-      let viewportHeight = window.innerHeight;
-      let totalHeight = reference.offsetHeight + 104 + 57 + 24 + 24;
+      let scrollTop = Math.round(this.scrollBox.scrollTop);
+      let rect = this.scrollBox.getBoundingClientRect();
+      let viewportHeight = Math.round(rect.height);
+      let totalHeight = reference.offsetHeight;
 
-      const atTheBottom = scrollTop + viewportHeight == totalHeight
+      let currentHeight = scrollTop + viewportHeight;
 
-      if(atTheBottom) {
+      if(currentHeight >= (totalHeight * 0.75)) {
         this.getRecipes(this.recipes.length)
       }
     }
@@ -74,6 +82,7 @@ export default {
       aspect-ratio: 4 / 3;
       overflow: hidden;
       border-radius: 20px;
+      background-color: rgb(179, 179, 179);
 
       .test {
         height: 100%;

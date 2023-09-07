@@ -19802,7 +19802,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.feed {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  box-sizing: border-box;\r\n  gap: 16px;\n.recipe-card {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 8px;\r\n    width: 47%;\r\n    box-sizing: border-box;\n.photo {\r\n      aspect-ratio: 4 / 3;\r\n      overflow: hidden;\r\n      border-radius: 20px;\n.test {\r\n        height: 100%;\r\n        width: 100%;\r\n        background-color: antiquewhite;\n}\n}\n.photo img {\r\n      width: 100%;\r\n      height: 100%;\r\n      -o-object-fit: cover;\r\n         object-fit: cover;\n}\n.title {\r\n      padding: 0 6px;\n}\n.title h4 {\r\n      font-weight: normal;\r\n      font-size: 16px;\n}\n}\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.feed {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  box-sizing: border-box;\r\n  gap: 16px;\n.recipe-card {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 8px;\r\n    width: 47%;\r\n    box-sizing: border-box;\n.photo {\r\n      aspect-ratio: 4 / 3;\r\n      overflow: hidden;\r\n      border-radius: 20px;\r\n      background-color: rgb(179, 179, 179);\n.test {\r\n        height: 100%;\r\n        width: 100%;\r\n        background-color: antiquewhite;\n}\n}\n.photo img {\r\n      width: 100%;\r\n      height: 100%;\r\n      -o-object-fit: cover;\r\n         object-fit: cover;\n}\n.title {\r\n      padding: 0 6px;\n}\n.title h4 {\r\n      font-weight: normal;\r\n      font-size: 16px;\n}\n}\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42603,11 +42603,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     scrollHandler: function scrollHandler() {
       var reference = document.getElementById('profile-reference');
-      var scrollTop = this.scrollBox.scrollTop;
-      var viewportHeight = window.innerHeight;
-      var totalHeight = reference.offsetHeight + 57;
-      var atTheBottom = scrollTop + viewportHeight == totalHeight;
-      if (atTheBottom) {
+      var scrollTop = Math.round(this.scrollBox.scrollTop);
+      var rect = this.scrollBox.getBoundingClientRect();
+      var viewportHeight = Math.round(rect.height);
+      var totalHeight = reference.offsetHeight;
+      var currentHeight = scrollTop + viewportHeight;
+      if (currentHeight >= totalHeight * 0.75) {
         this.getRecipes(this.recipes.length);
       }
     }
@@ -43033,7 +43034,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['checked', 'isText', 'text'],
   data: function data() {
     return {
-      recipes: null,
+      recipe: null,
       scrollBox: null,
       recipe_id: 44
     };
@@ -43048,10 +43049,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getRecipe: function getRecipe() {
+      var _this = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/get-recipe', {
         id: this.recipe_id
       }).then(function (response) {
         console.log(response.data[0]);
+        _this.recipe = response.data[0];
       });
     },
     handleScroll: function handleScroll() {
@@ -43128,11 +43131,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     scrollHandler: function scrollHandler() {
       var reference = document.getElementById('home-reference');
-      var scrollTop = this.scrollBox.scrollTop;
-      var viewportHeight = window.innerHeight;
-      var totalHeight = reference.offsetHeight + 104 + 57 + 24 + 24;
-      var atTheBottom = scrollTop + viewportHeight == totalHeight;
-      if (atTheBottom) {
+      var scrollTop = Math.round(this.scrollBox.scrollTop);
+      var rect = this.scrollBox.getBoundingClientRect();
+      var viewportHeight = Math.round(rect.height);
+      var totalHeight = reference.offsetHeight;
+      var currentHeight = scrollTop + viewportHeight;
+      if (currentHeight >= totalHeight * 0.75) {
         this.getRecipes(this.recipes.length);
       }
     }
@@ -45358,26 +45362,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* unplugin-vue-components disabled */
 var _hoisted_1 = {
-  "class": "page home"
+  "class": "page"
 };
 var _hoisted_2 = {
   "class": "page-content",
   id: "home-scroll-box"
 };
 var _hoisted_3 = {
-  "class": "home-header"
+  "class": "home",
+  id: "home-reference"
 };
 var _hoisted_4 = {
+  "class": "home-header"
+};
+var _hoisted_5 = {
   "class": "home-title-buttons"
 };
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "recipe", -1 /* HOISTED */);
-var _hoisted_6 = {
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "recipe", -1 /* HOISTED */);
+var _hoisted_7 = {
   "class": "header-buttons"
 };
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Война войной, а обед — по "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, "расписанию")], -1 /* HOISTED */);
-var _hoisted_8 = {
-  "class": "home-content",
-  id: "home-reference"
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Война войной, а обед — по "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, "расписанию")], -1 /* HOISTED */);
+var _hoisted_9 = {
+  "class": "home-content"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("icon");
@@ -45385,16 +45392,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_mp_categories = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("mp-categories");
   var _component_mp_slider = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("mp-slider");
   var _component_feed = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("feed");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "item",
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return _ctx.$emit('addRecipe');
     })
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
     icon: "new"
-  })])])]), _hoisted_7]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_bar, {
+  })])])]), _hoisted_8]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_bar, {
     filters: true
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_mp_categories), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_mp_slider), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_feed)])])]);
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_mp_categories), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_mp_slider), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_feed)])])])]);
 }
 
 /***/ }),
@@ -46014,16 +46021,17 @@ var _hoisted_12 = {
 var _hoisted_13 = {
   "class": "info-header"
 };
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_14 = {
   "class": "title"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Сочная курица с мясом"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Русская кухня")], -1 /* HOISTED */);
-var _hoisted_15 = {
+};
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Русская кухня", -1 /* HOISTED */);
+var _hoisted_16 = {
   "class": "like-buttons"
 };
-var _hoisted_16 = {
+var _hoisted_17 = {
   "class": "item"
 };
-var _hoisted_17 = {
+var _hoisted_18 = {
   "class": "item"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -46039,9 +46047,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _ctx.additionalPopupActive = true;
     }),
     id: "slv-popup-btn"
-  }, "•••")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
+  }, "•••")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.recipe.name), 1 /* TEXT */), _hoisted_15]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
     icon: "like"
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
     icon: "favorite"
   })])])])])])])])]);
 }
