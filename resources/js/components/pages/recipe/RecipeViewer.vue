@@ -42,9 +42,11 @@
                 </div>
               </div>
             </div>
+
             <div class="description">
               <p>{{ recipe.description }}</p>
             </div>
+
             <div class="author">
               <div class="picture">
                 <img :src="author.picture">
@@ -54,7 +56,6 @@
                 <span>@{{ this.author.nickname }}</span>
               </div>
             </div>
-
 
             <div class="difficulty-spiciness">
               <div class="card">
@@ -79,7 +80,70 @@
               </div>
             </div>
 
+            <div class="additional-info">
+              <div class="timings">
+                <div class="card">
+                  <span>1 час</span>
+                  <p>Время приготовления</p>
+                </div>
+                <div class="card">
+                  <span>25 минут</span>
+                  <p>Время на кухне</p>
+                </div>
+              </div>
 
+              <span>Подойдет на:</span>
+              <div class="inline-row-text">
+                <span v-for="meal in this.recipe.meal">{{ meal.name }}</span>
+              </div>
+
+              <span>Способы приготовления:</span>
+              <div class="inline-row-text">
+                <span v-for="item in cooking_methods">{{ item.name }}</span>
+              </div>
+              
+              <span>Посуда:</span>
+              <div class="inline-row-text">
+                <span v-for="item in dishes">{{ item.name }}</span>
+              </div>
+            </div>
+            
+            <div class="recipe-ingredients-viewer">
+              <h4>Ингредиенты</h4>
+              <div class="servings-editor">
+                <span>Порции</span>
+                <num-editor v-model="servings" @changed="servingsEditor"/>
+              </div>
+
+              <div class="ingredients">
+
+                <div class="ingredient" v-for="ingredient in ingredients">
+                  <span>{{ ingredient.name }}</span>
+                  <span>{{ ingredient.amount }} {{ ingredient.unit.name }}</span>
+                </div>
+
+              </div>
+              <button class="big">Добавить в список покупок</button>
+            </div>
+
+            <h4>Пошаговый рецепт</h4>
+            <div class="recipe-steps">
+              <div class="recipe-step" v-for="(step, index) in recipe.recipe_steps">
+                <span>Шаг {{ index + 1 }}</span>
+                <p>{{ step.desc }}</p>
+                <div class="picture">
+                  <img src="https://w.forfun.com/fetch/00/00c3d0bc0617f22de4af13e6322b6e58.jpeg">
+                </div>
+              </div>
+
+              <div class="recipe-step" v-if="recipe.serving">
+                <span>Подача</span>
+                <p>{{ recipe.serving.desc }}</p>
+                <div class="picture">
+                  <img src="https://w.forfun.com/fetch/00/00c3d0bc0617f22de4af13e6322b6e58.jpeg">
+                </div>
+              </div>
+            </div>
 
           </div>
 
@@ -105,6 +169,11 @@ export default {
       kitchen: null,
       category: {},
       scrollBox: null,
+      ingredients: [],
+      ingredients_reference: [],
+      cooking_methods: [],
+      dishes: [],
+      servings: null,
       recipe_id: 44,
       loading: false
     }
@@ -126,8 +195,16 @@ export default {
       axios.post('/get-recipe', {
         id: this.recipe_id
       }).then((response) => {
-        console.log(response.data[0])
         this.recipe = response.data[0]
+        this.ingredients = JSON.parse(this.recipe.ingredients);
+        this.ingredients_reference = JSON.parse(this.recipe.ingredients);
+        this.cooking_methods = JSON.parse(this.recipe.cooking_methods);
+        this.dishes = JSON.parse(this.recipe.dishes);
+        this.servings = this.recipe.servings;
+        this.recipe.recipe_steps = JSON.parse(this.recipe.recipe_steps);
+        this.recipe.serving = JSON.parse(this.recipe.serving);
+        this.recipe.meal = JSON.parse(this.recipe.meal)
+        console.log(this.recipe)
         this.loading = false;
         this.getUserInfo();
         this.getKitchen();
@@ -159,6 +236,22 @@ export default {
       }).then((response) => {
         this.category = response.data[0]
         this.loading = false;
+      })
+    },
+    servingsEditor() {
+      // Записываем изначальное количество порций
+      const servings_reference = this.recipe.servings;
+
+      // Цикл по изначальному списку ингредиентов
+      _.forEach(this.ingredients_reference, (ingredient, index) => {
+        // Считаем количество ингредиента на одну порцию
+        let amount_one = ingredient.amount / servings_reference;
+        // Вычисляем количество ингрдиента на нужное количество порций
+        let new_amount = amount_one * this.servings;
+
+        new_amount = Math.round(new_amount * 100) / 100
+        // Записываем данные в локальный массив ингредиентов
+        this.ingredients[index].amount = new_amount;
       })
     },
     handleScroll () {

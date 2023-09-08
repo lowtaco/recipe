@@ -24,6 +24,7 @@ import Loader from './components/core/elements/loader';
 import FormTitle from './components/core/elements/form_title';
 import TimeInput from './components/core/elements/time_input';
 import AutoTextarea from './components/core/elements/auto_textarea';
+import NumEditor from './components/core/elements/num_editor';
 
 import { утилиты } from '@/core/утилиты';
 window.утилиты = утилиты;
@@ -70,6 +71,7 @@ app.component('r-select', Select)
 app.component('draggable-list', Draggable)
 app.component('photo-uploader', PhotoUploader)
 app.component('auto-textarea', AutoTextarea)
+app.component('num-editor', NumEditor)
 
 
 app.mount('#app')
