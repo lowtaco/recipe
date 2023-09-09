@@ -62,6 +62,18 @@
   <div class="icon" v-if="icon == 'minus' || debug">
     <svg :width="px" :height="px" viewBox="0 0 0.72 0.72" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color"><path d="M.57.39H.15a.03.03 0 0 1 0-.06h.42a.03.03 0 0 1 0 .06Z" style="fill:#000"/></svg>
   </div>
+  <div class="icon" v-if="icon == 'protein' || debug">
+    <svg :width="px" :height="px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.9999 9C16.9999 7 15.9899 2 9.9699 2C4.9499 2 1.9399 6 1.9999 11.52C2.0599 17.04 6.9599 19 9.9699 19C11.9799 19 11.9799 22 15.9899 22C18.9999 22 21.9999 19 21.9999 15.02C21.9999 12 21.0099 11 18.9999 9ZM11.9999 15.5C10.0699 15.5 8.4999 13.93 8.4999 12C8.4999 10.07 10.0699 8.5 11.9999 8.5C13.9299 8.5 15.4999 10.07 15.4999 12C15.4999 13.93 13.9299 15.5 11.9999 15.5Z" fill="black"/></svg>
+  </div>
+  <div class="icon" v-if="icon == 'fat' || debug">
+    <svg xmlns="http://www.w3.org/2000/svg" :width="px" :height="px" viewBox="0 0 12 17" fill="none"><path d="M6 16.75C4.4087 16.75 2.88258 16.1179 1.75736 14.9926C0.632141 13.8674 0 12.3413 0 10.75C0 6.75 6 0 6 0C6 0 12 6.75 12 10.75C12 12.3413 11.3679 13.8674 10.2426 14.9926C9.11742 16.1179 7.5913 16.75 6 16.75Z" fill="black"/></svg>
+  </div>
+  <div class="icon" v-if="icon == 'carbs' || debug">
+    <svg :width="px" :height="px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="red"><path fill="red" d="M10.125 23.111a.751.751 0 0 1-.37-.098L3.38 19.402A.75.75 0 0 1 3 18.75v-7.5a.75.75 0 0 1 .38-.652l6.375-3.611a.751.751 0 0 1 .74 0l6.375 3.611a.75.75 0 0 1 .38.652v7.5a.75.75 0 0 1-.38.652l-6.375 3.611a.751.751 0 0 1-.37.098ZM4.5 18.313l5.625 3.186 5.625-3.186v-6.625l-5.625-3.186L4.5 11.687Z"/><path d="M21 12.75h-1.5V5.687l-5.625-3.186L7.87 5.902l-.74-1.305L13.505.986a.751.751 0 0 1 .74 0l6.375 3.611a.75.75 0 0 1 .38.653Z"/><path data-name="&amp;lt;Transparent Rectangle&amp;gt;" transform="rotate(180 16 16)" style="fill:none" d="M0 0h24v24H0z"/></svg>
+  </div>
+  <div class="icon" v-if="icon == 'fire' || debug">
+    <svg xmlns="http://www.w3.org/2000/svg" :width="px" :height="px" viewBox="0 0 7.68 7.68" xml:space="preserve"><path d="M5.085 3.495C3.84 2.715 3.915.84 3.915.84S2.408 1.93 1.71 3.33c-.624 1.251-.387 2.744.727 3.4-.178-.369-.201-.834-.053-1.276.287-.856 1.061-1.6 1.061-1.6s-.01.812.382 1.448c.205-.254.268-.518.268-.518s.578.566.768 1.168c.112.353.048.708-.166.948 1.412-.595 1.63-2.627.389-3.405z"/></svg>
+  </div>
 </template>
 
 <script>
