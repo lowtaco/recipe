@@ -1,6 +1,6 @@
 <template>
   <div class="feed">
-    <div class="recipe-card" v-for="recipe in recipes">
+    <div class="recipe-card" v-for="recipe in recipes" @click="openRecipe(recipe.id)">
       <div class="photo">
         <img :src="recipe.main_banner_url">
       </div>
@@ -40,6 +40,10 @@ export default {
       }).then((response) => {
         this.recipes = this.recipes.concat(response.data) 
       })
+    },
+
+    openRecipe(id) {
+      this.$router.push('/recipe/' + id)
     },
 
     scrollHandler() {

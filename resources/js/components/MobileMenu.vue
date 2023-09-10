@@ -1,6 +1,7 @@
 <template>
   <div class="mobile-menu-wrap">
-    <div class="mobile-menu-item" :class="{selected: current == item.link}" v-for="item in $mobile_menu" @click="pageSelect(item.link)">
+    <div class="mobile-menu-item" :class="{selected: $route.path == item.link}" v-for="item in $mobile_menu" 
+    @click="pageSelect(item.link)">
       <div class="mmi_icon">
         <icon :icon="item.icon"/>
       </div>
@@ -20,14 +21,10 @@ export default {
         labels: false
       }
     },
-    current: {
-      type: String,
-      default: "Home"
-    }
   },
   methods: {
     pageSelect(link) {
-      this.$emit('handler', link);
+      this.$router.push(link);
     }
   }
 };

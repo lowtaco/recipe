@@ -5,6 +5,7 @@ use App\Http\Controllers\ShoppingListsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RecipesController;
 use App\Http\Controllers\PhotoUploadController;
+use App\Http\Controllers\SpaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,8 @@ use App\Http\Controllers\PhotoUploadController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('main');
-});
+
+Route::get('/', [SpaController::class, 'index']);
 
 Route::post('/get-user-shopping-lists', [ShoppingListsController::class, 'getUserLists']);
 Route::post('/create-shopping-list', [ShoppingListsController::class, 'createShoppingList']);
@@ -26,8 +26,6 @@ Route::post('/get-list-info', [ShoppingListsController::class, 'getListInfo']);
 Route::post('/update-list', [ShoppingListsController::class, 'updateList']);
 Route::post('/update-list-info', [ShoppingListsController::class, 'updateListInfo']);
 Route::post('/delete-list', [ShoppingListsController::class, 'deleteList']);
-
-
 
 Route::post('/get-recipes', [RecipesController::class, 'getRecipes']);
 Route::get('/get-recipes-kitchens', [RecipesController::class, 'getRecipesKitchens']);

@@ -21,7 +21,7 @@
         <div class="divider"><span>Информация</span></div>
         <button class="line">Политика конфиденциальности</button>
         <button class="line">Написать в поддержку</button>
-        <button class="line" @click="$emit('debug')">Debug</button>
+        <button class="line" @click="$router.push('/debug')">Debug</button>
         <button class="line logout" @click="logout">Выйти</button>
       </div>
     </div>

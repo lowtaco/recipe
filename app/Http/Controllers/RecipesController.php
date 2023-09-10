@@ -13,9 +13,9 @@ class RecipesController extends Controller
         $category = $request->input('category');
 
         if ($category) {
-            $recipes = DB::table('recipes')->where('category', $category)->offset($offset)->take(9)->get();
+            $recipes = DB::table('recipes')->orderBy('id', 'desc')->where('category', $category)->offset($offset)->take(9)->get();
         } else {
-            $recipes = DB::table('recipes')->offset($offset)->take(9)->get();
+            $recipes = DB::table('recipes')->orderBy('id', 'desc')->offset($offset)->take(9)->get();
         }
         return $recipes;
     }

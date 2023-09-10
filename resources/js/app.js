@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 import { createApp, reactive } from 'vue';
+import router from './router';
 
 import MainScreen from './components/MainScreen';
 
@@ -31,7 +32,6 @@ window.утилиты = утилиты;
 
 import GoogleIdentity from 'vue-google-identity'
 import Vue3TouchEvents from "vue3-touch-events";
-
 
 const app = createApp({});
 
@@ -73,5 +73,5 @@ app.component('photo-uploader', PhotoUploader)
 app.component('auto-textarea', AutoTextarea)
 app.component('num-editor', NumEditor)
 
-
+app.use(router)
 app.mount('#app')

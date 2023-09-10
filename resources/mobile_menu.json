@@ -1,22 +1,22 @@
 [
      {
           "label": "Главная",
-          "link": "Home",
+          "link": "/",
           "icon": "home"
      },
      {
           "label": "Идеи",
-          "link": "Ideas",
+          "link": "/ideas",
           "icon": "idea" 
      },
      {
           "label": "Список",
-          "link": "ShoppingLists",
+          "link": "/shopping-lists",
           "icon": "list" 
      },
      {
           "label": "Аккаунт",
-          "link": "Account",
+          "link": "/account",
           "icon": "account" 
      }
 ]

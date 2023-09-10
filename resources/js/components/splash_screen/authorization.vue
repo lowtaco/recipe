@@ -91,6 +91,7 @@ export default {
           localStorage.setItem('token', this.token)
           localStorage.setItem('user', JSON.stringify(response.data[0]))
           location.reload();
+          this.$router.push('/')
         } else {
           // Открываем регистрацию
           if(userInfo) {

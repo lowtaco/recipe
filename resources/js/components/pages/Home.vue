@@ -6,7 +6,7 @@
           <div class="home-title-buttons">
             <h1>recipe</h1>
             <div class="header-buttons">
-              <div class="item" @click="$emit('addRecipe')">
+              <div class="item" @click="$router.push('/add-recipe')">
                 <icon icon="new" />
               </div>
             </div>

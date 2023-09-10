@@ -2,7 +2,7 @@
   <div class="info-header">
     <div class="title">
       <h1>{{ name }}</h1>
-      <span>{{ kitchen }} кухня</span>
+      <span>{{ kitchen }}</span>
     </div>
     <div class="like-buttons">
       <div class="item" @click="$emit('like')">
