@@ -70,9 +70,11 @@ export default {
     },
     selectOption(option) {
       let newItem = {
+        id: option.id,
         name: option.name
       }
       this.list.push(newItem);
+      console.log(this.list)
       this.update();
     },
     deleteElement(element) {

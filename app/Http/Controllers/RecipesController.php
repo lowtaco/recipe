@@ -59,7 +59,6 @@ class RecipesController extends Controller
         $cooking_methods = $request->input('cooking_methods');
         $dishes = $request->input('dishes');
         $ingredients = $request->input('ingredients');
-        $serving = $request->input('serving');
 
         $id = DB::table('recipes')->insertGetId([
             'author' => $author,
@@ -73,8 +72,7 @@ class RecipesController extends Controller
             'meal' => $meal,
             'cooking_methods' => $cooking_methods,
             'dishes' => $dishes,
-            'ingredients' => $ingredients,
-            'serving' => $serving,
+            'ingredients' => $ingredients
         ]);
         return $id;
     }
@@ -82,12 +80,12 @@ class RecipesController extends Controller
     public function updateRecipePhotosUrl(Request $request) {
         $id = $request->input('id');
         $main_banner_url = $request->input('main_banner_url');
-        $serving_photo_url = $request->input('serving_photo_url');
+        $serving = $request->input('serving');
         $recipe_steps = $request->input('recipe_steps');
 
         $id = DB::table('recipes')->where('id', $id)->update([
             'main_banner_url' => $main_banner_url,
-            'serving_photo_url' => $serving_photo_url,
+            'serving' => $serving,
             'recipe_steps' => $recipe_steps
         ]);
         return $id;

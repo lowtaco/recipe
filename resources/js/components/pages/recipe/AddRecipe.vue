@@ -109,6 +109,15 @@ export default {
     this.$emit("hideMenu", true);
   },
   methods: {
+    objValuesToArray(array, key) {
+      let arr = [];
+      _.forEach(array, (element) => {
+        if (element && key && element[key]) {
+          arr.push(element[key]);
+        }
+      })
+      return arr;
+    },
     createRecipe() {
       this.loading = true;
       let filteredMeals = _.filter(this.meal, (meal) => {
@@ -125,16 +134,15 @@ export default {
         servings: this.servings,
         cooking_time: JSON.stringify(this.cooking_time),
         kitchen_time: JSON.stringify(this.kitchen_time),
-        meal: JSON.stringify(filteredMeals),
-        cooking_methods: JSON.stringify(this.cooking_methods),
-        dishes: JSON.stringify(this.dishes),
+        meal: JSON.stringify(this.objValuesToArray(filteredMeals, 'name')),
+        cooking_methods: JSON.stringify(this.objValuesToArray(this.cooking_methods, 'id')),
+        dishes: JSON.stringify(this.objValuesToArray(this.dishes, 'id')),
         ingredients: JSON.stringify(this.ingredients),
         serving: JSON.stringify(this.serving),
       }).then((response) => {
         const id = String(response.data)
 
         let main_banner_url = null;
-        let serving_url = null;
 
         axios.post('/upload-image', {
           image: this.main_banner,
@@ -147,7 +155,7 @@ export default {
             type: утилиты.decodeImageType(this.serving.photo),
             name: id + '_serving'
           }).then((serving_url_response) => {
-            serving_url = serving_url_response.data;
+            this.serving.photo = serving_url_response.data;
             _.forEach(this.steps, (step, index) => {
               axios.post('/upload-image', {
                 image: step.photo,
@@ -158,7 +166,7 @@ export default {
                 axios.post('/updateRecipePhotosUrl', {
                   id: id,
                   main_banner_url: main_banner_url,
-                  serving_photo_url: serving_url,
+                  serving: JSON.stringify(this.serving),
                   recipe_steps: JSON.stringify(this.steps)
                 }).then(() => {
                   this.loading = false;

@@ -70,8 +70,6 @@ export default {
       category: {},
       scrollBox: null,
       ingredients: [],
-      cooking_methods: [],
-      dishes: [],
       servings: null,
       recipe_id: this.id,
       loading: false
@@ -96,9 +94,11 @@ export default {
         id: this.recipe_id
       }).then((response) => {
         this.recipe = response.data[0]
+        this.recipe.cooking_time = JSON.parse(this.recipe.cooking_time);
+        this.recipe.kitchen_time = JSON.parse(this.recipe.kitchen_time);
         this.ingredients = JSON.parse(this.recipe.ingredients);
-        this.cooking_methods = JSON.parse(this.recipe.cooking_methods);
-        this.dishes = JSON.parse(this.recipe.dishes);
+        this.recipe.cooking_methods = JSON.parse(this.recipe.cooking_methods);
+        this.recipe.dishes = JSON.parse(this.recipe.dishes);
         this.servings = this.recipe.servings;
         this.recipe.recipe_steps = JSON.parse(this.recipe.recipe_steps);
         this.recipe.serving = JSON.parse(this.recipe.serving);
