@@ -12,20 +12,24 @@
         <span>{{ ingredient.amount }} {{ ingredient.unit.name }}</span>
       </div>
     </div>
-    <button @click="addToShoppingList">{{ addToListBtnText }}</button>
+    <button @click="addToShoppingList" :class="{outline: isListExist}">
+      <icon icon="list" size="small" />
+      <span>{{ addToListBtnText }}</span>
+    </button>
   </div>
 </template>
 <script>
 import axios from 'axios';
 
 export default {
-  props: ['ingredients', 'servings', 'recipeName', 'recipeAuthor', 'picture'],
+  props: ['ingredients', 'servings', 'recipeId', 'recipeName', 'recipeAuthor', 'picture'],
   data() {
     return {
       servings_local: this.servings,
       ingredients_local: [],
       addToListBtnText: 'Добавить в список покупок',
-      isListExist: false
+      isListExist: false,
+      existingListId: null
     }
   },
   watch: {
@@ -42,7 +46,7 @@ export default {
     },
     isListExist() {
       if (this.isListExist) {
-        this.addToListBtnText = 'В список покупок';
+        this.addToListBtnText = 'Перейти в список покупок';
       } else {
         this.addToListBtnText = 'Добавить в список покупок';
       }
@@ -66,35 +70,37 @@ export default {
       })
     },
     async findList() {
-      axios.post('/getShoppingListByName', {
-        name: this.recipeName,
+      axios.post('/getShoppingListByRecipe', {
+        id: this.recipeId,
         user: this.recipeAuthor.email,
       }).then((response) => {
         if (response.data.length > 0) {
           this.isListExist = true;
+          this.existingListId = response.data[0].id;
         } else {
           this.isListExist = false;
         }
       })
     },
     addToShoppingList() {
-      if (!isListExist) {
+      if (!this.isListExist) {
         _.forEach(this.ingredients_local, (ingredient) => {
           ingredient.checked = false
         })
       
         axios.post('/create-shopping-list', {
-            name: this.recipeName,
-            user: this.recipeAuthor.email,
-            personal: 0,
-            picture: this.picture,
-            color: '#ccc',
-            list: JSON.stringify(this.ingredients_local),
-            icon: '🥣'
-          }).then((response) => {
-            let id = response.data;
-            console.log(response)
+          name: this.recipeName,
+          user: this.recipeAuthor.email,
+          personal: 0,
+          picture: this.picture,
+          list: JSON.stringify(this.ingredients_local),
+          recipe_id: this.recipeId,
+        }).then((response) => {
+          let id = response.data;
+          this.isListExist = true;
         })
+      } else {
+        this.$router.push('/list/' + this.existingListId)
       }
     }
   }

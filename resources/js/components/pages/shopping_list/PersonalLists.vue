@@ -13,13 +13,13 @@
             </div>
           </div>
 
-          <div class="sl-second" v-if="item.shared">
-            <div class="sl-shared">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.375 7.5a5.625 5.625 0 0 1 11.25 0v5.833a.625.625 0 0 1-1.25 0V7.5a4.375 4.375 0 1 0-8.75 0v6.667a2.708 2.708 0 0 0 5.417 0V8.334a1.042 1.042 0 1 0-2.083 0v5a.625.625 0 0 1-1.25 0v-5a2.292 2.292 0 1 1 4.583 0v5.833a3.958 3.958 0 1 1-7.917 0V7.5Z" fill="black"/></svg>
+          <div class="sl-second">
+            <div class="sl-shared" v-if="item.shared">
+              <icon icon="shared"/>
             </div>
 
             <div class="sl-run">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.892 4.558a.625.625 0 0 1 .883 0l5 5a.625.625 0 0 1 0 .883l-5 5a.625.625 0 1 1-.883-.883L12.45 10 7.892 5.442a.625.625 0 0 1 0-.883Z" fill="#030D45"/></svg>
+              <icon icon="run" />
             </div>
           </div>
         </div>
@@ -34,10 +34,9 @@
       </div>
     </div>
 
-    <div class="page-footer">
-      <button class="big" @click="$emit('addList')">
-        <svg width="20" height="20" viewBox="0 0 0.6 0.6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.3.1a.025.025 0 0 1 .025.025v.15h.15a.025.025 0 1 1 0 .05h-.15v.15a.025.025 0 1 1-.05 0v-.15h-.15a.025.025 0 1 1 0-.05h.15v-.15A.025.025 0 0 1 .3.1z" fill="black"/></svg>
-        <span>Создать новый список</span>
+    <div class="add-list-button">
+      <button class="big square" @click="$router.push('/add-list')">
+        <icon icon="plus" />
       </button>
     </div>
 
@@ -68,9 +67,14 @@ export default {
           let amount = [];
           _.forEach(this.lists, (item) => {
             let jsonList = JSON.parse(item.list);
-            let num = jsonList.length;
-            let str = num + " " + утилиты.makeStringEnding(num, ["продукт", "продукта", "продуктов"]);
-            amount.push(str);
+            if(jsonList) {
+              let num = jsonList.length;
+              let str = num + " " + утилиты.makeStringEnding(num, ["продукт", "продукта", "продуктов"]);
+              amount.push(str);
+            } else {
+              amount.push('0 продуктов');
+            }
+            
           })
           return amount;
         }
@@ -81,8 +85,6 @@ export default {
   },
   methods: {
     openList(id) {
-      console.log(this.lists)
-      console.log(id)
       this.$emit('openList', id);
     }
   },

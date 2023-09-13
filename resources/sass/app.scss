@@ -499,10 +499,17 @@ body,
 
 /* Shopping List */
 .shopping-lists {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
+
+  .add-list-button {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+  }
 }
 
 .shopping-lists-box {
@@ -516,15 +523,13 @@ body,
     align-items: center;
     justify-content: space-between;
     height: 80px;
-    padding: 0 20px;
+    padding: 0 16px;
+    gap: 16px;
 
     .sl-main {
       display: inline-flex;
       align-items: center;
       gap: 15px;
-
-      
-      
   
       .sl-info {
         display: flex;
@@ -545,7 +550,7 @@ body,
     .sl-second {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
 
       .sl-shared {
         display: inline-flex;
@@ -553,8 +558,12 @@ body,
         justify-content: center;
         flex-direction: row-reverse;
 
-        svg {
-          rotate: 15deg;
+        .icon svg {
+          transform: rotate(180deg);
+        }
+
+        .icon svg path {
+          fill:#3496ff;
         }
       }
   
@@ -588,7 +597,7 @@ body,
 .list-viewer {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
 
   .list-viewer-header {
     display: inline-flex;
@@ -1216,6 +1225,20 @@ button.line {
   justify-content: flex-start;
   background: none;
   border-radius: 0;
+}
+
+button.outline {
+  border: 1px solid var(--accent-color);
+  background-color: var(--main-bg-color);
+}
+
+button.square {
+  padding: 0;
+  aspect-ratio: 1 / 1;
+
+  svg {
+    margin: 0;
+  }
 }
 
 button.logout {
@@ -2233,9 +2256,9 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 55px;
-  height: 55px;
-  border-radius: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 20px;
   overflow: hidden;
   flex-shrink: 0;
 
@@ -2250,10 +2273,10 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 56px;
+  height: 56px;
   background-color: var(--item-icon-picker-bg-color);
-  border-radius: 15px;
+  border-radius: 20px;
   flex-shrink: 0;
 
   span {

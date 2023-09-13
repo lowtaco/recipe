@@ -21,7 +21,7 @@ use App\Http\Controllers\SpaController;
 Route::get('/', [SpaController::class, 'index']);
 
 Route::post('/get-user-shopping-lists', [ShoppingListsController::class, 'getUserLists']);
-Route::post('/getShoppingListByName', [ShoppingListsController::class, 'getShoppingListByName']);
+Route::post('/getShoppingListByRecipe', [ShoppingListsController::class, 'getShoppingListByRecipe']);
 Route::post('/create-shopping-list', [ShoppingListsController::class, 'createShoppingList']);
 Route::post('/get-list-info', [ShoppingListsController::class, 'getListInfo']);
 Route::post('/update-list', [ShoppingListsController::class, 'updateList']);

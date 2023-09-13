@@ -14,10 +14,10 @@
           
           <div class="swipe-tabs-content" v-touch:swipe.left="swipeLeft" v-touch:swipe.right="swipeRight">
             
-              <div class="swipe-tab-content">
-                  <component is="RecipeLists" :user="user" :lists="listsRecipe" v-if="selectedTab == 0" @openList="openList"></component>
-                  <component is="PersonalLists" :user="user" :lists="listsPersonal" @addList="addListMode = true" @openList="openList" v-if="selectedTab == 1"></component>
-                </div>
+            <div class="swipe-tab-content">
+              <component is="RecipeLists" :user="user" :lists="listsRecipe" v-if="selectedTab == 0" @openList="openList"></component>
+              <component is="PersonalLists" :user="user" :lists="listsPersonal" @addList="addListMode = true" @openList="openList" v-if="selectedTab == 1"></component>
+            </div>
               
           </div>
         </div>
@@ -37,13 +37,6 @@
   <div class="page in-page" v-if="addListMode">
     <add-list :user="user" @goBack="addListMode = false" @openList="openList"/>
   </div>
-  <div class="page in-page" v-if="editListMode">
-    <edit-list :user="user" :listId="editListId" @goBack="editListMode = false" @openList="openList"/>
-  </div>
-  <div class="page in-page" v-if="listViewerMode">
-    <list-viewer :user="user" :listId="openListId" @goBack="listViewerMode = false" @editList="editList" @update="getLists"/>
-  </div>
-
     
 </template>
 <script>
@@ -51,17 +44,13 @@
 import PersonalLists from "./shopping_list/PersonalLists";
 import RecipeLists from "./shopping_list/RecipeLists";
 import AddList from "./shopping_list/AddList";
-import EditList from "./shopping_list/EditList";
-import ListViewer from "./shopping_list/ListViewer";
 
 export default {
   props: ['logged', 'user'],
   components: {
     PersonalLists,
     RecipeLists,
-    "add-list": AddList,
-    "edit-list": EditList,
-    "list-viewer": ListViewer
+    "add-list": AddList
   },
   data() {
     return {
@@ -71,10 +60,6 @@ export default {
         "Мои списки"
       ],
       addListMode: false,
-      editListMode: false,
-      listViewerMode: false,
-      openListId: null,
-      editListId: null,
       listsRecipe: null,
       listsPersonal: null,
       loading: true
@@ -87,23 +72,10 @@ export default {
       } else {
         this.$emit("hideMenu", false);
       }
-    },
-    editListMode() {
-      if(this.editListMode) {
-        this.$emit("hideMenu", true);
-      } else {
-        this.$emit("hideMenu", false);
-      }
-    },
-    listViewerMode() {
-      if(this.listViewerMode) {
-        this.$emit("hideMenu", true);
-      } else {
-        this.$emit("hideMenu", false);
-      }
     }
   },
   mounted() {
+    this.$emit("hideMenu", false);
     this.getLists();
   },
   methods: {
@@ -134,20 +106,9 @@ export default {
       }
     },
     openList(id) {
-      this.listViewerMode = false;
-      this.openListId = id;
-      this.listViewerMode = true;
+      this.$router.push('/list/' + id);
+
       this.getLists();
-    },
-    editList(id) {
-      if(this.editListMode) {
-        this.$emit("hideMenu", true);
-      } else {
-        this.$emit("hideMenu", false);
-      }
-      this.editListId = id;
-      this.listViewerMode = false;
-      this.editListMode = true;
     }
   },
 };

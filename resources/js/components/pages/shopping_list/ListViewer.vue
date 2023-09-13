@@ -1,24 +1,23 @@
 <template>
-  <div class="page add-shopping-list no-padding">
+  <div class="page">
     
-
     <div class="page-header no-border" id="slv-parent">
       <div class="header-w-button between">
-        <div class="goBackButton" @click="$emit('goBack')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.578 17.137a.625.625 0 0 1-.882-.058l-5.833-6.667a.625.625 0 0 1 0-.823l5.833-6.667a.625.625 0 1 1 .94.823l-4.925 5.63h11.956a.625.625 0 0 1 0 1.25H4.711l4.926 5.63a.625.625 0 0 1-.058.882Z" fill="#030D45"/></svg></div>
+        <div class="goBackButton" @click="$router.back()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.578 17.137a.625.625 0 0 1-.882-.058l-5.833-6.667a.625.625 0 0 1 0-.823l5.833-6.667a.625.625 0 1 1 .94.823l-4.925 5.63h11.956a.625.625 0 0 1 0 1.25H4.711l4.926 5.63a.625.625 0 0 1-.058.882Z" fill="#030D45"/></svg></div>
         <div class="list-viewer-shared"></div>
         <div class="popup-menu-button" @click="additionalPopupActive = true" id="slv-popup-btn">•••</div>
       </div>
     </div>
-
     
     <div class="page-content">
       <loader v-if="loading"/>
 
       <div class="list-viewer">
 
-        <div class="list-viewer-header">
-          <div class="lvh-icon">
-            <span>{{ listInfo.icon }}</span>
+        <div class="list-viewer-header" @click="">
+          <div class="sl-icon" :style="{'background-color': listInfo.color}" v-if="listInfo.icon"><span>{{ listInfo.icon }}</span></div>
+          <div class="sl-picture" v-if="listInfo.picture">
+            <img :src="listInfo.picture"/>
           </div>
           <div class="lvh-title">
             <h3>{{ listInfo.name }}</h3>
@@ -33,7 +32,7 @@
             </div>
             <div class="sli-secondary">
               <div class="sl-amount">
-                <span>{{ item.amount }}{{ ' ' }}{{ item.unit }}</span>
+                <span>{{ item.amount }}{{ ' ' }}{{ item.unit.name }}</span>
               </div>
             </div>
           </div>
@@ -70,7 +69,7 @@
 import AddListItem from "./AddListItem"
 
 export default {
-  props: ['listId', 'user'],
+  props: ['id', 'user'],
   components: {
     'add-list-item': AddListItem
   },
@@ -120,6 +119,7 @@ export default {
 
   },
   mounted() {
+    this.$emit("hideMenu", true);
     this.getList();
   },
   methods: {
@@ -127,7 +127,7 @@ export default {
       console.log(this.list)
       axios.post('/update-list', {
         user: this.user.email,
-        id: this.listId,
+        id: this.id,
         list: JSON.stringify(this.list)
       }).then((response) => {
         console.log(response)
@@ -136,7 +136,7 @@ export default {
     },
     getList() {
       this.loading = true;
-      axios.post('/get-list-info', {id: this.listId}).then((response) => {
+      axios.post('/get-list-info', {id: this.id}).then((response) => {
         this.listInfo = response.data[0];
         this.list = JSON.parse(response.data[0].list);
         console.log(this.list)
@@ -149,7 +149,7 @@ export default {
     },
     deletePopUpConfirm() {
       this.deleteConfirmMode = false;
-      axios.post('/delete-list', {id: this.listId}).then((response) => {
+      axios.post('/delete-list', {id: this.id}).then((response) => {
         console.log(response);
         this.$emit('update');
         this.$emit('goBack')
@@ -157,7 +157,7 @@ export default {
     },
     popupMenu(link) {
       if (link == 'editList') {
-        this.$emit('editList', this.listId);
+        this.$router.push('/edit-list/' + this.id);
       };
       if (link == 'deleteChecked') {
         let filteredList = _.filter(this.list , (i) => {

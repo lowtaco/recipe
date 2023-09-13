@@ -3,7 +3,7 @@
 
     <div class="page-header no-border">
       <div class="header-w-button">
-        <div class="goBackButton" @click="$emit('goBack')">
+        <div class="goBackButton" @click="$router.back()">
           <icon icon="back"/>
         </div>
         <h1>Редактировать список</h1>
@@ -41,7 +41,7 @@
 <script>
 
 export default {
-  props: ['listId'],
+  props: ['id'],
   data() {
     return {
       loading: true,
@@ -52,16 +52,13 @@ export default {
       isErrorEmpty: false,
     }
   },
-  computed: {
-
-  },
   mounted() {
     this.getList()
   },
   methods: {
     getList() {
       this.loading = true;
-      axios.post('/get-list-info', {id: this.listId}).then((response) => {
+      axios.post('/get-list-info', {id: this.id}).then((response) => {
         let listInfo = response.data[0];
         this.listName = listInfo.name;
         this.c_bg_color = listInfo.color;
@@ -74,14 +71,13 @@ export default {
     updateListInfo() {
       this.loading = true;
       axios.post('/update-list-info', {
-        id: this.listId,
+        id: this.id,
         name: this.listName,
         color: this.c_bg_color,
         icon: this.c_icon
       }).then((response) => {
         console.log("Список сохранен");
-        this.$emit('goBack');
-        this.$emit('openList', this.listId);
+        this.$router.push('/list/' + this.id)
         this.loading = false;
       })
     }

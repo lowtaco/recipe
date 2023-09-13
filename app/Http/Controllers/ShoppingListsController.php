@@ -16,11 +16,11 @@ class ShoppingListsController extends Controller
         return $lists;
     }
 
-    public function getShoppingListByName(Request $request) {
+    public function getShoppingListByRecipe(Request $request) {
         $user = $request->input('user');
-        $name = $request->input('name');
+        $id = $request->input('id');
 
-        $list = DB::table('shopping_lists')->where('owner', $user)->where('name', $name)->get();
+        $list = DB::table('shopping_lists')->where('owner', $user)->where('recipe_id', $id)->get();
         return $list;
     }
 
@@ -29,6 +29,7 @@ class ShoppingListsController extends Controller
         $color = $request->input('color');
         $icon = $request->input('icon');
         $owner = $request->input('user');
+        $recipe_id = $request->input('recipe_id');
         $personal = $request->input('personal');
         $list = $request->input('list');
         $picture = $request->input('picture');
@@ -36,6 +37,7 @@ class ShoppingListsController extends Controller
             'name' => $name,
             'owner' => $owner,
             'personal' => $personal,
+            'recipe_id' => $recipe_id,
             'icon' => $icon,
             'picture' => $picture,
             'color' => $color,

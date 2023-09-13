@@ -9,7 +9,7 @@
       <input v-model="itemAmount" type="number" placeholder="Количество" @keydown="AmountInputChanged">
     </div>
     <div class="item">
-      <r-select v-model="itemUnit" placeholder="Ед. измерения" :select="select"/>
+      <r-select v-model="itemUnit" request="/get-ingredients-units" placeholder="Ед. измерения"/>
     </div>
   </div>
   <button class="big" @click="addItem"><span>Добавить продукт</span></button>
@@ -32,27 +32,6 @@ export default {
         "unit": null,
         "checked": false
       },
-      select: {
-        name: 'Единица измерения',
-        options: [
-          {
-            id: 0,
-            option: 'Грамм'
-          },
-          {
-            id: 1,
-            option: 'Штук'
-          },
-          {
-            id: 2,
-            option: 'Зубчиков'
-          },
-          {
-            id: 3,
-            option: 'Менструация'
-          }
-        ]
-      }
     }
   },
   computed: {

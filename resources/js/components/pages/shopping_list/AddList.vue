@@ -3,7 +3,7 @@
 
     <div class="page-header no-border">
       <div class="header-w-button">
-        <div class="goBackButton" @click="$emit('goBack')"><icon icon="back"/></div>
+        <div class="goBackButton" @click="$router.push('/shopping-lists')"><icon icon="back"/></div>
         <h1>Новый список покупок</h1>
       </div>
     </div>
@@ -73,15 +73,14 @@ export default {
         axios.post('/create-shopping-list', {
           user: this.user.email,
           name: this.listName,
+          personal: 1,
           color: this.c_bg_color,
-          icon: this.c_icon
+          icon: this.c_icon,
+          list: JSON.stringify([])
         }).then((response) => {
           let id = response.data;
-          this.$emit('goBack');
-          this.$emit('openList', id);
-          console.log(response)
+          this.$router.push('/list/' + id)
         })
-        
 
       } else {
         this.isErrorEmpty = true;
