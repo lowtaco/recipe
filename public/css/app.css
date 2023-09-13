@@ -97,6 +97,30 @@ body,
 .food-app .page .page-header .header-w-button.between {
   justify-content: space-between;
 }
+.food-app .page .page-header .header-w-button.recipe {
+  padding-top: 16px;
+  background-color: transparent;
+}
+.food-app .page .page-header .header-w-button.recipe .goBackButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  opacity: 0.8;
+}
+.food-app .page .page-header .header-w-button.recipe .popup-menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--main-bg-color);
+  border-radius: 50%;
+  opacity: 0.8;
+}
 .food-app .page .page-header.no-border {
   border-bottom: 1px solid transparent;
 }
@@ -430,23 +454,6 @@ body,
   align-items: center;
   gap: 15px;
 }
-.shopping-lists-box .sl-item .sl-main .sl-picture {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 55px;
-  height: 55px;
-  background: paint(squircle);
-  --squircle-radius: 16px;
-  --squircle-fill: rgb(143, 255, 255);
-  --squircle-smooth: 0.3;
-  border-radius: 50px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.shopping-lists-box .sl-item .sl-main .sl-picture img {
-  width: 100%;
-}
 .shopping-lists-box .sl-item .sl-main .sl-info {
   display: flex;
   flex-direction: column;
@@ -678,7 +685,7 @@ body,
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 16px 20px;
+  padding: 20px;
   background-color: var(--main-bg-color);
   border-radius: 30px 30px 0 0;
   transition: 0.5s all ease-out;
@@ -846,7 +853,7 @@ body,
 .recipe .content .recipe-info .additional-info .card .list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 .recipe .content .recipe-info .additional-info .card .list .item {
   display: inline-flex;
@@ -857,6 +864,7 @@ body,
   width: 5px;
   height: auto;
   border-radius: 50px;
+  flex-shrink: 0;
 }
 .recipe .content .recipe-info .additional-info .card .list .item .item-content {
   display: flex;
@@ -1818,25 +1826,6 @@ textarea {
 }
 
 /* END Num Editor */
-.sl-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  background-color: var(--item-icon-picker-bg-color);
-  border-radius: 15px;
-  flex-shrink: 0;
-}
-.sl-icon span {
-  font-size: 22px;
-  padding-bottom: 2px;
-  padding-left: 1px;
-  text-transform: uppercase;
-  text-align: center;
-  width: 100%;
-}
-
 .two-collumns {
   display: flex;
   align-items: center;
@@ -1864,6 +1853,185 @@ textarea {
   fill: black;
 }
 
+/* Difficulty Spiciness Editor */
+.difficulty-spiciness-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.difficulty-spiciness-editor .card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: var(--input-text-border-color);
+  height: 78px;
+  width: 100%;
+  border-radius: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.difficulty-spiciness-editor .card .mid {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+}
+.difficulty-spiciness-editor .card .mid .icon-row {
+  display: inline-flex;
+  gap: 8px;
+}
+.difficulty-spiciness-editor .card .mid .icon-row .item {
+  opacity: 0.5;
+  transition: 0.1s all ease;
+}
+.difficulty-spiciness-editor .card .mid .icon-row .item.checked {
+  opacity: 1;
+}
+.difficulty-spiciness-editor .card .mid .icon-row.spiciness svg path {
+  fill: rgb(255, 78, 107);
+}
+.difficulty-spiciness-editor .card .mid .icon-row.difficulty svg path {
+  fill: #007bff;
+}
+.difficulty-spiciness-editor .card .edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+
+/* END Difficulty Spiciness Editor */
+/* Difficulty Spiciness Viewer */
+.difficulty-spiciness-viewer {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+}
+.difficulty-spiciness-viewer .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--input-text-border-color);
+  height: 68px;
+  width: 100%;
+  border-radius: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-size: 14px;
+}
+.difficulty-spiciness-viewer .card .icon-row {
+  display: inline-flex;
+  gap: 4px;
+}
+.difficulty-spiciness-viewer .card .icon-row .item {
+  opacity: 0.5;
+  transition: 0.1s all ease;
+}
+.difficulty-spiciness-viewer .card .icon-row .item.checked {
+  opacity: 1;
+}
+.difficulty-spiciness-viewer .card .icon-row.spiciness svg path {
+  fill: rgb(255, 78, 107);
+}
+.difficulty-spiciness-viewer .card .icon-row.difficulty svg path {
+  fill: #007bff;
+}
+
+/* END Difficulty Spiciness Viewer */
+.sl-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sl-picture img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.sl-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: var(--item-icon-picker-bg-color);
+  border-radius: 15px;
+  flex-shrink: 0;
+}
+.sl-icon span {
+  font-size: 22px;
+  padding-bottom: 2px;
+  padding-left: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+}
+
+/* Loader */
+.loader {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: -webkit-fill-available;
+  background-color: white;
+  z-index: 9999;
+}
+.loader .ring {
+  --uib-size: 40px;
+  --uib-speed: 2s;
+  --uib-color: var(--accent-color);
+  height: var(--uib-size);
+  width: var(--uib-size);
+  vertical-align: middle;
+  transform-origin: center;
+  animation: rotate var(--uib-speed) linear infinite;
+}
+.loader .ring circle {
+  fill: none;
+  stroke: var(--uib-color);
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: stretch calc(var(--uib-speed) * 0.75) ease-in-out infinite;
+}
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes stretch {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dashoffset: -124px;
+  }
+}
+
+/* END Loader */
 /* END UI ELEMENTS */
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;

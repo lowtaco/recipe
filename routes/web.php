@@ -21,6 +21,7 @@ use App\Http\Controllers\SpaController;
 Route::get('/', [SpaController::class, 'index']);
 
 Route::post('/get-user-shopping-lists', [ShoppingListsController::class, 'getUserLists']);
+Route::post('/getShoppingListByName', [ShoppingListsController::class, 'getShoppingListByName']);
 Route::post('/create-shopping-list', [ShoppingListsController::class, 'createShoppingList']);
 Route::post('/get-list-info', [ShoppingListsController::class, 'getListInfo']);
 Route::post('/update-list', [ShoppingListsController::class, 'updateList']);
@@ -32,6 +33,7 @@ Route::get('/get-recipes-kitchens', [RecipesController::class, 'getRecipesKitche
 Route::get('/get-recipes-categories', [RecipesController::class, 'getRecipesCategories']);
 Route::get('/get-cooking-methods', [RecipesController::class, 'getCookingMethods']);
 Route::get('/get-cooking-dishes', [RecipesController::class, 'getCookingDishes']);
+Route::get('/get-meals', [RecipesController::class, 'getMeals']);
 Route::get('/get-ingredients-units', [RecipesController::class, 'getIngredientsUnits']);
 Route::post('/create-recipe', [RecipesController::class, 'createRecipe']);
 Route::post('/updateRecipePhotosUrl', [RecipesController::class, 'updateRecipePhotosUrl']);
@@ -39,6 +41,9 @@ Route::post('/updateRecipePhotosUrl', [RecipesController::class, 'updateRecipePh
 Route::post('/get-recipe', [RecipesController::class, 'getRecipe']);
 Route::post('/get-recipe-kitchen', [RecipesController::class, 'getRecipeKitchen']);
 Route::post('/get-recipe-category', [RecipesController::class, 'getRecipeCategory']);
+Route::post('/get-recipe-meal', [RecipesController::class, 'getRecipeMeal']);
+Route::post('/get-recipe-dishes', [RecipesController::class, 'getRecipeDishes']);
+Route::post('/get-recipe-cooking-methods', [RecipesController::class, 'getRecipeCookingMethods']);
 
 Route::post('/auth', [UsersController::class, 'authorize']);
 Route::post('/registration', [UsersController::class, 'registerUser']);

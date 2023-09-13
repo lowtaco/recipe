@@ -16,22 +16,28 @@ class ShoppingListsController extends Controller
         return $lists;
     }
 
+    public function getShoppingListByName(Request $request) {
+        $user = $request->input('user');
+        $name = $request->input('name');
+
+        $list = DB::table('shopping_lists')->where('owner', $user)->where('name', $name)->get();
+        return $list;
+    }
+
     public function createShoppingList(Request $request) {
         $name = $request->input('name');
         $color = $request->input('color');
         $icon = $request->input('icon');
         $owner = $request->input('user');
-        $personal = 1;
-        $list = json_encode([]);
-        $shared = 0;
-        $shared_users = json_encode([]);
+        $personal = $request->input('personal');
+        $list = $request->input('list');
+        $picture = $request->input('picture');
         $id = DB::table('shopping_lists')->insertGetId([
             'name' => $name,
             'owner' => $owner,
             'personal' => $personal,
-            'shared' => $shared,
-            'shared_users' => $shared_users,
             'icon' => $icon,
+            'picture' => $picture,
             'color' => $color,
             'list' => $list
         ]);

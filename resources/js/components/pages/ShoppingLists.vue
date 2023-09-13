@@ -52,7 +52,7 @@ import PersonalLists from "./shopping_list/PersonalLists";
 import RecipeLists from "./shopping_list/RecipeLists";
 import AddList from "./shopping_list/AddList";
 import EditList from "./shopping_list/EditList";
-import ListViewer from "./shopping_list/ListViewer.vue";
+import ListViewer from "./shopping_list/ListViewer";
 
 export default {
   props: ['logged', 'user'],
@@ -83,6 +83,13 @@ export default {
   watch: {
     addListMode() {
       if(this.addListMode) {
+        this.$emit("hideMenu", true);
+      } else {
+        this.$emit("hideMenu", false);
+      }
+    },
+    editListMode() {
+      if(this.editListMode) {
         this.$emit("hideMenu", true);
       } else {
         this.$emit("hideMenu", false);

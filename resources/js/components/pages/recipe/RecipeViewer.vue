@@ -1,7 +1,7 @@
 <template>
   <div class="page no-padding">
     <div class="page-header no-border absolute" style="background-color: transparent;" id="slv-parent">
-      <div class="header-w-button between" id="menu">
+      <div class="header-w-button between recipe" id="menu">
         <div class="goBackButton" @click="$router.back()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.578 17.137a.625.625 0 0 1-.882-.058l-5.833-6.667a.625.625 0 0 1 0-.823l5.833-6.667a.625.625 0 1 1 .94.823l-4.925 5.63h11.956a.625.625 0 0 1 0 1.25H4.711l4.926 5.63a.625.625 0 0 1-.058.882Z" fill="#030D45"/></svg></div>
         <div class="popup-menu-button" @click="additionalPopupActive = true" id="slv-popup-btn">•••</div>
       </div>
@@ -12,23 +12,23 @@
       <div class="recipe" >
         <div class="banner">
           <img :src="recipe.main_banner_url" id="scalable" >
-          <div class="category" id="category">
+          <div class="category" id="category" v-if="recipe.category">
             <div class="icon">
-              <span>{{ category.icon }}</span>
+              <span>{{ recipe.category.icon }}</span>
             </div>
-            <span>{{ category.short_name }}</span>
+            <span>{{ recipe.category.short_name }}</span>
           </div>
         </div>
 
         <div class="content" id="ref-box">
           <div class="swipe-trigger"></div>
           <div class="recipe-info">
-            <info_header :name="recipe.name" :kitchen="kitchen" @like="" @save=""/>
-            <author_info :picture="author.picture" :nickname="author.nickname" :first_name="author.first_name" :last_name="author.last_name"/>
-            <difficulty_spiciness />
-            <additional_info :description="recipe.description"/>
-            <cpaf protein='34' fat='28' carbs='16' :startDelay="loading"/>
-            <ingredients_viewer :ingredients="ingredients" :servings="servings"/>
+            <info_header :name="recipe.name" :kitchen="recipe.kitchen" @like="" @save=""/>
+            <author_info v-if="recipe.author" :picture="recipe.author.picture" :nickname="recipe.author.nickname" :first_name="recipe.author.first_name" :last_name="recipe.author.last_name"/>
+            <difficulty-spiciness-viewer :total="5" :spiciness="recipe.spiciness" :difficulty="recipe.difficulty"/>
+            <additional_info :description="recipe.description" :cooking_time="recipe.cooking_time" :kitchen_time="recipe.kitchen_time" :meal="meal_string" :cooking_methods='cooking_methods_string' :dishes="dishes_string"/>
+            <!-- <cpaf protein='34' fat='28' carbs='16' :startDelay="loading"/> -->
+            <ingredients_viewer :ingredients="ingredients" :servings="recipe.servings" :recipeName="recipe.name" :recipeAuthor="recipe.author" :picture="recipe.main_banner_url"/>
             <recipe_steps :steps="recipe.recipe_steps" :serving="recipe.serving"/>
           </div>
         </div>
@@ -66,26 +66,23 @@ export default {
     return {
       recipe: {},
       author: {},
-      kitchen: null,
-      category: {},
       scrollBox: null,
       ingredients: [],
-      servings: null,
       recipe_id: this.id,
+      meal_string: '',
+      cooking_methods_string: '',
+      dishes_string: '',
       loading: false
     }
   },
   mounted() {
-    console.log(this.id)
     this.scrollBox = document.getElementById('scroll-box')
     this.scrollBox.addEventListener('scroll', this.handleScroll);
     this.getRecipe();
+    this.$emit("hideMenu", true);
   },
   unmounted() {
     this.scrollBox.removeEventListener("scroll", this.handleScroll);
-  },
-  computed: {
-    
   },
   methods: {
     getRecipe() {
@@ -99,48 +96,62 @@ export default {
         this.ingredients = JSON.parse(this.recipe.ingredients);
         this.recipe.cooking_methods = JSON.parse(this.recipe.cooking_methods);
         this.recipe.dishes = JSON.parse(this.recipe.dishes);
-        this.servings = this.recipe.servings;
         this.recipe.recipe_steps = JSON.parse(this.recipe.recipe_steps);
         this.recipe.serving = JSON.parse(this.recipe.serving);
         this.recipe.meal = JSON.parse(this.recipe.meal)
+        this.recipe.cooking_time = утилиты.convertTime(this.recipe.cooking_time);
+        this.recipe.kitchen_time = утилиты.convertTime(this.recipe.kitchen_time);
         console.log(this.recipe)
-        this.loading = false;
-        this.getUserInfo();
-        this.getKitchen();
-        this.getCategory();
-      })
-    },
-    getUserInfo() {
-      this.loading = true;
-      axios.post('/get-user-info', {
-        id: this.recipe.author
-      }).then((response) => {
-        this.author = response.data[0];
-        this.loading = false;
-      })
-    },
-    getKitchen() {
-      this.loading = true;
-      axios.post('/get-recipe-kitchen', {
-        id: this.recipe.kitchen
-      }).then((response) => {
-        this.kitchen = response.data[0].name
-        this.loading = false;
-      })
-    },
-    getCategory() {
-      this.loading = true;
-      axios.post('/get-recipe-category', {
-        id: this.recipe.category
-      }).then((response) => {
-        this.category = response.data[0]
-        this.loading = false;
+
+        axios.post('/get-user-info', {
+          id: this.recipe.author
+        }).then((response) => {
+          this.recipe.author = response.data[0];
+
+          axios.post('/get-recipe-kitchen', {
+            id: this.recipe.kitchen
+          }).then((response) => {
+            this.recipe.kitchen = response.data[0].name;
+
+            axios.post('/get-recipe-category', {
+              id: this.recipe.category
+            }).then((response) => {
+              this.recipe.category = response.data[0];
+
+              _.forEach(this.recipe.meal, (mealId) => {
+                axios.post('/get-recipe-meal', {
+                  id: mealId
+                }).then((response) => {
+                  this.meal_string += response.data[0].name.toLowerCase() + ', ';
+                })
+              })
+     
+              _.forEach(this.recipe.dishes, (dishesId) => {
+                axios.post('/get-recipe-dishes', {
+                  id: dishesId
+                }).then((response) => {
+                  this.dishes_string += response.data[0].name.toLowerCase() + ', ';
+                })
+              })
+
+              _.forEach(this.recipe.cooking_methods, (methodId) => {
+                axios.post('/get-recipe-cooking-methods', {
+                  id: methodId
+                }).then((response) => {
+                  this.cooking_methods_string += response.data[0].name.toLowerCase() + ', ';
+                })
+              })
+
+              this.loading = false;
+            })
+          })
+        })
       })
     },
     handleScroll () {
-      let reference = document.getElementById('ref-box')
-      let rect = reference.getBoundingClientRect()
-      let y = rect.y
+      let reference = document.getElementById('ref-box');
+      let rect = reference.getBoundingClientRect();
+      let y = rect.y;
       let scalable = document.getElementById('scalable');
 
       let menu = document.getElementById('menu');
@@ -151,21 +162,15 @@ export default {
         scalable.style.opacity = 0.5;
         menu.style.opacity = 0;
         category.style.opacity = 0;
-        reference.style.borderRadius = '0 0 0 0'
+        reference.style.borderRadius = '0 0 0 0';
       } else {
         scalable.style.transform = `scale(${1})`;
         scalable.style.opacity = 1;
         menu.style.opacity = 1;
         category.style.opacity = 1;
-        reference.style.borderRadius = '30px 30px 0 0'
+        reference.style.borderRadius = '30px 30px 0 0';
       }
     }
   }
-
-
 };
 </script>
-
-<style>
-
-</style>

@@ -40,6 +40,11 @@ class RecipesController extends Controller
         return $recipes;
     }
 
+    public function getMeals(Request $request) {
+        $meals = DB::table('recipe_meal')->get();
+        return $meals;
+    }
+
     public function getIngredientsUnits(Request $request) {
         $recipes = DB::table('ingredients_units')->get();
         return $recipes;
@@ -53,6 +58,8 @@ class RecipesController extends Controller
         $kitchen = $request->input('kitchen');
         $category = $request->input('category');
         $servings = $request->input('servings');
+        $spiciness = $request->input('spiciness');
+        $difficulty = $request->input('difficulty');
         $cooking_time = $request->input('cooking_time');
         $kitchen_time = $request->input('kitchen_time');
         $meal = $request->input('meal');
@@ -67,6 +74,8 @@ class RecipesController extends Controller
             'kitchen' => $kitchen,
             'category' => $category,
             'servings' => $servings,
+            'spiciness' => $spiciness,
+            'difficulty' => $difficulty,
             'cooking_time' => $cooking_time,
             'kitchen_time' => $kitchen_time,
             'meal' => $meal,
@@ -110,6 +119,27 @@ class RecipesController extends Controller
         
         $category = DB::table('recipe_categories')->where('id', $id)->get();
         return $category;
+    }
+
+    public function getRecipeMeal(Request $request) {
+        $id = $request->input('id');
+        
+        $meal = DB::table('recipe_meal')->where('id', $id)->get();
+        return $meal;
+    }
+
+    public function getRecipeDishes(Request $request) {
+        $id = $request->input('id');
+        
+        $dishes = DB::table('cooking_dishes')->where('id', $id)->get();
+        return $dishes;
+    }
+
+    public function getRecipeCookingMethods(Request $request) {
+        $id = $request->input('id');
+        
+        $cooking_method = DB::table('cooking_methods')->where('id', $id)->get();
+        return $cooking_method;
     }
 
     

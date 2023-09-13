@@ -53,6 +53,9 @@
 
         <time-input />
 
+        <difficulty-spiciness-editor />
+
+        <difficulty-spiciness-viewer />
 
       </div>
       

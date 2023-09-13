@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <loader v-if="loading"/>
+    <loader v-if="loading" :status="loading_status"/>
     <div class="page-header no-border">
       <div class="header-w-button">
         <div class="goBackButton" @click="$router.back()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.578 17.137a.625.625 0 0 1-.882-.058l-5.833-6.667a.625.625 0 0 1 0-.823l5.833-6.667a.625.625 0 1 1 .94.823l-4.925 5.63h11.956a.625.625 0 0 1 0 1.25H4.711l4.926 5.63a.625.625 0 0 1-.058.882Z" fill="#030D45"/></svg></div>
@@ -20,6 +20,8 @@
         <r-select v-model="kitchen" request="/get-recipes-kitchens" placeholder="Национальная кухня"/>
         <r-select v-model="category" request="/get-recipes-categories" placeholder="Категория"/>
         <input v-model="servings" type="number" placeholder="Порции">
+
+        <difficulty-spiciness-editor @spiciness="spicinessCallback" @difficulty="difficultyCallback"/>
 
         <form-title title="Прием пищи"/>
         <div class="checkbox-box">
@@ -69,6 +71,7 @@ export default {
   data() {
     return {
       loading: false,
+      loading_status: null,
       main_banner: null,
       name: null,
       description: null,
@@ -77,24 +80,9 @@ export default {
       servings: null,
       cooking_time: null,
       kitchen_time: null,
-      meal: [
-        {
-          name: 'Завтрак',
-          checked: false
-        },
-        {
-          name: 'Обед',
-          checked: false
-        },
-        {
-          name: 'Ужин',
-          checked: false
-        },
-        {
-          name: 'Перекус',
-          checked: false
-        }
-      ],
+      spiciness: null,
+      difficulty: null,
+      meal: [],
       cooking_methods: null,
       dishes: null,
       ingredients: null,
@@ -107,8 +95,23 @@ export default {
   },
   mounted() {
     this.$emit("hideMenu", true);
+    this.getMeals();
   },
   methods: {
+    spicinessCallback(value) {
+      this.spiciness = value;
+    },
+    difficultyCallback(value) {
+      this.difficulty = value;
+    },
+    getMeals() {
+      axios.get('/get-meals').then((response) => {
+        this.meal = response.data;
+        _.forEach(this.meal, (meal) => {
+          meal.checked = false;
+        })
+      })
+    },
     objValuesToArray(array, key) {
       let arr = [];
       _.forEach(array, (element) => {
@@ -120,6 +123,7 @@ export default {
     },
     createRecipe() {
       this.loading = true;
+      this.loading_status = 'Формируем рецепт';
       let filteredMeals = _.filter(this.meal, (meal) => {
         return meal.checked
       })
@@ -132,18 +136,20 @@ export default {
         kitchen: this.kitchen.id,
         category: this.category.id,
         servings: this.servings,
+        spiciness: this.spiciness,
+        difficulty: this.difficulty,
         cooking_time: JSON.stringify(this.cooking_time),
         kitchen_time: JSON.stringify(this.kitchen_time),
-        meal: JSON.stringify(this.objValuesToArray(filteredMeals, 'name')),
+        meal: JSON.stringify(this.objValuesToArray(filteredMeals, 'id')),
         cooking_methods: JSON.stringify(this.objValuesToArray(this.cooking_methods, 'id')),
         dishes: JSON.stringify(this.objValuesToArray(this.dishes, 'id')),
         ingredients: JSON.stringify(this.ingredients),
         serving: JSON.stringify(this.serving),
       }).then((response) => {
-        const id = String(response.data)
-
+        const id = String(response.data);
         let main_banner_url = null;
 
+        this.loading_status = 'Загружаем фотографии';
         axios.post('/upload-image', {
           image: this.main_banner,
           type: утилиты.decodeImageType(this.main_banner),
@@ -163,6 +169,7 @@ export default {
                 name: id + '_' + index
               }).then((step_photo_url_response) => {
                 step.photo = step_photo_url_response.data;
+                this.loading_status = 'Ещё немного...';
                 axios.post('/updateRecipePhotosUrl', {
                   id: id,
                   main_banner_url: main_banner_url,
@@ -171,7 +178,6 @@ export default {
                 }).then(() => {
                   this.loading = false;
                 })
-
               })
             })
           })

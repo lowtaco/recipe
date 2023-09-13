@@ -6,7 +6,9 @@
         <div class="sl-item" v-for="(item, index) in lists" @click="$emit('openList', item.id)">
           <div class="sl-main">
      
-            <div class="sl-icon"><span>🧻</span></div>
+            <div class="sl-picture">
+              <img :src="item.picture"/>
+            </div>
             <div class="sl-info">
               <span>{{ item.name }}</span>
               <a>{{ productsAmount[index] }}</a>
@@ -74,8 +76,8 @@ export default {
   },
   methods: {
     openList(id) {
-      console.log(this.lists)
-      console.log(id)
+      console.log(this.lists);
+      console.log(id);
       this.$emit('openList', id);
     }
   },

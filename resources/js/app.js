@@ -24,6 +24,8 @@ import Confirm from './components/core/elements/confirm';
 import Loader from './components/core/elements/loader';
 import FormTitle from './components/core/elements/form_title';
 import TimeInput from './components/core/elements/time_input';
+import DifficultySpicinessEditor from './components/core/elements/difficulty-spiciness-editor';
+import DifficultySpicinessViewer from './components/core/elements/difficulty-spiciness-viewer';
 import AutoTextarea from './components/core/elements/auto_textarea';
 import NumEditor from './components/core/elements/num_editor';
 
@@ -67,6 +69,8 @@ app.component('confirm', Confirm)
 app.component('loader', Loader)
 app.component('form-title', FormTitle)
 app.component('time-input', TimeInput)
+app.component('difficulty-spiciness-editor', DifficultySpicinessEditor)
+app.component('difficulty-spiciness-viewer', DifficultySpicinessViewer)
 app.component('r-select', Select)
 app.component('draggable-list', Draggable)
 app.component('photo-uploader', PhotoUploader)
