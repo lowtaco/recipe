@@ -11,6 +11,7 @@ import ShoppingLists from "./components/pages/ShoppingLists";
 import AddList from "./components/pages/shopping_list/AddList.vue"
 import ListViewer from "./components/pages/shopping_list/ListViewer.vue"
 import EditListViewer from "./components/pages/shopping_list/EditList"
+import SharedListViewer from "./components/pages/shopping_list/SharedListViewer"
 
 import Account from "./components/pages/Account";
 
@@ -37,6 +38,7 @@ export default createRouter({
     {path: '/add-list', component: AddList},
     {path: '/list/:id', component: ListViewer, props: true},
     {path: '/edit-list/:id', component: EditListViewer, props: true},
+    {path: '/shared-list/:token', component: SharedListViewer, props: true},
 
     {path: '/debug', component: Debug},
   ]

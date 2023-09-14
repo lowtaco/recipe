@@ -158,6 +158,7 @@ body,
       overflow-x: hidden;
       padding: 0 16px;
       box-sizing: border-box;
+      -ms-overflow-style: none;
 
       .page-empty {
         display: flex;
@@ -182,6 +183,8 @@ body,
         }
       }
     }
+
+    .page-content::-webkit-scrollbar { width: 0; }
 
     .page-footer {
       flex-shrink: 0;
@@ -508,7 +511,8 @@ body,
   .add-list-button {
     position: absolute;
     right: 16px;
-    bottom: 16px;
+    bottom: -100px;
+    transition: .2s all ease;
   }
 }
 
@@ -585,6 +589,7 @@ body,
     flex-direction: column;
     padding-top: 20px;
     gap: 10px;
+    width: 100%;
     
     .add-list-preview {
       display: inline-flex;
@@ -649,6 +654,52 @@ body,
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+
+.shared-list-users {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 8px;
+
+  .user {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .info {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+
+      .picture {
+        width: 48px;
+        height: 48px;
+        background-color: #BDBDBD;
+        border-radius: 50%;
+      }
+
+      .name {
+
+      }
+    }
+
+    .remove-user {
+
+    }
+
+  }
+  
+}
+
+.add-new-shared-list-user {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  padding-top: 0;
 }
 
 /* END Shopping List */
@@ -1161,6 +1212,12 @@ h1, h2, h3, h4, h5, h6, a, span {
     font-size: 14px;
   }
 }
+
+.divider.line {
+  padding: 0;
+  height: 1px;
+  margin: 0 10px;
+}
 /* END Dividers */
 
 /* Buttons */
@@ -1267,6 +1324,7 @@ button.logout {
   align-items: center;
   justify-content: space-between;
   height: 56px;
+  gap: 16px;
   padding: 0 16px;
   box-sizing: border-box;
   font-size: 16px;
@@ -1703,17 +1761,16 @@ textarea {
 /* Color & Icon Picker */
 .item-color-picker,
 .item-icon-picker {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
+  display: grid;
+  gap: 16px;
+  grid-template-areas:  "a b c d e"
+                        "f g k l m";
 
   .icp-color {
     display: inline-block;
     flex-shrink: 0;
-    width: 50px;
-    height: 50px;
+    width: 56px;
+    height: 56px;
     border-radius: 15px;
   }
   
@@ -1723,10 +1780,11 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--item-icon-picker-bg-color);
-  width: 50px;
-  height: 50px;
+  background-color: var(--input-text-border-color);
+  width: 56px;
+  height: 56px;
   border-radius: 15px;
+  box-sizing: border-box;
 
   span {
     font-size: 22px;
@@ -2421,16 +2479,56 @@ textarea {
   opacity: 0;
 }
 
-.slide-leave-active,
-.slide-enter-active {
-  transition: 1s;
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.2s ease;
 }
-.slide-enter {
-  transform: translate(100%, 0);
+
+.slide-enter-to {
+  position: absolute;
+  right: 0;
 }
+
+.slide-enter-from {
+  position: absolute;
+  right: 100%;
+}
+
 .slide-leave-to {
-  transform: translate(-100%, 0);
+  position: absolute;
+  left: -100%;
 }
+
+.slide-leave-from {
+  position: absolute;
+  left: 0;
+}
+
+.slide-reverse-enter-active,
+.slide-reverse-leave-active {
+  transition: all 0.2s ease;
+}
+
+.slide-reverse-enter-to {
+  position: absolute;
+  right: 0;
+}
+
+.slide-reverse-enter-from {
+  position: absolute;
+  right: -100%;
+}
+
+.slide-reverse-leave-to {
+  position: absolute;
+  left: 100%;
+}
+
+.slide-reverse-leave-from {
+  position: absolute;
+  left: 0;
+}
+
 @property --percent {
   syntax: "<integer>";
   initial-value: 0;

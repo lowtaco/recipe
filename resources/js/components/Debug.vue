@@ -49,7 +49,7 @@
 
         <mp-slider />
 
-        <switch-input />
+        <switch-input placeholder="switch"/>
 
         <time-input />
 

@@ -28,8 +28,6 @@
           <div class="icp-color" :style="{'background-color': color}" :class="{selected: c_bg_color == color}" v-for="color in $addListVariables.colors" @click="c_bg_color = color"></div>
         </div>
       </div>
-      
-    
     </div>
 
     <div class="page-footer">
@@ -65,8 +63,6 @@ export default {
         this.c_icon = listInfo.icon;
         this.loading = false;
       })
-    },
-    inputChanged() {
     },
     updateListInfo() {
       this.loading = true;

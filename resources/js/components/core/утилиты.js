@@ -57,6 +57,25 @@ class утилиты {
             return time;
         }
     }
+
+    static utf8_to_b64(str) {
+        return window.btoa(unescape(encodeURIComponent(str)));
+    }
+
+    static b64_to_utf8(str) {
+        return decodeURIComponent(escape(window.atob(str)));
+    }
+
+    static generateShareListToken(user, id) {
+        let token = id + '_!' + JSON.stringify(user); 
+        let encoded = this.utf8_to_b64(token);
+        console.log(encoded)
+        return encoded;
+    }
+
+    static decodeShareListToken(token) {
+        let decoded = this.b64_to_utf8(token);
+    }
 }
 
 export { утилиты };

@@ -25,8 +25,6 @@
           <div class="icp-color" :style="{'background-color': color}" :class="{selected: c_bg_color == color}" v-for="color in $addListVariables.colors" @click="c_bg_color = color"></div>
         </div>
       </div>
-      
-    
     </div>
 
     <div class="page-footer">
@@ -38,7 +36,7 @@
 <script>
 
 export default {
-  props: ['lists', 'user'],
+  props: ['user'],
   data() {
     return {
       listName: '',

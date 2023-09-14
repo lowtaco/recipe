@@ -14,25 +14,15 @@ export default {
     return {
      items: [
       {
-        name: "Все рецепты",
+        name: "Рецепты",
         checked: true,
         link: '#'
       },
       {
-        name: "Какая-то папка",
+        name: "Статьи",
         checked: false,
         link: '#'
       },
-      {
-        name: "Какая-то папка",
-        checked: false,
-        link: '#'
-      },
-      {
-        name: "Какая-то папка",
-        checked: false,
-        link: '#'
-      }
      ]
     }
   },

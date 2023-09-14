@@ -3,9 +3,8 @@
 
     <div class="page-content">
       <div class="shopping-lists-box">
-        <div class="sl-item" v-for="(item, index) in lists" @click="openList(item.id)">
+        <div class="sl-item" v-for="(item, index) in lists" @click="$router.push('/list/' + item.id)">
           <div class="sl-main">
-      
             <div class="sl-icon" :style="{'background-color': item.color}"><span>{{ item.icon }}</span></div>
             <div class="sl-info">
               <span>{{ item.name }}</span>
@@ -17,9 +16,8 @@
             <div class="sl-shared" v-if="item.shared">
               <icon icon="shared"/>
             </div>
-
             <div class="sl-run">
-              <icon icon="run" />
+              <icon icon="run"/>
             </div>
           </div>
         </div>
@@ -34,7 +32,7 @@
       </div>
     </div>
 
-    <div class="add-list-button">
+    <div class="add-list-button" id="add-shopping-list-button">
       <button class="big square" @click="$router.push('/add-list')">
         <icon icon="plus" />
       </button>
@@ -45,7 +43,7 @@
 <script>
 
 export default {
-  props: ['user', 'lists'],
+  props: ['lists'],
   data() {
     return {
       isListEpmty: null,
@@ -82,10 +80,14 @@ export default {
     }
   },
   mounted() {
+    this.slideAddButtonUp();
   },
   methods: {
-    openList(id) {
-      this.$emit('openList', id);
+    slideAddButtonUp() {
+      let button = document.getElementById('add-shopping-list-button');
+      setTimeout(() => {
+        button.style.bottom = 16 + 'px';
+      }, 200)
     }
   },
 };

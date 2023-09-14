@@ -34,7 +34,7 @@
           <button>Редактировать</button>
         </div>
         <div class="profile-content">
-          <h2>Рецепты</h2>
+          <h2>Лента</h2>
           <profile-folders-slider />
           <div class="posts">
             <div class="post" v-for="recipe in recipes">

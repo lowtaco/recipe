@@ -34,11 +34,6 @@ export default {
       },
     }
   },
-  computed: {
-
-  },
-  mounted() {
-  },
   methods: {
     AmountInputChanged() {
       if(this.itemAmount) {

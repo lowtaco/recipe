@@ -3,9 +3,8 @@
 
     <div class="page-content">
       <div class="shopping-lists-box">
-        <div class="sl-item" v-for="(item, index) in lists" @click="$emit('openList', item.id)">
+        <div class="sl-item" v-for="(item, index) in lists" @click="$router.push('/list/' + item.id)">
           <div class="sl-main">
-     
             <div class="sl-picture">
               <img :src="item.picture"/>
             </div>
@@ -19,9 +18,8 @@
             <div class="sl-shared" v-if="item.shared">
               <icon icon="shared"/>
             </div>
-            
             <div class="sl-run">
-              <icon icon="run" />
+              <icon icon="run"/>
             </div>
           </div>
         </div>
@@ -41,7 +39,7 @@
 <script>
 
 export default {
-  props: ['user', 'lists'],
+  props: ['lists'],
   data() {
     return {
       isListEpmty: null,
@@ -71,13 +69,6 @@ export default {
         }
       }
     }
-  },
-  mounted() {
-  },
-  methods: {
-    openList(id) {
-      this.$emit('openList', id);
-    }
-  },
+  }
 };
 </script>

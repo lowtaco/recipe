@@ -1,12 +1,12 @@
 <template>
   <div class="switchbox" @click="checked = !checked">
-    <span>Switch</span>
+    <span>{{ placeholder }}</span>
     <input id="switchcheckbox" type="checkbox" :checked="checked"/><label for="switchcheckbox" id="switch"></label>
   </div>
 </template>
 <script>
 
 export default {
-  props: ['checked']
+  props: ['checked', 'placeholder']
 };
 </script>
