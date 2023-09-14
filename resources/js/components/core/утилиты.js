@@ -69,12 +69,12 @@ class утилиты {
     static generateShareListToken(user, id) {
         let token = id + '_!' + JSON.stringify(user); 
         let encoded = this.utf8_to_b64(token);
-        console.log(encoded)
         return encoded;
     }
 
     static decodeShareListToken(token) {
         let decoded = this.b64_to_utf8(token);
+        console.log(decoded)
     }
 }
 

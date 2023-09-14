@@ -172,7 +172,8 @@ export default {
         this.sharedOptionsMode = true;
       };
       if (link == 'share') {
-        утилиты.generateShareListToken(this.user, this.id)
+        let token = утилиты.generateShareListToken(this.user, this.id)
+        console.log(token)
       };
       if (link == 'delete') {
         this.deleteConfirmMode = true;
