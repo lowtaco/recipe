@@ -27,6 +27,14 @@ Route::post('/get-list-info', [ShoppingListsController::class, 'getListInfo']);
 Route::post('/update-list', [ShoppingListsController::class, 'updateList']);
 Route::post('/update-list-info', [ShoppingListsController::class, 'updateListInfo']);
 Route::post('/delete-list', [ShoppingListsController::class, 'deleteList']);
+Route::post('/invite-user-to-list', [ShoppingListsController::class, 'inviteUserToList']);
+Route::post('/findShareListPending', [ShoppingListsController::class, 'findShareListPending']);
+Route::post('/countSharedListsInvites', [ShoppingListsController::class, 'countSharedListsInvites']);
+Route::post('/get-shopping-list-invites', [ShoppingListsController::class, 'getShoppingListInvites']);
+Route::post('/getSharedListStatus', [ShoppingListsController::class, 'getSharedListStatus']);
+Route::post('/updateSharedStatus', [ShoppingListsController::class, 'updateSharedStatus']);
+Route::post('/declineInviteList', [ShoppingListsController::class, 'declineInviteList']);
+Route::post('/aproveInviteList', [ShoppingListsController::class, 'aproveInviteList']);
 
 Route::post('/get-recipes', [RecipesController::class, 'getRecipes']);
 Route::get('/get-recipes-kitchens', [RecipesController::class, 'getRecipesKitchens']);
@@ -48,5 +56,6 @@ Route::post('/get-recipe-cooking-methods', [RecipesController::class, 'getRecipe
 Route::post('/auth', [UsersController::class, 'authorize']);
 Route::post('/registration', [UsersController::class, 'registerUser']);
 Route::post('/get-user-info', [UsersController::class, 'getUserInfo']);
+Route::post('/findUserByNickname', [UsersController::class, 'findUserByNickname']);
 
 Route::post('/upload-image', [PhotoUploadController::class, 'store']);

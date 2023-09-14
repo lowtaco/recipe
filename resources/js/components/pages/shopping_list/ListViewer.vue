@@ -3,7 +3,7 @@
     
     <div class="page-header no-border" id="slv-parent">
       <div class="header-w-button between">
-        <div class="goBackButton" @click="$router.push('/shopping-lists')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.578 17.137a.625.625 0 0 1-.882-.058l-5.833-6.667a.625.625 0 0 1 0-.823l5.833-6.667a.625.625 0 1 1 .94.823l-4.925 5.63h11.956a.625.625 0 0 1 0 1.25H4.711l4.926 5.63a.625.625 0 0 1-.058.882Z" fill="#030D45"/></svg></div>
+        <div class="goBackButton" @click="$router.push('/shopping-lists')"><icon icon="back" size="small"/></div>
         <div class="list-viewer-shared"></div>
         <div class="popup-menu-button" @click="additionalPopupActive = true" id="slv-popup-btn">•••</div>
       </div>
@@ -59,7 +59,7 @@
     </Transition>
 
     <Transition name="fade">
-      <shared_options :id="id" v-if="sharedOptionsMode" @goBack="sharedOptionsMode = false"/>
+      <shared_options :id="id" :user="user" v-if="sharedOptionsMode" @goBack="sharedOptionsMode = false"/>
     </Transition>
 
     <confirm :settings="deleteConfirmSettings" @goBack="deleteConfirmMode = false" @confirm="deletePopUpConfirm" v-if="deleteConfirmMode"/>
@@ -130,7 +130,7 @@ export default {
     updateList() {
       console.log(this.list)
       axios.post('/update-list', {
-        user: this.user.email,
+        user: this.user.id,
         id: this.id,
         list: JSON.stringify(this.list)
       }).then((response) => {

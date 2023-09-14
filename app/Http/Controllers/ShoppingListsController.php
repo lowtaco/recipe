@@ -72,4 +72,72 @@ class ShoppingListsController extends Controller
         $id = $request->input('id');
         DB::table('shopping_lists')->where('id', $id)->delete();
     }
+
+    public function inviteUserToList(Request $request) {
+        $list_id = $request->input('list_id');
+        $user_id = $request->input('user_id');
+        $list_owner_id = $request->input('list_owner_id');
+
+        $id = DB::table('pending_shared_shopping_list')->insertGetId([
+            'list_id' => $list_id,
+            'user_id' => $user_id,
+            'list_owner_id' => $list_owner_id,
+        ]);
+        return $id;
+    }
+
+    public function findShareListPending(Request $request) {
+        $list_id = $request->input('list_id');
+        $user_id = $request->input('user_id');
+        $list_owner_id = $request->input('list_owner_id');
+
+        $pending = DB::table('pending_shared_shopping_list')->where('list_id', $list_id)->where('user_id', $user_id)->where('list_owner_id', $list_owner_id)->get();
+        return $pending;
+    }
+
+    public function countSharedListsInvites(Request $request) {
+        $user_id = $request->input('user_id');
+
+        $count = DB::table('pending_shared_shopping_list')->where('user_id', $user_id)->count();
+        return $count;
+    }
+
+    public function getShoppingListInvites(Request $request) {
+        $user_id = $request->input('user_id');
+
+        $invites = DB::table('pending_shared_shopping_list')->where('user_id', $user_id)->orderBy('id', 'desc')->get();
+        return $invites;
+    }
+
+    public function getSharedListStatus(Request $request) {
+        $list_id = $request->input('list_id');
+
+        $sharedStatus = DB::table('shopping_lists')->where('id', $list_id)->value('shared');
+        return $sharedStatus;
+    }
+
+    public function updateSharedStatus(Request $request) {
+        $list_id = $request->input('list_id');
+        $status = $request->input('status');
+
+        DB::table('shopping_lists')->where('id', $list_id)->update(['shared' => $status]);
+    }
+
+    public function declineInviteList(Request $request) {
+        $invite_id = $request->input('invite_id');
+
+        DB::table('pending_shared_shopping_list')->where('id', $invite_id)->delete();
+    }
+
+    public function aproveInviteList(Request $request) {
+        $invite_id = $request->input('invite_id');
+        $shared_users = $request->input('shared_users');
+
+        $user_id = DB::table('pending_shared_shopping_list')->where('id', $invite_id)->value('user_id');
+        $list_id = DB::table('pending_shared_shopping_list')->where('id', $invite_id)->value('list_id');
+
+        DB::table('shopping_lists')->where('id', $list_id)->update(['shared_users' => $shared_users]);
+        DB::table('pending_shared_shopping_list')->where('id', $invite_id)->delete();
+       
+    }
 }

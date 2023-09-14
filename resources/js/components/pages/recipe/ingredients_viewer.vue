@@ -72,7 +72,7 @@ export default {
     async findList() {
       axios.post('/getShoppingListByRecipe', {
         id: this.recipeId,
-        user: this.recipeAuthor.email,
+        user: this.recipeAuthor.id,
       }).then((response) => {
         if (response.data.length > 0) {
           this.isListExist = true;
@@ -90,7 +90,7 @@ export default {
       
         axios.post('/create-shopping-list', {
           name: this.recipeName,
-          user: this.recipeAuthor.email,
+          user: this.recipeAuthor.id,
           personal: 0,
           picture: this.picture,
           list: JSON.stringify(this.ingredients_local),

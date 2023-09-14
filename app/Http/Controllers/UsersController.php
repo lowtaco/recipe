@@ -39,4 +39,12 @@ class UsersController extends Controller
 
         return $user;
     }
+
+    public function findUserByNickname(Request $request) {
+        $nickname = $request->input('nickname');
+
+        $user = DB::table('app_users')->where('nickname', $nickname)->get();
+
+        return $user;
+    }
 }

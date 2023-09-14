@@ -69,7 +69,7 @@ export default {
         list.icon = this.c_icon;
 
         axios.post('/create-shopping-list', {
-          user: this.user.email,
+          user: this.user.id,
           name: this.listName,
           personal: 1,
           color: this.c_bg_color,

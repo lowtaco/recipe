@@ -10,6 +10,11 @@
               <span>{{ tab }}</span>
             </div>
           </div>
+
+          <div class="sl-invites" v-if="invitesAmount" @click="$router.push('/invites-list')">
+            <span>Приглашения в списки покупок</span>
+            <div class="count">{{ invitesAmount }}</div>
+          </div>
           
           <div class="swipe-tabs-content" v-touch:swipe.left="swipeLeft" v-touch:swipe.right="swipeRight">
             <div class="swipe-tab-content">
@@ -36,6 +41,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import PersonalLists from "./shopping_list/PersonalLists";
 import RecipeLists from "./shopping_list/RecipeLists";
 
@@ -54,6 +60,7 @@ export default {
       ],
       listsRecipe: null,
       listsPersonal: null,
+      invitesAmount: null,
       loading: true
     }
   },
@@ -65,6 +72,7 @@ export default {
   mounted() {
     this.$emit("hideMenu", false);
     this.getLists();
+    this.countInvites();
     if(localStorage.getItem('shoppingListTab')) {
       this.selectedTab = localStorage.getItem('shoppingListTab');
     };
@@ -72,7 +80,7 @@ export default {
   methods: {
     getLists() {
       this.loading = true;
-      axios.post('/get-user-shopping-lists', {user: this.user.email}).then((response) => {
+      axios.post('/get-user-shopping-lists', {user: this.user.id}).then((response) => {
         // Фильтруем списки на личные и сохраненные
         let personal = _.filter(response.data, (l) => {
           return l.personal == 1;
@@ -84,6 +92,13 @@ export default {
         this.listsPersonal = personal;
         this.listsRecipe = recipe;
         this.loading = false;
+      })
+    },
+    countInvites() {
+      axios.post('/countSharedListsInvites', {
+        user_id: this.user.id
+      }).then((response) => {
+        this.invitesAmount = response.data;
       })
     },
     swipeLeft() {

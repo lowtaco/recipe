@@ -11,6 +11,8 @@ import Icon from './components/core/icon_pack';
 
 import PhotoUploader from './components/core/elements/photo_uploader';
 
+import Toast from './components/core/elements/toast'
+
 import Checkbox from './components/core/elements/checkbox';
 import Switch from './components/core/elements/switch';
 import Select from './components/core/elements/select';
@@ -76,6 +78,7 @@ app.component('draggable-list', Draggable)
 app.component('photo-uploader', PhotoUploader)
 app.component('auto-textarea', AutoTextarea)
 app.component('num-editor', NumEditor)
+app.component('toast', Toast)
 
 app.use(router)
 app.mount('#app')
