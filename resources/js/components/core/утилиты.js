@@ -76,6 +76,16 @@ class утилиты {
         let decoded = this.b64_to_utf8(token);
         console.log(decoded)
     }
+
+    static getBGU(bgu_str) {
+        let bgu_array = bgu_str.split(',')
+        let bgu = {
+            protein: +bgu_array[0],
+            fat: +bgu_array[1],
+            carbs: +bgu_array[2]
+        }
+        return bgu;
+    }
 }
 
 export { утилиты };

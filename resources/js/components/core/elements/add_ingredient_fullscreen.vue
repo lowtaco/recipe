@@ -10,7 +10,8 @@
 
     <div class="page-content">
       <div class="page-wrapper">
-       <input v-model="name" type="text" placeholder="Ингредиент">
+       <r-select v-model="ingredient" request="/get-products" placeholder="Название продукта"/>
+       <input v-model="additional" type="text" placeholder="Дополнение (Например, Черри)">
         <div class="two-collumns">
           <div class="item">
             <input v-model="amount" type="number" placeholder="Количество">
@@ -18,6 +19,17 @@
           </div>
           <div class="item">
             <r-select v-model="unit" placeholder="Ед. измерения" request="/get-ingredients-units" title="Единицы измерения"/>
+          </div>
+        </div>
+        <div class="divider simple" v-if="ingredient"><span>Как будет выглядеть в рецепте:</span></div>
+        <div class="ingredient-preview" v-if="ingredient">
+          <div class="left">
+            <span v-if="ingredient">{{ ingredient.name }}</span>
+            <span v-if="additional">{{ additional}}</span>
+          </div>
+          <div class="right">
+            <span v-if="amount">{{ amount }}</span>
+            <span v-if="unit">{{ unit.name }}</span>
           </div>
         </div>
       </div>
@@ -35,16 +47,21 @@ export default {
   props: ['select'],
   data() {
     return {
-      name: null,
+      ingredient: null,
+      additional: null,
       amount: null,
       unit: null
     }
   },
   methods: {
     addIngredient() {
-      if(this.name) {
+      if(this.ingredient) {
         let ingredient = {
-          name: this.name,
+          id: this.ingredient.id,
+          name: this.ingredient.name,
+          bgu: this.ingredient.bgu,
+          kcal: this.ingredient.kcal,
+          additional: this.additional,
           amount: this.amount,
           unit: this.unit
         }

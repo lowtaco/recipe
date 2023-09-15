@@ -47,6 +47,8 @@ Route::get('/get-meals', [RecipesController::class, 'getMeals']);
 Route::get('/get-ingredients-units', [RecipesController::class, 'getIngredientsUnits']);
 Route::post('/create-recipe', [RecipesController::class, 'createRecipe']);
 Route::post('/updateRecipePhotosUrl', [RecipesController::class, 'updateRecipePhotosUrl']);
+Route::get('/get-products', [RecipesController::class, 'getProducts']);
+Route::post('/get-product-info', [RecipesController::class, 'getProductInfo']);
 
 Route::post('/get-recipe', [RecipesController::class, 'getRecipe']);
 Route::post('/get-recipe-kitchen', [RecipesController::class, 'getRecipeKitchen']);

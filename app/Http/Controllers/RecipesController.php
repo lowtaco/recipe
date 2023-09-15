@@ -66,6 +66,10 @@ class RecipesController extends Controller
         $cooking_methods = $request->input('cooking_methods');
         $dishes = $request->input('dishes');
         $ingredients = $request->input('ingredients');
+        $kcal = $request->input('kcal');
+        $protein = $request->input('protein');
+        $fat = $request->input('fat');
+        $carbs = $request->input('carbs');
 
         $id = DB::table('recipes')->insertGetId([
             'author' => $author,
@@ -81,7 +85,11 @@ class RecipesController extends Controller
             'meal' => $meal,
             'cooking_methods' => $cooking_methods,
             'dishes' => $dishes,
-            'ingredients' => $ingredients
+            'ingredients' => $ingredients,
+            'kcal' => $kcal,
+            'protein' => $protein,
+            'fat' => $fat,
+            'carbs' => $carbs
         ]);
         return $id;
     }
@@ -140,6 +148,18 @@ class RecipesController extends Controller
         
         $cooking_method = DB::table('cooking_methods')->where('id', $id)->get();
         return $cooking_method;
+    }
+
+    public function getProducts(Request $request) {
+        $products = DB::table('products')->get();
+        return $products;
+    }
+
+    public function getProductInfo(Request $request) {
+        $id = $request->input('id');
+
+        $product = DB::table('products')->where('id', $id)->get();
+        return $product;
     }
 
     

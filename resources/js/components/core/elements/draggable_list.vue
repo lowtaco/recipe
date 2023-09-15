@@ -14,7 +14,7 @@
           </div>
           <div class="element">
             <span>{{element.name}}</span>
-            <span v-if="element.unit">{{ element.amount }} {{ element.unit.name }}</span>
+            <span class="unit_amount" v-if="element.unit">{{ element.amount }} {{ element.unit.name }}</span>
           </div>
           <div class="item-icon" @click="deleteElement(element)">
             <icon icon="trash" size="small"/>
@@ -42,6 +42,7 @@
 </template>
 <script>
 
+import axios from 'axios';
 import add_ingredient_fullscreen from './add_ingredient_fullscreen'
 import select_fullscreen from './select_fullscreen';
 import draggable from 'vuedraggable'
@@ -64,7 +65,12 @@ export default {
     update() {
       this.$emit('update:modelValue', this.list);
     },
+    
     addIngredient(ingredient) {
+      if (ingredient.additional) {
+        ingredient.name = ingredient.name + ' ' + ingredient.additional;
+      }
+      delete ingredient['additional'];
       this.list.push(ingredient);
       this.update();
     },

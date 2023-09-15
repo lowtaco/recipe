@@ -19,6 +19,8 @@ import Account from "./components/pages/Account";
 import AddRecipe from "./components/pages/recipe/AddRecipe";
 import RecipeViewer from "./components/pages/recipe/RecipeViewer"
 
+import stories from "./components/core/stories_engine/stories.vue"
+
 export default createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -41,6 +43,8 @@ export default createRouter({
     {path: '/edit-list/:id', component: EditListViewer, props: true},
     {path: '/shared-list/:token', component: SharedListViewer, props: true},
     {path: '/invites-list', component: InvitesListViewer},
+
+    {path: '/stories', component: stories},
 
     {path: '/debug', component: Debug},
   ]

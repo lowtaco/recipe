@@ -5,7 +5,7 @@
       <h4>Пищевая ценность <span>на 100 гр.</span></h4>
       <div class="calories">
         <icon icon="fire" size="tiny" />
-        <span>{{ calories }} ккал</span>
+        <span>{{ kcal }} ккал</span>
       </div>
     </div>
 
@@ -17,7 +17,7 @@
         <div class="name">
           <div class="title">
             <span>Белки</span>
-            <p>{{ protein }} {{ unit }}</p>
+            <p>({{ protein }} {{ unit }})</p>
           </div>
           <div class="percents" :style="{'--percent': this.proteinPercents}"></div>
         </div>
@@ -35,7 +35,7 @@
         <div class="name">
           <div class="title">
             <span>Жиры</span>
-            <p>{{ fat }} {{ unit }}</p>
+            <p>({{ fat }} {{ unit }})</p>
           </div>
           <div class="percents" :style="{'--percent': this.fatPercents}">
           </div>
@@ -54,7 +54,7 @@
         <div class="name">
           <div class="title">
             <span>Углеводы</span>
-            <p>{{ carbs }} {{ unit }}</p>
+            <p>({{ carbs }} {{ unit }})</p>
           </div>
           <div class="percents" :style="{'--percent': this.carbsPercents}"></div>
         </div>
@@ -69,12 +69,11 @@
 <script>
 
 export default {
-  props: ['protein', 'fat', 'carbs', 'startDelay'],
+  props: ['kcal', 'protein', 'fat', 'carbs', 'startDelay'],
   data() {
     return {
       unit: 'гр.',
       delayTime: 1000,
-      calories: 0,
       proteinPercents: 0,
       fatPercents: 0,
       carbsPercents: 0
@@ -105,8 +104,6 @@ export default {
       let kcal_protein = 4;
       let kcal_carbs = 4;
       let kcal_fat = 9;
-
-      this.calories = (this.protein * kcal_protein) + (this.carbs * kcal_carbs) + (this.fat * kcal_fat);
     },
   },
 };

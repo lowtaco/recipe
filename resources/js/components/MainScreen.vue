@@ -21,11 +21,17 @@
 
 <script>
 
+//TODO: Исправить ошибку с null переходм после добавления списка покупок из рецепта
+//TODO: Запретить реадактирование списка покупок, если не ты его создатель
+//TODO: Сделать общий доступ по ссылке
+
+
+
+
 import MobileMenu from "./MobileMenu";
 
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import Stories from "./core/stories/story_viewer"
 
 import AddRecipe from "./pages/recipe/AddRecipe";
 
@@ -35,7 +41,6 @@ export default {
     'mobile-menu': MobileMenu,
     Home,
     Search,
-    Stories,
     AddRecipe,
   },
 

@@ -31,16 +31,25 @@
               <p>рецепты</p>
             </div>
           </div>
-          <button>Редактировать</button>
+          <div class="action-buttons">
+            <button class="action">Редактировать</button>
+            <button class="square"><icon icon="chat"/></button>
+          </div>
         </div>
         <div class="profile-content">
           <h2>Лента</h2>
-          <profile-folders-slider />
-          <div class="posts">
+          <profile-folders-slider v-model="selectedTab"/>
+
+          <div class="posts recipes" v-if="selectedTab == 0">
             <div class="post" v-for="recipe in recipes">
               <img :src="recipe.main_banner_url">
             </div>
+          </div>
 
+          <div class="posts articles" v-if="selectedTab == 1">
+            <div class="post" v-for="recipe in recipes">
+              <img :src="recipe.main_banner_url">
+            </div>
           </div>
 
         </div>
@@ -71,7 +80,9 @@ export default {
   data() {
     return {
       isSettingsOpen: false,
+      selectedTab: 0,
       recipes: [],
+      articles: [],
       scrollBox: null
     }
   },

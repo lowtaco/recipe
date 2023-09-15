@@ -87,6 +87,8 @@ export default {
       dishes: null,
       ingredients: null,
       steps: [],
+      kcal: null,
+      bgu: {},
       serving: {
         desc: null,
         photo: null
@@ -121,12 +123,66 @@ export default {
       })
       return arr;
     },
+
+    getCalories(ingredients) {
+      let kcal_total = null;
+      let bgu_total = {
+        protein: 0,
+        fat: 0,
+        carbs: 0
+      }
+      let weight_total = 0;
+      let kcal_100 = 0;
+      let bgu_100 = {
+        protein: 0,
+        fat: 0,
+        carbs: 0
+      }
+
+      _.forEach(ingredients, (ingredient) => {
+        let bgu_product = утилиты.getBGU(ingredient.bgu)
+        
+        let g = 1;
+        if (ingredient.unit.id == 6) {
+          g = 1;
+        } else if (ingredient.unit.id == 10) {
+          g = 1000;
+        }
+        // Считаем общий вес блюда
+        weight_total += (ingredient.amount * g);
+        
+        // Считаем общее КБЖУ блюда на весь вес
+        kcal_total += (ingredient.kcal / 100) * (ingredient.amount * g);
+        bgu_total.protein += (bgu_product.protein / 100) * (ingredient.amount * g);
+        bgu_total.fat += (bgu_product.fat / 100) * (ingredient.amount * g);
+        bgu_total.carbs += (bgu_product.carbs / 100) * (ingredient.amount * g);
+      })
+      // Считаем КБЖУ блюда на 100 гр
+      kcal_100 = (kcal_total / weight_total) * 100
+      bgu_100.protein = (bgu_total.protein / weight_total) * 100
+      bgu_100.fat = (bgu_total.fat / weight_total) * 100
+      bgu_100.carbs = (bgu_total.carbs / weight_total) * 100
+
+      // Округляем до 2х знаков после запятой
+      kcal_100 = Math.round(kcal_100 * 100) / 100;
+      bgu_100.protein = Math.round(bgu_100.protein * 100) / 100;
+      bgu_100.fat = Math.round(bgu_100.fat * 100) / 100;
+      bgu_100.carbs = Math.round(bgu_100.carbs * 100) / 100;
+
+      this.kcal = kcal_100;
+      this.bgu = bgu_100;
+    },
     createRecipe() {
       this.loading = true;
       this.loading_status = 'Формируем рецепт';
       let filteredMeals = _.filter(this.meal, (meal) => {
         return meal.checked
       })
+      
+      this.loading_status = 'Считаем калории';
+      this.getCalories(this.ingredients)
+      console.log(this.kcal)
+      console.log(this.bgu)
 
       axios.post('/create-recipe', {
         author: this.user.id,
@@ -145,6 +201,10 @@ export default {
         dishes: JSON.stringify(this.objValuesToArray(this.dishes, 'id')),
         ingredients: JSON.stringify(this.ingredients),
         serving: JSON.stringify(this.serving),
+        kcal: this.kcal,
+        protein: this.bgu.protein,
+        fat: this.bgu.fat,
+        carbs: this.bgu.carbs
       }).then((response) => {
         const id = String(response.data);
         let main_banner_url = null;
