@@ -35,6 +35,8 @@ Route::post('/getSharedListStatus', [ShoppingListsController::class, 'getSharedL
 Route::post('/updateSharedStatus', [ShoppingListsController::class, 'updateSharedStatus']);
 Route::post('/declineInviteList', [ShoppingListsController::class, 'declineInviteList']);
 Route::post('/aproveInviteList', [ShoppingListsController::class, 'aproveInviteList']);
+Route::post('/get-shared-shopping-list-users', [ShoppingListsController::class, 'getSharedShoppingListUsers']);
+Route::post('/updateSharedUsers', [ShoppingListsController::class, 'updateSharedUsers']);
 
 Route::post('/get-recipes', [RecipesController::class, 'getRecipes']);
 Route::get('/get-recipes-kitchens', [RecipesController::class, 'getRecipesKitchens']);

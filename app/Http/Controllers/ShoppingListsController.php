@@ -11,7 +11,7 @@ class ShoppingListsController extends Controller
     public function getUserLists(Request $request) {
         $user = $request->input('user');
         $shopping_lists = DB::table('shopping_lists')->where('owner', $user)->get();
-        $shared_lists = DB::table('shopping_lists')->whereJsonContains('shared_users', $user)->get();
+        $shared_lists = DB::table('shopping_lists')->whereJsonContains('shared_users', $user)->where('shared', 1)->get();
         $lists = $shared_lists->merge($shopping_lists);
         return $lists;
     }
@@ -138,6 +138,19 @@ class ShoppingListsController extends Controller
 
         DB::table('shopping_lists')->where('id', $list_id)->update(['shared_users' => $shared_users]);
         DB::table('pending_shared_shopping_list')->where('id', $invite_id)->delete();
-       
+    }
+
+    public function getSharedShoppingListUsers(Request $request) {
+        $list_id = $request->input('list_id');
+
+        $shared_users = DB::table('shopping_lists')->where('id', $list_id)->value('shared_users');
+        return json_decode($shared_users);
+    }
+
+    public function updateSharedUsers(Request $request) {
+        $list_id = $request->input('list_id');
+        $shared_users = $request->input('shared_users');
+
+        DB::table('shopping_lists')->where('id', $list_id)->update(['shared_users' => $shared_users]);
     }
 }

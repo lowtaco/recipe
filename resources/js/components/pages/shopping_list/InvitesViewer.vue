@@ -51,7 +51,6 @@
 <script>
 import axios from 'axios';
 
-
 export default {
   props: ['user'],
   data() {
@@ -60,53 +59,56 @@ export default {
       invites: []
     }
   },
-  computed: {
-
-  },
   mounted() {
     this.getInvites();
   },
   methods: {
     getInvites() {
       this.loading = true;
+
+      // Получаем список приглашений в списки покупок
       axios.post('/get-shopping-list-invites', {
         user_id: this.user.id
       }).then((response) => {
-        if(response.data) {
+        if(response.data.length) {
           this.invites = response.data;
-          _.forEach(response.data, (invite, index) => {
 
+          // Цикл по каждому инвайту
+          _.forEach(response.data, (invite, index) => {
+            // Получаем информацию о списке покупок из инвайта
             axios.post('/get-list-info', {id: invite.list_id}).then((response) => {
               let listInfo = response.data[0];
               this.invites[index].list_info = listInfo
 
+              // Получаем информацию о приглашающем пользователе
               axios.post('/get-user-info', {
                 id: invite.list_owner_id
               }).then((response) => {
                 this.invites[index].owner_info = response.data[0];
                 this.loading = false;
-                console.log(this.invites);
               })
             })
             
           })
         } else {
-          console.log('empty')
+          // Если ивайтов нет, создаем переадресацию на страницу со списками покупок
+          this.$router.push('/shopping-lists');
         }
       })
      
     },
     declineInvite(id) {
+      // Удаляем pending инвайт
       axios.post('/declineInviteList', {
         invite_id: id
-      }).then((response) => {
+      }).then(() => {
         this.getInvites();
       })
     },
     aproveInvite(id) {
       let invite = _.find(this.invites, {id: id});
       if (invite) {
-        let shared_users = invite.list_info.shared_users;
+        let shared_users = JSON.parse(invite.list_info.shared_users);
         
         if(!shared_users) {
           shared_users = [];
@@ -114,10 +116,11 @@ export default {
 
         shared_users.push(invite.user_id);
 
+        // Добавляем текущего пользователя в shared_users списка покупок и удаляем pending инвайт
         axios.post('/aproveInviteList', {
           invite_id: id,
           shared_users: JSON.stringify(shared_users) 
-        }).then((response) => {
+        }).then(() => {
           this.getInvites();
         })  
       }

@@ -44175,7 +44175,6 @@ __webpack_require__.r(__webpack_exports__);
       invites: []
     };
   },
-  computed: {},
   mounted: function mounted() {
     this.getInvites();
   },
@@ -44183,36 +44182,44 @@ __webpack_require__.r(__webpack_exports__);
     getInvites: function getInvites() {
       var _this = this;
       this.loading = true;
+
+      // Получаем список приглашений в списки покупок
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/get-shopping-list-invites', {
         user_id: this.user.id
       }).then(function (response) {
-        if (response.data) {
+        if (response.data.length) {
           _this.invites = response.data;
+
+          // Цикл по каждому инвайту
           _.forEach(response.data, function (invite, index) {
+            // Получаем информацию о списке покупок из инвайта
             axios__WEBPACK_IMPORTED_MODULE_0___default().post('/get-list-info', {
               id: invite.list_id
             }).then(function (response) {
               var listInfo = response.data[0];
               _this.invites[index].list_info = listInfo;
+
+              // Получаем информацию о приглашающем пользователе
               axios__WEBPACK_IMPORTED_MODULE_0___default().post('/get-user-info', {
                 id: invite.list_owner_id
               }).then(function (response) {
                 _this.invites[index].owner_info = response.data[0];
                 _this.loading = false;
-                console.log(_this.invites);
               });
             });
           });
         } else {
-          console.log('empty');
+          // Если ивайтов нет, создаем переадресацию на страницу со списками покупок
+          _this.$router.push('/shopping-lists');
         }
       });
     },
     declineInvite: function declineInvite(id) {
       var _this2 = this;
+      // Удаляем pending инвайт
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/declineInviteList', {
         invite_id: id
-      }).then(function (response) {
+      }).then(function () {
         _this2.getInvites();
       });
     },
@@ -44222,15 +44229,17 @@ __webpack_require__.r(__webpack_exports__);
         id: id
       });
       if (invite) {
-        var shared_users = invite.list_info.shared_users;
+        var shared_users = JSON.parse(invite.list_info.shared_users);
         if (!shared_users) {
           shared_users = [];
         }
         shared_users.push(invite.user_id);
+
+        // Добавляем текущего пользователя в shared_users списка покупок и удаляем pending инвайт
         axios__WEBPACK_IMPORTED_MODULE_0___default().post('/aproveInviteList', {
           invite_id: id,
           shared_users: JSON.stringify(shared_users)
-        }).then(function (response) {
+        }).then(function () {
           _this3.getInvites();
         });
       }
@@ -44523,13 +44532,15 @@ __webpack_require__.r(__webpack_exports__);
     return {
       isShared: null,
       inviteNickname: null,
+      sharedUsers: [],
+      sharedUsersIds: [],
       toastEnable: false,
       toastMsg: ''
     };
   },
-  watch: {},
   mounted: function mounted() {
     this.getSharedStatus();
+    this.getSharedUsers();
   },
   methods: {
     updateSharedStatus: function updateSharedStatus() {
@@ -44538,9 +44549,13 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/updateSharedStatus', {
         list_id: this.id,
         status: this.isShared ? 1 : 0
-      }).then(function (response) {
-        console.log(response);
+      }).then(function () {
         _this.getSharedStatus();
+        if (_this.isShared) {
+          _this.toast('Общий доступ включен');
+        } else {
+          _this.toast('Общий доступ выключен');
+        }
       });
     },
     getSharedStatus: function getSharedStatus() {
@@ -44548,50 +44563,86 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/getSharedListStatus', {
         list_id: this.id
       }).then(function (response) {
-        console.log(response);
         _this2.isShared = response.data;
       });
     },
-    toast: function toast(msg) {
+    getSharedUsers: function getSharedUsers() {
       var _this3 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/get-shared-shopping-list-users', {
+        list_id: this.id
+      }).then(function (response) {
+        _this3.sharedUsersIds = response.data;
+        _this3.sharedUsers = [];
+        if (_this3.sharedUsersIds.length) {
+          _.forEach(_this3.sharedUsersIds, function (user_id) {
+            axios__WEBPACK_IMPORTED_MODULE_0___default().post('/get-user-info', {
+              id: user_id
+            }).then(function (response) {
+              _this3.sharedUsers.push(response.data[0]);
+            });
+          });
+        }
+      });
+    },
+    toast: function toast(msg) {
+      var _this4 = this;
       this.toastMsg = msg;
       this.toastEnable = true;
       setTimeout(function () {
-        _this3.toastEnable = false;
+        _this4.toastEnable = false;
       }, 2000);
     },
     sendInvite: function sendInvite() {
-      var _this4 = this;
-      if (this.inviteNickname) {
-        axios__WEBPACK_IMPORTED_MODULE_0___default().post('/findUserByNickname', {
-          nickname: this.inviteNickname
-        }).then(function (response) {
-          if (response.data[0]) {
-            var pending_user_id = response.data[0].id;
-            axios__WEBPACK_IMPORTED_MODULE_0___default().post('/findShareListPending', {
-              list_id: _this4.id,
-              user_id: pending_user_id,
-              list_owner_id: _this4.user.id
-            }).then(function (response) {
-              if (!response.data[0]) {
-                axios__WEBPACK_IMPORTED_MODULE_0___default().post('/invite-user-to-list', {
-                  list_id: _this4.id,
-                  user_id: pending_user_id,
-                  list_owner_id: _this4.user.id
-                }).then(function (response) {
-                  if (response.data) {
-                    _this4.toast('Приглашение отправлено');
-                  }
-                });
-              } else {
-                _this4.toast('Приглашение уже отправлено');
-              }
-            });
-          } else {
-            _this4.toast('Пользователь не найден');
+      var _this5 = this;
+      if (this.user.nickname != this.inviteNickname) {
+        if (this.inviteNickname) {
+          if (!this.isShared) {
+            this.updateSharedStatus();
           }
-        });
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post('/findUserByNickname', {
+            nickname: this.inviteNickname
+          }).then(function (response) {
+            if (response.data[0]) {
+              var pending_user_id = response.data[0].id;
+              axios__WEBPACK_IMPORTED_MODULE_0___default().post('/findShareListPending', {
+                list_id: _this5.id,
+                user_id: pending_user_id,
+                list_owner_id: _this5.user.id
+              }).then(function (response) {
+                if (!response.data[0]) {
+                  axios__WEBPACK_IMPORTED_MODULE_0___default().post('/invite-user-to-list', {
+                    list_id: _this5.id,
+                    user_id: pending_user_id,
+                    list_owner_id: _this5.user.id
+                  }).then(function (response) {
+                    if (response.data) {
+                      _this5.toast('Приглашение отправлено');
+                    }
+                  });
+                } else {
+                  _this5.toast('Приглашение уже отправлено');
+                }
+              });
+            } else {
+              _this5.toast('Пользователь не найден');
+            }
+          });
+        }
+      } else {
+        this.toast('Нельзя пригласить самого себя');
       }
+    },
+    removeSharedUser: function removeSharedUser(id) {
+      var _this6 = this;
+      var updatedSharedUsers = _.filter(this.sharedUsersIds, function (u) {
+        return u != id;
+      });
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/updateSharedUsers', {
+        list_id: this.id,
+        shared_users: JSON.stringify(updatedSharedUsers)
+      }).then(function (response) {
+        _this6.getSharedUsers();
+      });
     }
   }
 });
@@ -48781,29 +48832,17 @@ var _hoisted_8 = {
 var _hoisted_9 = {
   "class": "user"
 };
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_10 = {
   "class": "info"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "picture"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "name"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "paintedfriend")])], -1 /* HOISTED */);
+};
 var _hoisted_11 = {
-  "class": "remove-user"
-};
-var _hoisted_12 = {
-  "class": "user"
-};
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "info"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "picture"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "name"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "paintedfriend")])], -1 /* HOISTED */);
-var _hoisted_14 = {
-  "class": "remove-user"
 };
+var _hoisted_12 = ["src"];
+var _hoisted_13 = {
+  "class": "name"
+};
+var _hoisted_14 = ["onClick"];
 var _hoisted_15 = {
   "class": "add-new-shared-list-user"
 };
@@ -48821,13 +48860,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: "switchcheckbox",
     type: "checkbox",
     checked: $data.isShared
-  }, null, 8 /* PROPS */, _hoisted_5), _hoisted_6]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
-    icon: "close",
-    size: "small"
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
-    icon: "close",
-    size: "small"
-  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 8 /* PROPS */, _hoisted_5), _hoisted_6]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.sharedUsers, function (user) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      src: user.picture
+    }, null, 8 /* PROPS */, _hoisted_12)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.first_name + ' ' + user.last_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "@" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.nickname), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      "class": "remove-user",
+      onClick: function onClick($event) {
+        return $options.removeSharedUser(user.id);
+      }
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_icon, {
+      icon: "close",
+      size: "small"
+    })], 8 /* PROPS */, _hoisted_14)]);
+  }), 256 /* UNKEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.inviteNickname = $event;
