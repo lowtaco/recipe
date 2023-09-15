@@ -63,7 +63,7 @@ body,
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: -webkit-fill-available;
   overflow-x: hidden;
 }
 .food-app .page .page-header {
@@ -146,6 +146,7 @@ body,
   display: flex;
   align-items: center;
   height: 100%;
+  padding: 0 24px;
 }
 .food-app .page .page-content .page-empty .pe-wrapper {
   display: flex;
@@ -447,6 +448,27 @@ body,
   bottom: -100px;
   transition: 0.2s all ease;
 }
+.shopping-lists .sl-invites {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 48px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--input-text-border-color);
+  border-bottom: 1px solid var(--input-text-border-color);
+  box-sizing: border-box;
+}
+.shopping-lists .sl-invites .count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 0.5em;
+  background-color: var(--accent-color);
+  font-size: 14px;
+}
 
 .shopping-lists-box {
   display: flex;
@@ -592,6 +614,66 @@ body,
   gap: 8px;
   padding: 16px;
   padding-top: 0;
+}
+
+.list-invites {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.list-invites .invite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  gap: 16px;
+}
+.list-invites .invite .info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+}
+.list-invites .invite .info .picture {
+  display: block;
+  width: 56px;
+  height: 56px;
+  background-color: #BDBDBD;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.list-invites .invite .info .picture img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.list-invites .invite .info .text {
+  display: block;
+}
+.list-invites .invite .info .text .owner {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+}
+.list-invites .invite .action-buttons {
+  display: inline-flex;
+  gap: 8px;
+  width: 100%;
+}
+.list-invites .invite .action-buttons .item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--input-text-border-color);
+  width: 50%;
+  height: 36px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.list-invites .invite .action-buttons .item:nth-child(2) {
+  background-color: var(--accent-color);
 }
 
 /* END Shopping List */
@@ -1201,6 +1283,7 @@ button.logout {
   justify-content: center;
   gap: 20px;
   height: var(--page-header-size);
+  flex-shrink: 0;
 }
 .swipe-tabs .swipe-tabs-header .swipe-tab {
   display: flex;
@@ -1232,6 +1315,7 @@ button.logout {
 
 /* Inputs */
 input[type=text],
+input[type=email],
 input[type=number] {
   border: 0;
   padding: 0 20px;
@@ -2098,6 +2182,32 @@ textarea {
 }
 
 /* END Loader */
+/* Toast Message */
+.toast {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 0;
+  box-sizing: border-box;
+  z-index: 99999;
+}
+.toast span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 36px;
+  padding: 0 24px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.68);
+  color: white;
+  font-size: 14px;
+}
+
+/* END Toast Message */
 /* END UI ELEMENTS */
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
