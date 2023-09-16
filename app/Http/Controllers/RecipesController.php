@@ -98,6 +98,9 @@ class RecipesController extends Controller
             'fat' => $fat,
             'carbs' => $carbs
         ]);
+        $user_recipes_amount = DB::table('app_users')->where('id', $author)->value('recipes_amount');
+        DB::table('app_users')->where('id', $author)->update(['recipes_amount' => $user_recipes_amount + 1]);
+
         return $id;
     }
 

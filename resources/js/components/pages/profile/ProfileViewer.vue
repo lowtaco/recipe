@@ -76,10 +76,6 @@
 </template>
 <script>
 
-import Settings from './Settings';
-
-import profile_folders_slider from '../core/elements/profile-folders-slider'
-
 export default {
   props: ['logged', 'user'],
   

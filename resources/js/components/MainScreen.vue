@@ -68,6 +68,15 @@ export default {
     if(token && user) {
       this.logged = true;
       this.user = user;
+
+      axios.post('/get-user-info', {
+        id: this.user.id
+      }).then((response) => {
+        if(response.data[0]) {
+          localStorage.setItem('user', JSON.stringify(response.data[0]))
+        }
+      })
+
     } else {
       this.logged = false;
       this.$router.push('/auth')
