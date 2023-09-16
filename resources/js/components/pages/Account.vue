@@ -5,8 +5,14 @@
       <div class="profile" id="profile-reference">
         <div class="profile-top">
           <div class="header">
-            <h1>Профиль</h1>
+            <h1>@{{ user.nickname }}</h1>
             <div class="header-buttons">
+              <div class="item" @click="$router.push('/add-recipe')">
+                <icon icon="new"/>
+              </div>
+              <div class="item" >
+                <icon icon="notification"/>
+              </div>
               <div class="item" @click="isSettingsOpen = true">
                 <icon icon="settings"/>
               </div>
@@ -15,38 +21,42 @@
 
           <div class="main-info">
             <img :src="user.picture">
-            <div class="name">
-              <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-              <h4>@{{ user.nickname }}</h4>
+            <div class="additional-info">
+              <div class="item">
+                <span>888k</span>
+                <p>подписчиков</p>
+              </div>
+              <div class="item">
+                <span>{{ user.recipes_amount }}</span>
+                <p>рецептов</p>
+              </div>
             </div>
           </div>
 
-          <div class="additional-info">
-            <div class="item">
-              <span>888k</span>
-              <p>подписчики</p>
-            </div>
-            <div class="item">
-              <span>198</span>
-              <p>рецепты</p>
+          <div class="name">
+            <span>{{ user.first_name }} {{ user.last_name }}</span>
+            <verified/>
+          </div>
+
+          <div class="bio">
+            <p>{{ user.bio }}</p>
+            <div class="link">
+              <icon icon="link" size="tiny"/>
+              <a :href="user.site" target="_blank">{{ user.site.substring(user.site.indexOf('://') + 3) }}</a>
             </div>
           </div>
+
           <div class="action-buttons">
-            <button class="action">Редактировать</button>
+            <button class="action" @click="$router.push('/account-editor')"><icon icon="edit" size="small"/><span>Редактировать</span></button>
             <button class="square"><icon icon="chat"/></button>
           </div>
+          
         </div>
         <div class="profile-content">
-          <h2>Лента</h2>
-          <profile-folders-slider v-model="selectedTab"/>
+          <h2>Рецепты</h2>
+          <!--<profile-folders-slider v-model="selectedTab"/> -->
 
           <div class="posts recipes" v-if="selectedTab == 0">
-            <div class="post" v-for="recipe in recipes">
-              <img :src="recipe.main_banner_url">
-            </div>
-          </div>
-
-          <div class="posts articles" v-if="selectedTab == 1">
             <div class="post" v-for="recipe in recipes">
               <img :src="recipe.main_banner_url">
             </div>
@@ -88,7 +98,7 @@ export default {
   },
   async mounted() {
     console.log(this.user);
-    this.getRecipes();
+    this.getUserRecipes();
 
     this.scrollBox = document.getElementById('profile-scroll-box')
     this.scrollBox.addEventListener("scroll", _.debounce(this.scrollHandler, 200))
@@ -97,9 +107,10 @@ export default {
     this.scrollBox.removeEventListener("scroll", _.debounce(this.scrollHandler, 200))
   },
   methods: {
-    async getRecipes(offset = 0) {
-      axios.post('/get-recipes', {
-        offset: offset
+    async getUserRecipes(offset = 0) {
+      axios.post('/get-user-recipes', {
+        offset: offset,
+        user_id: this.user.id
       }).then((response) => {
         this.recipes = this.recipes.concat(response.data) 
       })
@@ -116,7 +127,7 @@ export default {
       let currentHeight = scrollTop + viewportHeight;
 
       if(currentHeight >= (totalHeight * 0.75)) {
-        this.getRecipes(this.recipes.length)
+        this.getUserRecipes(this.recipes.length)
       }
     }
   },

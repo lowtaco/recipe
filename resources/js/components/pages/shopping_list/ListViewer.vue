@@ -9,7 +9,7 @@
       </div>
     </div>
     
-    <div class="page-content">
+    <div class="page-content" v-touch:swipe.right="swipeRight">
       <loader v-if="loading"/>
 
       <div class="list-viewer">
@@ -127,6 +127,9 @@ export default {
     this.getList();
   },
   methods: {
+    swipeRight() {
+      this.$router.push('/shopping-lists')
+    },
     updateList() {
       console.log(this.list)
       axios.post('/update-list', {

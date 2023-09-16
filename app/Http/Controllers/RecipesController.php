@@ -20,6 +20,13 @@ class RecipesController extends Controller
         return $recipes;
     }
 
+    public function getUserRecipes(Request $request) {
+        $offset = $request->input('offset');
+        $user_id = $request->input('user_id');
+        $recipes = DB::table('recipes')->orderBy('id', 'desc')->where('author', $user_id)->offset($offset)->take(9)->get();
+        return $recipes;
+    }
+
     public function getRecipesKitchens(Request $request) {
         $recipes = DB::table('national_kitchens')->get();
         return $recipes;

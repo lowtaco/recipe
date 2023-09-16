@@ -14,11 +14,12 @@ class PhotoUploadController extends Controller
         $image = $request->input('image');
         $type = $request->input('type');
         $name = $request->input('name');
+        $folder = $request->input('folder');
 
         $image_content = strstr($image, ',');
 
-        $path = 'public/images/recipes/' . $name . '.' . $type;
-        $url = 'storage/images/recipes/' . $name . '.' . $type;
+        $path = 'public/images/' . $folder . '/' . $name . '.' . $type;
+        $url = 'storage/images/' . $folder . '/' . $name . '.' . $type;
 
         Storage::put($path, base64_decode($image_content));
         

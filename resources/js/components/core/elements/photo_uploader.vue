@@ -28,22 +28,49 @@
   </div>
 
   <div class="photo-uploader-multiply" v-if="type == 'multiply'">
-
     <input style="display: block;" type="file" multiple="multiple" accept="image/jpeg, image/jpg, image/png" @change=uploadImage>
-
-
   </div>
+
+  <div class="photo-uploader-single avatar" v-if="type == 'avatar'">
+
+    <div class="preview">
+      <img :src="previewImage" class="uploading-image">
+    </div>
+
+    <div class="uploader-form">
+      <label class="file-uploader">
+        <input type="file" accept="image/jpeg, image/jpg, image/png" @change=uploadImage>
+        <div class="button">
+          <icon icon="img" size="tiny"/>
+          <span>Загрузить аватар</span>
+        </div>
+      </label>
+    </div>
+
+    
+  </div>
+
 </template>
 <script>
 
 
 export default {
-  props: ['type'],
+  props: ['type', 'path', 'modelValue'],
   data(){
     return{
       preview: false,
       previewImage:null
     }
+  },
+  watch: {
+    modelValue() {
+      if(this.modelValue) {
+        this.previewImage = this.modelValue;
+      }
+    }
+  },
+  mounted() {
+    
   },
   methods: {
     uploadImage(e){
@@ -130,4 +157,28 @@ export default {
   fill: white;
 }
 
+.photo-uploader-single.avatar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: auto;
+  background: none;
+  margin-top: 16px;
+}
+
+.photo-uploader-single.avatar .preview {
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.photo-uploader-single.avatar .uploader-form {
+  gap: 16px;
+}
+
+.photo-uploader-single.avatar .uploader-form p {
+ margin: 0;
+}
 </style>

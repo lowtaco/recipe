@@ -9,14 +9,14 @@
   --mobile-menu-font-size: 12px;
   --page-footer-size: 60px;
   --page-footer-collapsed-size: 140px;
-  --accent-color: #FFA62B;
+  --accent-color: #ffa62b;
   --accent-shadow-color: rgba(255, 167, 43, 0.7);
   --main-bg-color: white;
   --mobile-menu-bg: var(--main-bg-color);
   --page-header-bg: var(--main-bg-color);
   --mobile-menu-border: 1px solid rgb(245, 245, 245);
   --page-header-border: var(--mobile-menu-border);
-  --text-color: black;
+  --text-color: #222222;
   --secondary-text-color: #BDBDBD;
   --text-color-invert: white;
   --main-icons-color: var(--text-color);
@@ -302,13 +302,12 @@ body,
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 340px;
   background-color: var(--accent-color);
   margin-bottom: -30px;
   padding: 0 24px;
   justify-content: flex-start;
-  padding-bottom: 54px;
-  gap: 18px;
+  padding-bottom: 46px;
+  gap: 16px;
   box-sizing: border-box;
 }
 .profile .profile-top .header {
@@ -322,22 +321,21 @@ body,
 .profile .profile-top .header svg path {
   fill: var(--text-color);
 }
+.profile .profile-top .header h1 {
+  font-size: 18px;
+}
 .profile .profile-top .main-info {
   display: inline-flex;
   align-items: center;
   gap: 16px;
+  flex-shrink: 0;
 }
 .profile .profile-top .main-info img {
   width: 80px;
+  height: 80px;
   border-radius: 50%;
-}
-.profile .profile-top .main-info .name {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.profile .profile-top .main-info .name h4 {
-  font-size: 16px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .profile .profile-top .additional-info {
   display: inline-flex;
@@ -367,16 +365,58 @@ body,
 .profile .profile-top .additional-info .item:nth-child(3) button {
   width: 100%;
 }
-.profile .profile-top button {
+.profile .profile-top .name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: -10px;
+}
+.profile .profile-top .name span {
+  font-weight: 700;
+}
+.profile .profile-top .bio {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.profile .profile-top .bio p {
+  margin: 0;
+  white-space: pre-line;
+}
+.profile .profile-top .bio .link {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  background-color: white;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 8px 14px 8px 12px;
+  border-radius: 50px;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.profile .profile-top .action-buttons {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  box-sizing: border-box;
+}
+.profile .profile-top .action-buttons button {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
-  flex-shrink: 0;
+}
+.profile .profile-top .action-buttons button.action {
+  width: -webkit-fill-available;
 }
 .profile .profile-content {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: 24px 16px;
   gap: 12px;
   width: 100%;
   border-radius: 30px 30px 0 0;
@@ -390,7 +430,7 @@ body,
 .profile .profile-content .posts {
   display: grid;
   padding-top: 12px;
-  gap: 16px;
+  gap: 4px;
   grid-template-areas: "a a b" "a a c";
 }
 .profile .profile-content .posts .post {
@@ -401,7 +441,7 @@ body,
   aspect-ratio: 1/1;
   flex-shrink: 0;
   float: none;
-  border-radius: 10px;
+  border-radius: 6px;
   transition: 0.3s all ease;
   overflow: hidden;
 }
@@ -1111,7 +1151,8 @@ h1 {
   font-size: var(--h1-size);
 }
 
-h1, h2, h3, h4, h5, h6, a, span {
+h1, h2, h3, h4, h5, h6, a, span, .no-select {
+  -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1337,6 +1378,25 @@ button.logout {
   flex-shrink: 0;
 }
 
+/* Links */
+a:link,
+a:visited,
+a:hover {
+  color: #3496ff;
+  text-decoration: none;
+  transition: 0.1s all ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+a:active {
+  opacity: 0.5;
+}
+
+/* END Links */
 /* Inputs */
 input[type=text],
 input[type=email],
@@ -1354,6 +1414,12 @@ input[type=number] {
   color: var(--text-color);
   font-size: 16px;
   transition: 0.3s all ease;
+}
+
+input[type=text]:disabled,
+input[type=email]:disabled,
+input[type=number]:disabled {
+  color: var(--secondary-text-color);
 }
 
 .input-with-count {
@@ -1730,11 +1796,36 @@ textarea {
   align-items: center;
   height: 100%;
 }
+.ingredient-list-add-recipe .list .item .element .unit_amount {
+  flex-shrink: 0;
+}
 .ingredient-list-add-recipe .list .item:last-child {
   border-bottom: none;
 }
 .ingredient-list-add-recipe .add-ingredient {
   padding: 0;
+}
+
+.ingredient-preview {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  width: 100%;
+  border: 1px solid var(--input-text-border-color);
+  padding: 0 16px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+.ingredient-preview .left {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ingredient-preview .right {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .stepper-recipe {
@@ -1775,11 +1866,13 @@ textarea {
   background-color: rgba(0, 0, 0, 0.622);
 }
 .popup-menu-wrapper .popup-menu {
+  position: relative;
   display: flex;
   flex-direction: column;
   background-color: var(--main-bg-color);
   border-radius: 20px;
   z-index: 9999;
+  overflow: hidden;
 }
 .popup-menu-wrapper .popup-menu .popup-menu-item {
   display: inline-flex;
@@ -1828,6 +1921,9 @@ textarea {
 .cpaf .title .calories svg path {
   fill: rgb(227, 81, 81);
 }
+.cpaf .title .calories span {
+  font-size: 14px;
+}
 .cpaf .item {
   display: inline-flex;
   width: 100%;
@@ -1867,8 +1963,9 @@ textarea {
   font-weight: normal;
 }
 .cpaf .item .info .name .title p {
-  font-size: 14px;
+  font-size: 12px;
   margin: 0;
+  color: var(--secondary-text-color);
 }
 .cpaf .item .info .name .percents {
   counter-set: percent var(--percent);
@@ -2232,6 +2329,17 @@ textarea {
 }
 
 /* END Toast Message */
+.stories {
+  background-color: red;
+  width: 100%;
+  height: 100%;
+  z-index: 9999999;
+}
+
+.storie {
+  background-color: gray;
+}
+
 /* END UI ELEMENTS */
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;

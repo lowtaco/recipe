@@ -39,6 +39,7 @@ Route::post('/get-shared-shopping-list-users', [ShoppingListsController::class, 
 Route::post('/updateSharedUsers', [ShoppingListsController::class, 'updateSharedUsers']);
 
 Route::post('/get-recipes', [RecipesController::class, 'getRecipes']);
+Route::post('/get-user-recipes', [RecipesController::class, 'getUserRecipes']);
 Route::get('/get-recipes-kitchens', [RecipesController::class, 'getRecipesKitchens']);
 Route::get('/get-recipes-categories', [RecipesController::class, 'getRecipesCategories']);
 Route::get('/get-cooking-methods', [RecipesController::class, 'getCookingMethods']);
@@ -59,6 +60,8 @@ Route::post('/get-recipe-cooking-methods', [RecipesController::class, 'getRecipe
 
 Route::post('/auth', [UsersController::class, 'authorize']);
 Route::post('/registration', [UsersController::class, 'registerUser']);
+Route::post('/updateUserAvatar', [UsersController::class, 'updateUserAvatar']);
+Route::post('/updateUserInfo', [UsersController::class, 'updateUserInfo']);
 Route::post('/get-user-info', [UsersController::class, 'getUserInfo']);
 Route::post('/findUserByNickname', [UsersController::class, 'findUserByNickname']);
 

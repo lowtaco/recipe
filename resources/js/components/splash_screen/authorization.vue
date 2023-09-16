@@ -33,7 +33,7 @@
 
     <div class="page-content">
       <div class="page-wrapper">
-
+        <photo-uploader v-model="registration.picture" type="avatar" path="recipes"/>
         <span>Имя</span>
         <input v-model="registration.first_name" type="text" placeholder="first_name">
         <span>Фамилия</span>
@@ -47,6 +47,8 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
+
 
 export default {
   data() {
@@ -97,6 +99,7 @@ export default {
           if(userInfo) {
             this.registration.first_name = userInfo.given_name;
             this.registration.last_name = userInfo.family_name;
+            this.registration.picture = userInfo.picture;
           }
           this.registrationMode = true;
         }
@@ -108,9 +111,20 @@ export default {
         email: this.user.email,
         first_name: this.registration.first_name,
         last_name: this.registration.last_name,
-        picture: this.user.picture,
-      }).then(() => {
-        this.authorize(this.user.email);
+      }).then((response) => {
+        axios.post('/upload-image', {
+          image: this.registration.picture,
+          type: утилиты.decodeImageType(this.registration.picture),
+          folder: 'users_avatars',
+          name: response.data
+        }).then((avatar_url) => {
+          axios.post('/updateUserAvatar', {
+            user_id: response.data,
+            picture: avatar_url.data
+          }).then(() => {
+            this.authorize(this.user.email);
+          })
+        })
       })
     },
     writeDebug() {

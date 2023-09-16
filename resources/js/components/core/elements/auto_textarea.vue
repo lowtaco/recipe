@@ -4,10 +4,10 @@
 <script>
 
 export default {
-  props: ['placeholder'],
+  props: ['modelValue', 'placeholder'],
   data() {
     return {
-      text: null
+      text: this.modelValue
     }
   },
   watch: {

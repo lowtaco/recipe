@@ -19,17 +19,38 @@ class UsersController extends Controller
         $nickname = $request->input('nickname');
         $first_name = $request->input('first_name');
         $last_name = $request->input('last_name');
-        $picture = $request->input('picture');
 
         $id = DB::table('app_users')->insertGetId([
             'email' => $email,
             'nickname' => $nickname,
             'first_name' => $first_name,
-            'last_name' => $last_name,
-            'picture' => $picture
+            'last_name' => $last_name
         ]);
 
         return $id;
+    }
+
+    public function updateUserAvatar(Request $request) {
+        $id = $request->input('user_id');
+        $picture = $request->input('picture');
+        DB::table('app_users')->where('id', $id)->update(['picture' => $picture]);
+    }
+
+    public function updateUserInfo(Request $request) {
+        $user_id = $request->input('user_id');
+        $first_name = $request->input('first_name');
+        $last_name = $request->input('last_name');
+        $nicakname = $request->input('nicakname');
+        $bio = $request->input('bio');
+        $site = $request->input('site');
+
+        DB::table('app_users')->where('id', $user_id)->update([
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'nickname' => $nicakname,
+            'bio' => $bio,
+            'site' => $site
+        ]);
     }
 
     public function getUserInfo(Request $request) {

@@ -30,6 +30,7 @@ import DifficultySpicinessEditor from './components/core/elements/difficulty-spi
 import DifficultySpicinessViewer from './components/core/elements/difficulty-spiciness-viewer';
 import AutoTextarea from './components/core/elements/auto_textarea';
 import NumEditor from './components/core/elements/num_editor';
+import Verified from './components/core/elements/verified';
 
 import { утилиты } from '@/core/утилиты';
 window.утилиты = утилиты;
@@ -79,6 +80,7 @@ app.component('photo-uploader', PhotoUploader)
 app.component('auto-textarea', AutoTextarea)
 app.component('num-editor', NumEditor)
 app.component('toast', Toast)
+app.component('verified', Verified)
 
 app.use(router)
 app.mount('#app')

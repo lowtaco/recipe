@@ -213,12 +213,14 @@ export default {
         axios.post('/upload-image', {
           image: this.main_banner,
           type: утилиты.decodeImageType(this.main_banner),
+          folder: 'recipe',
           name: id
         }).then((main_banner_url_response) => {
           main_banner_url = main_banner_url_response.data;
           axios.post('/upload-image', {
             image: this.serving.photo,
             type: утилиты.decodeImageType(this.serving.photo),
+            folder: 'recipe',
             name: id + '_serving'
           }).then((serving_url_response) => {
             this.serving.photo = serving_url_response.data;
@@ -226,6 +228,7 @@ export default {
               axios.post('/upload-image', {
                 image: step.photo,
                 type: утилиты.decodeImageType(step.photo),
+                folder: 'recipe',
                 name: id + '_' + index
               }).then((step_photo_url_response) => {
                 step.photo = step_photo_url_response.data;

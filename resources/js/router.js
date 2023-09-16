@@ -15,6 +15,7 @@ import SharedListViewer from "./components/pages/shopping_list/SharedListViewer"
 import InvitesListViewer from "./components/pages/shopping_list/InvitesViewer"
 
 import Account from "./components/pages/Account";
+import AccountEditor from './components/pages/account/account_editor.vue'
 
 import AddRecipe from "./components/pages/recipe/AddRecipe";
 import RecipeViewer from "./components/pages/recipe/RecipeViewer"
@@ -43,6 +44,9 @@ export default createRouter({
     {path: '/edit-list/:id', component: EditListViewer, props: true},
     {path: '/shared-list/:token', component: SharedListViewer, props: true},
     {path: '/invites-list', component: InvitesListViewer},
+
+    // Account
+    {path: '/account-editor', component: AccountEditor},
 
     {path: '/stories', component: stories},
 
