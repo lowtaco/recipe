@@ -1074,6 +1074,9 @@ body,
       }
 
       .author {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         padding: 10px;
         border-radius: 20px;
         //border: 1px solid grey;
@@ -2227,6 +2230,7 @@ textarea {
       align-items: flex-start;
       gap: 8px;
       box-sizing: border-box;
+      width: -webkit-fill-available;
 
       .name {
         display: inline-flex;

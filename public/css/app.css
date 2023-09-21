@@ -924,6 +924,9 @@ body,
   margin: 0;
 }
 .recipe .content .recipe-info .author {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px;
   border-radius: 20px;
   background-color: var(--input-text-border-color);
@@ -1947,6 +1950,7 @@ textarea {
   align-items: flex-start;
   gap: 8px;
   box-sizing: border-box;
+  width: -webkit-fill-available;
 }
 .cpaf .item .info .name {
   display: inline-flex;
