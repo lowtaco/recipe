@@ -101,6 +101,9 @@
   <div class="icon" v-if="icon == 'verified' || debug">
     <svg :width="px" :height="px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.82 6.195c.24.26.24.683 0 .943L9.974 17.805c-.24.26-.63.26-.87 0L4.18 12.47a.707.707 0 0 1 0-.942c.24-.26.63-.26.87 0l4.488 4.861L18.95 6.195c.24-.26.63-.26.87 0Z"/></svg>
   </div>
+  <div class="icon" v-if="icon == 'popup' || debug">
+    <svg :width="px" :height="px" viewBox="0 0 0.45 0.45" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M.259.075a.034.034 0 1 1-.068 0 .034.034 0 0 1 .068 0Zm0 .15a.034.034 0 1 1-.068 0 .034.034 0 0 1 .068 0ZM.225.409a.034.034 0 1 0 0-.068.034.034 0 0 0 0 .068Z" fill="#000"/></svg>
+  </div>
 </template>
 
 <script>

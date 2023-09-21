@@ -15,7 +15,8 @@ import SharedListViewer from "./components/pages/shopping_list/SharedListViewer"
 import InvitesListViewer from "./components/pages/shopping_list/InvitesViewer"
 
 import Account from "./components/pages/Account";
-import AccountEditor from './components/pages/account/account_editor.vue'
+import AccountEditor from './components/pages/account/account_editor.vue';
+import ProfileViewer from './components/pages/profile/ProfileViewer.vue';
 
 import AddRecipe from "./components/pages/recipe/AddRecipe";
 import RecipeViewer from "./components/pages/recipe/RecipeViewer"
@@ -47,6 +48,7 @@ export default createRouter({
 
     // Account
     {path: '/account-editor', component: AccountEditor},
+    {path: '/profile/:profileID', component: ProfileViewer,  props: true},
 
     {path: '/stories', component: stories},
 

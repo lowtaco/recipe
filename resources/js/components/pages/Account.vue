@@ -20,35 +20,13 @@
             </div>
           </div>
 
-          <div class="main-info">
-            <img :src="user.picture">
-            <div class="additional-info">
-              <div class="item">
-                <span>888k</span>
-                <p>подписчиков</p>
-              </div>
-              <div class="item">
-                <span>{{ user.recipes_amount }}</span>
-                <p>рецептов</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="name">
-            <span>{{ user.first_name }} {{ user.last_name }}</span>
-            <verified v-if="user.verified"/>
-          </div>
-
-          <div class="bio">
-            <p>{{ user.bio }}</p>
-            <div class="link" v-if="user.site">
-              <icon icon="link" size="tiny"/>
-              <a :href="user.site" target="_blank">{{ user.site.substring(user.site.indexOf('://') + 3) }}</a>
-            </div>
-          </div>
+          <profile_main_info :user="user"/>
 
           <div class="action-buttons">
-            <button class="action" @click="$router.push('/account-editor')"><icon icon="edit" size="small"/><span>Редактировать</span></button>
+            <button class="action" @click="$router.push('/account-editor')">
+              <icon icon="edit" size="small"/>
+              <span>Редактировать</span>
+            </button>
             <button class="square"><icon icon="chat"/></button>
           </div>
           
@@ -78,14 +56,16 @@
 
 import Settings from './Settings';
 
-import profile_folders_slider from '../core/elements/profile-folders-slider'
+import profile_folders_slider from '../core/elements/profile-folders-slider';
+import profile_main_info from '../pages/profile/profile_main_info'
 
 export default {
   props: ['logged', 'user'],
   
   components: {
     'settings': Settings,
-    'profile-folders-slider': profile_folders_slider
+    'profile-folders-slider': profile_folders_slider,
+    profile_main_info
   },
 
   data() {
