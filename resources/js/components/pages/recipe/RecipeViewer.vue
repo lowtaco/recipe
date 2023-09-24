@@ -24,7 +24,7 @@
           <div class="swipe-trigger"></div>
           <div class="recipe-info">
             <info_header :name="recipe.name" :kitchen="recipe.kitchen" @like="" @save=""/>
-            <author_info v-if="recipe.author" :picture="recipe.author.picture" :nickname="recipe.author.nickname" :first_name="recipe.author.first_name" :last_name="recipe.author.last_name"/>
+            <author_info v-if="recipe.author" @subscribe="subscribe" @unsubscribe="unsubscribe" :subscribeStatus="subscribeStatus" :picture="recipe.author.picture" :nickname="recipe.author.nickname" :first_name="recipe.author.first_name" :last_name="recipe.author.last_name"/>
             <difficulty-spiciness-viewer :total="5" :spiciness="recipe.spiciness" :difficulty="recipe.difficulty"/>
             <additional_info :description="recipe.description" :cooking_time="recipe.cooking_time" :kitchen_time="recipe.kitchen_time" :meal="meal_string" :cooking_methods='cooking_methods_string' :dishes="dishes_string"/>
             <cpaf :kcal="recipe.kcal" :protein="recipe.protein" :fat="recipe.fat" :carbs="recipe.carbs" :startDelay="loading"/>
@@ -51,6 +51,9 @@ export default {
     id: {
       type: String,
       default: '46'
+    },
+    user: {
+      type: Array
     }
   },
   components: {
@@ -71,6 +74,7 @@ export default {
       recipe_id: this.id,
       meal_string: '',
       cooking_methods_string: '',
+      subscribeStatus: null,
       dishes_string: '',
       loading: false
     }
@@ -85,12 +89,11 @@ export default {
     this.scrollBox.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
-    getRecipe() {
+    async getRecipe() {
       this.loading = true;
-      axios.post('/get-recipe', {
-        id: this.recipe_id
-      }).then((response) => {
-        this.recipe = response.data[0]
+      try {
+        const response = await axios.post('/get-recipe', {id: this.recipe_id});
+        this.recipe = response.data[0];
         this.recipe.cooking_time = JSON.parse(this.recipe.cooking_time);
         this.recipe.kitchen_time = JSON.parse(this.recipe.kitchen_time);
         this.ingredients = JSON.parse(this.recipe.ingredients);
@@ -98,55 +101,82 @@ export default {
         this.recipe.dishes = JSON.parse(this.recipe.dishes);
         this.recipe.recipe_steps = JSON.parse(this.recipe.recipe_steps);
         this.recipe.serving = JSON.parse(this.recipe.serving);
-        this.recipe.meal = JSON.parse(this.recipe.meal)
+        this.recipe.meal = JSON.parse(this.recipe.meal);
         this.recipe.cooking_time = утилиты.convertTime(this.recipe.cooking_time);
         this.recipe.kitchen_time = утилиты.convertTime(this.recipe.kitchen_time);
-        console.log(this.recipe)
+        console.log(this.recipe);
 
-        axios.post('/get-user-info', {
-          id: this.recipe.author
-        }).then((response) => {
-          this.recipe.author = response.data[0];
+        const user = await axios.post('/get-user-info', {id: this.recipe.author});
+        this.recipe.author = user.data[0];
 
-          axios.post('/get-recipe-kitchen', {
-            id: this.recipe.kitchen
-          }).then((response) => {
-            this.recipe.kitchen = response.data[0].name;
+        const kitchen = await axios.post('/get-user-info', {id: this.recipe.author});
+        this.recipe.kitchen = kitchen.data[0].name;
 
-            axios.post('/get-recipe-category', {
-              id: this.recipe.category
-            }).then((response) => {
-              this.recipe.category = response.data[0];
+        const category = await axios.post('/get-recipe-category', {id: this.recipe.category});
+        this.recipe.category = category.data[0];
 
-              _.forEach(this.recipe.meal, (mealId) => {
-                axios.post('/get-recipe-meal', {
-                  id: mealId
-                }).then((response) => {
-                  this.meal_string += response.data[0].name.toLowerCase() + ', ';
-                })
-              })
-     
-              _.forEach(this.recipe.dishes, (dishesId) => {
-                axios.post('/get-recipe-dishes', {
-                  id: dishesId
-                }).then((response) => {
-                  this.dishes_string += response.data[0].name.toLowerCase() + ', ';
-                })
-              })
-
-              _.forEach(this.recipe.cooking_methods, (methodId) => {
-                axios.post('/get-recipe-cooking-methods', {
-                  id: methodId
-                }).then((response) => {
-                  this.cooking_methods_string += response.data[0].name.toLowerCase() + ', ';
-                })
-              })
-
-              this.loading = false;
-            })
+        _.forEach(this.recipe.meal, async (mealId) => {
+          const meal = await axios.post('/get-recipe-meal', {
+            id: mealId
           })
+          this.meal_string += meal.data[0].name.toLowerCase() + ', ';
         })
-      })
+
+        _.forEach(this.recipe.dishes, async (dishesId) => {
+          const dishes = await axios.post('/get-recipe-dishes', {id: dishesId});
+          this.dishes_string += dishes.data[0].name.toLowerCase() + ', ';
+        })
+
+        _.forEach(this.recipe.cooking_methods, async (methodId) => {
+          const cooking_methods = await axios.post('/get-recipe-cooking-methods', {id: methodId});
+          this.cooking_methods_string += cooking_methods.data[0].name.toLowerCase() + ', ';
+        })
+
+        await this.checkSubscription();
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async checkSubscription() {
+      try {
+        const response = await axios.post('/check-subscription', {
+          profile_id: this.recipe.author.id,
+          subscriber_id: this.user.id
+        })
+        if (response.data) {
+          this.subscribeStatus = true;
+        } else {
+          this.subscribeStatus = false;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async subscribe() {
+      try {
+        this.subscribeStatusLoading = true;
+        await axios.post('/subscribe-to-user', {
+          profile_id: this.recipe.author.id,
+          subscriber_id: this.user.id
+        })
+        await this.checkSubscription();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async unsubscribe() {
+      try {
+        this.subscribeStatusLoading = true;
+        await axios.post('/unsubscribe-to-user', {
+          profile_id: this.recipe.author.id,
+          subscriber_id: this.user.id
+        })
+        await this.checkSubscription();
+      } catch (e) {
+        console.log(e);
+      }
     },
     handleScroll () {
       let reference = document.getElementById('ref-box');

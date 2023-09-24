@@ -4,11 +4,20 @@
       <img :src="user.picture">
       <div class="additional-info">
         <div class="item">
-          <span>888k</span>
-          <p>подписчиков</p>
+          <span v-if="user.subscribers_amount">{{ user.subscribers_amount }}</span>
+          <span v-if="!user.subscribers_amount">0</span>
+          <p>{{ makeSubscribersEnd }}</p>
         </div>
+
+        <div class="item" v-if="subsriptionsShow">
+          <span v-if="user.subscriptions_amount">{{ user.subscriptions_amount }}</span>
+          <span v-if="!user.subscriptions_amount">0</span>
+          <p>{{ makeSubscriptionsEnd }}</p>
+        </div>
+
         <div class="item">
-          <span>{{ user.recipes_amount }}</span>
+          <span v-if="user.recipes_amount">{{ user.recipes_amount }}</span>
+          <span v-if="!user.recipes_amount">0</span>
           <p>{{ makeRecipesEnd }}</p>
         </div>
       </div>
@@ -32,10 +41,16 @@
 <script>
 
 export default {
-  props: ['user'],
+  props: ['user', 'subsriptionsShow'],
   computed: {
     makeRecipesEnd() {
       return утилиты.makeStringEnding(this.user.recipes_amount, ["рецепт", "рецепта", "рецептов"]);
+    },
+    makeSubscribersEnd() {
+      return утилиты.makeStringEnding(this.user.subscribers_amount, ["подписчик", "подписчика", "подписчиков"]);
+    },
+    makeSubscriptionsEnd() {
+      return утилиты.makeStringEnding(this.user.subscriptions_amount, ["подписка", "подписки", "подписок"]);
     }
   }
 };

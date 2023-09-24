@@ -20,7 +20,7 @@
             </div>
           </div>
 
-          <profile_main_info :user="user"/>
+          <profile_main_info :user="user" :subsriptionsShow="true"/>
 
           <div class="action-buttons">
             <button class="action" @click="$router.push('/account-editor')">

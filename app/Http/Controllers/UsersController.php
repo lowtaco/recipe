@@ -68,4 +68,85 @@ class UsersController extends Controller
 
         return $user;
     }
+
+    public function checkSubscription(Request $request) {
+        $profile_id = $request->input('profile_id');
+        $subscriber_id = $request->input('subscriber_id');
+
+        $subscriber_subscriptions = json_decode(DB::table('app_users')->where('id', $subscriber_id)->value('subscriptions'));
+        $subsription = false;
+
+        if ($subscriber_subscriptions != null) {
+            if (in_array($profile_id, $subscriber_subscriptions)) {
+                $subsription = true;
+            }
+        }
+
+        return $subsription;
+    }
+
+    public function subscribeToUser(Request $request) {
+        $profile_id = $request->input('profile_id');
+        $subscriber_id = $request->input('subscriber_id');
+
+        $profile_subscribers_amount = DB::table('app_users')->where('id', $profile_id)->value('subscribers_amount');
+        $subscriber_subscription_amount = DB::table('app_users')->where('id', $subscriber_id)->value('subscriptions_amount');
+        $profile_subscribers = json_decode(DB::table('app_users')->where('id', $profile_id)->value('subscribers'));
+        $subscriber_subscriptions = json_decode(DB::table('app_users')->where('id', $subscriber_id)->value('subscriptions'));
+
+        if ($profile_subscribers === null) {
+            $profile_subscribers = array($subscriber_id);
+            DB::table('app_users')->where('id', $profile_id)->update(['subscribers_amount' => 1]);
+        } else {
+            if (!in_array($subscriber_id, $profile_subscribers)) {
+                array_push($profile_subscribers, $subscriber_id);
+                DB::table('app_users')->where('id', $profile_id)->update(['subscribers_amount' => $profile_subscribers_amount + 1]);
+            }
+        }
+
+        if($subscriber_subscriptions === null) {
+            $subscriber_subscriptions = array(+$profile_id);
+            DB::table('app_users')->where('id', $subscriber_id)->update(['subscriptions_amount' => 1]);
+        } else {
+            if (!in_array($profile_id, $subscriber_subscriptions)) {
+                array_push($subscriber_subscriptions, +$profile_id);
+                DB::table('app_users')->where('id', $subscriber_id)->update(['subscriptions_amount' => $subscriber_subscription_amount + 1]);
+            }
+        }
+        DB::table('app_users')->where('id', $subscriber_id)->update(['subscriptions' => $subscriber_subscriptions]);
+        DB::table('app_users')->where('id', $profile_id)->update(['subscribers' => $profile_subscribers]);
+
+        return $profile_subscribers_amount + 1;
+    }
+
+    public function unsubscribeToUser(Request $request) {
+        $profile_id = $request->input('profile_id');
+        $subscriber_id = $request->input('subscriber_id');
+
+        $profile_subscribers_amount = DB::table('app_users')->where('id', $profile_id)->value('subscribers_amount');
+        $subscriber_subscription_amount = DB::table('app_users')->where('id', $subscriber_id)->value('subscriptions_amount');
+        $profile_subscribers = json_decode(DB::table('app_users')->where('id', $profile_id)->value('subscribers'));
+        $subscriber_subscriptions = json_decode(DB::table('app_users')->where('id', $subscriber_id)->value('subscriptions'));
+        
+        if ($profile_subscribers != null) {
+            if (in_array($subscriber_id, $profile_subscribers)) {
+                $subscriber_index = array_search($subscriber_id, $profile_subscribers);
+                unset($profile_subscribers[$subscriber_index]);
+                DB::table('app_users')->where('id', $profile_id)->update(['subscribers_amount' => $profile_subscribers_amount - 1]);
+            }
+        }
+
+        if ($subscriber_subscriptions != null) {
+            if (in_array($profile_id, $subscriber_subscriptions)) {
+                $profile_index = array_search($profile_id, $subscriber_subscriptions);
+                unset($subscriber_subscriptions[$profile_index]);
+                DB::table('app_users')->where('id', $subscriber_id)->update(['subscriptions_amount' => $subscriber_subscription_amount - 1]);
+            }
+        } 
+        DB::table('app_users')->where('id', $subscriber_id)->update(['subscriptions' => $subscriber_subscriptions]);
+        DB::table('app_users')->where('id', $profile_id)->update(['subscribers' => $profile_subscribers]);
+
+        return $profile_subscribers_amount - 1;
+    }
+    
 }

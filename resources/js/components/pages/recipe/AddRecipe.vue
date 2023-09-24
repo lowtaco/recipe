@@ -99,6 +99,9 @@ export default {
     this.$emit("hideMenu", true);
     this.getMeals();
   },
+  unmounted() {
+    this.$emit("hideMenu", false);
+  },
   methods: {
     spicinessCallback(value) {
       this.spiciness = value;

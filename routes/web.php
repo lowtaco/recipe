@@ -64,5 +64,8 @@ Route::post('/updateUserAvatar', [UsersController::class, 'updateUserAvatar']);
 Route::post('/updateUserInfo', [UsersController::class, 'updateUserInfo']);
 Route::post('/get-user-info', [UsersController::class, 'getUserInfo']);
 Route::post('/findUserByNickname', [UsersController::class, 'findUserByNickname']);
+Route::post('/check-subscription', [UsersController::class, 'checkSubscription']);
+Route::post('/subscribe-to-user', [UsersController::class, 'subscribeToUser']);
+Route::post('/unsubscribe-to-user', [UsersController::class, 'unsubscribeToUser']);
 
 Route::post('/upload-image', [PhotoUploadController::class, 'store']);

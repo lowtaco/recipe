@@ -70,37 +70,42 @@ export default {
       })
     },
     async findList() {
-      axios.post('/getShoppingListByRecipe', {
-        id: this.recipeId,
-        user: this.recipeAuthor.id,
-      }).then((response) => {
+      try {
+        const response = await axios.post('/getShoppingListByRecipe', {
+          id: this.recipeId,
+          user: this.recipeAuthor.id,
+        })
         if (response.data.length > 0) {
           this.isListExist = true;
           this.existingListId = response.data[0].id;
         } else {
           this.isListExist = false;
         }
-      })
+      } catch (e) {
+        console.log(e);
+      }
     },
-    addToShoppingList() {
+    async addToShoppingList() {
       if (!this.isListExist) {
         _.forEach(this.ingredients_local, (ingredient) => {
-          ingredient.checked = false
+          ingredient.checked = false;
         })
-      
-        axios.post('/create-shopping-list', {
-          name: this.recipeName,
-          user: this.recipeAuthor.id,
-          personal: 0,
-          picture: this.picture,
-          list: JSON.stringify(this.ingredients_local),
-          recipe_id: this.recipeId,
-        }).then((response) => {
-          let id = response.data;
+        try {
+          const response = await axios.post('/create-shopping-list', {
+            name: this.recipeName,
+            user: this.recipeAuthor.id,
+            personal: 0,
+            picture: this.picture,
+            list: JSON.stringify(this.ingredients_local),
+            recipe_id: this.recipeId,
+          })
+          this.existingListId = response.data;
           this.isListExist = true;
-        })
+        } catch (e) {
+          console.log(e);
+        }
       } else {
-        this.$router.push('/list/' + this.existingListId)
+        this.$router.push('/list/' + this.existingListId);
       }
     }
   }
