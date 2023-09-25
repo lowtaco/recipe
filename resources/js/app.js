@@ -31,6 +31,9 @@ import DifficultySpicinessViewer from './components/core/elements/difficulty-spi
 import AutoTextarea from './components/core/elements/auto_textarea';
 import NumEditor from './components/core/elements/num_editor';
 import Verified from './components/core/elements/verified';
+import Comments from './components/core/elements/comments/comments'
+import CommentsViewer from './components/core/elements/comments/comments_viewer'
+import CommentItem from './components/core/elements/comments/comment_item'
 
 import { утилиты } from '@/core/утилиты';
 window.утилиты = утилиты;
@@ -81,6 +84,9 @@ app.component('auto-textarea', AutoTextarea)
 app.component('num-editor', NumEditor)
 app.component('toast', Toast)
 app.component('verified', Verified)
+app.component('comments', Comments)
+app.component('comments-viewer', CommentsViewer)
+app.component('comment-item', CommentItem)
 
 app.use(router)
 app.mount('#app')

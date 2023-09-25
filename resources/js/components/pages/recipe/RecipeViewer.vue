@@ -30,6 +30,7 @@
             <cpaf :kcal="recipe.kcal" :protein="recipe.protein" :fat="recipe.fat" :carbs="recipe.carbs" :startDelay="loading"/>
             <ingredients_viewer :ingredients="ingredients" :servings="recipe.servings" :recipeId="recipe.id" :recipeName="recipe.name" :recipeAuthor="recipe.author" :picture="recipe.main_banner_url"/>
             <recipe_steps :steps="recipe.recipe_steps" :serving="recipe.serving"/>
+            <comments />
           </div>
         </div>
       </div>
