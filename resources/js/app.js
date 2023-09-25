@@ -34,6 +34,7 @@ import Verified from './components/core/elements/verified';
 import Comments from './components/core/elements/comments/comments'
 import CommentsViewer from './components/core/elements/comments/comments_viewer'
 import CommentItem from './components/core/elements/comments/comment_item'
+import CommentAdd from './components/core/elements/comments/comment_add'
 
 import { утилиты } from '@/core/утилиты';
 window.утилиты = утилиты;
@@ -87,6 +88,7 @@ app.component('verified', Verified)
 app.component('comments', Comments)
 app.component('comments-viewer', CommentsViewer)
 app.component('comment-item', CommentItem)
+app.component('comment-add', CommentAdd)
 
 app.use(router)
 app.mount('#app')

@@ -6,6 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RecipesController;
 use App\Http\Controllers\PhotoUploadController;
 use App\Http\Controllers\SpaController;
+use App\Http\Controllers\CommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,3 +70,5 @@ Route::post('/subscribe-to-user', [UsersController::class, 'subscribeToUser']);
 Route::post('/unsubscribe-to-user', [UsersController::class, 'unsubscribeToUser']);
 
 Route::post('/upload-image', [PhotoUploadController::class, 'store']);
+
+Route::post('/get-comments', [CommentsController::class, 'getComments']);

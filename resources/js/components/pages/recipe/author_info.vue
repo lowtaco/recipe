@@ -1,7 +1,7 @@
 <template>
   <div class="author">
     <div class="info">
-      <div class="picture">
+      <div class="picture" @click="">
         <img :src="picture" >
       </div>
       <div class="name">

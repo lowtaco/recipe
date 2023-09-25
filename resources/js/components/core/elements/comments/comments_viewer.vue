@@ -21,3 +21,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.comments-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+</style>

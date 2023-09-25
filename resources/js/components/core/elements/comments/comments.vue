@@ -1,113 +1,39 @@
 <template>
   <h4>Комментарии</h4>
+  <comment-add />
   <comments-viewer :comments="comments"/>
 </template>
 <script>
+import axios from 'axios';
 
 export default {
-  props: ['user', 'payload'],
-  components: {
-  },
+  props: ['user', 'get', 'post', 'postID'],
   data() {
     return {
-      comments: [
-        {
-          author: '@paintedfriend',
-          content: 'Все херня я могу лучше получилось не вкусно азазаза',
-          likes: 128,
-          replies: [
-            {
-              author: '@paintedfriend',
-              content: 'Ты несешь полную чушь, это на самом деле очень вкусно!!!',
-              likes: 128,
-              replies: [
-                {
-                  author: '@paintedfriend',
-                  content: 'Согласен, брат',
-                  likes: 128,
-                  replies: [
-                    {
-                      author: '@paintedfriend',
-                      content: 'Я тебе не брат, брат',
-                      likes: 128,
-                      replies: [
-                        {
-                          
-                        }
-                      ] 
-                    },
-                    {
-                      author: '@paintedfriend',
-                      content: 'Я тебе не брат, брат',
-                      likes: 128,
-                      replies: [
-                        {
-                          
-                        }
-                      ] 
-                    }
-                  ] 
-                }
-              ] 
-            }
-          ] 
-        },
-        {
-          author: '@paintedfriend',
-          content: 'Все херня я могу лучше получилось не вкусно азазаза',
-          likes: 128,
-          replies: [
-            {
-              author: '@paintedfriend',
-              content: 'Ты несешь полную чушь, это на самом деле очень вкусно!!!',
-              likes: 128,
-              replies: [
-                {
-                  author: '@paintedfriend',
-                  content: 'Согласен, брат',
-                  likes: 128,
-                  replies: [
-                    {
-                      author: '@paintedfriend',
-                      content: 'Я тебе не брат, брат',
-                      likes: 128,
-                      replies: [
-                        {
-                          
-                        }
-                      ] 
-                    }
-                  ] 
-                },
-                {
-                  author: '@paintedfriend',
-                  content: 'Согласен, брат',
-                  likes: 128,
-                  replies: [
-                    {
-                      author: '@paintedfriend',
-                      content: 'Я тебе не брат, брат',
-                      likes: 128,
-                      replies: [
-                        {
-                          
-                        }
-                      ] 
-                    }
-                  ] 
-                }
-              ] 
-            }
-          ] 
-        }
-      ]
+      comments: []
     }
   },
-  watch: {
-   
+  async mounted() {
+    await this.getComments()
   },
-  mounted() {
+  methods: {
+    async getComments() {
+      let postID = 68;
 
-  },
+      try {
+        const response = await axios.post('/get-comments', {
+          post_id: postID
+        })
+        console.log(response)
+        this.comments = response.data;
+
+      } catch (e) {
+        console.log(e)
+      } finally {
+
+      }
+
+    }
+  }
 };
 </script>

@@ -2694,6 +2694,17 @@ textarea {
 }
 /* END Loader */
 
+.send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--input-text-border-color);
+  border-radius: 16px;
+  height: 48px;
+  width: 48px;
+  flex-shrink: 0;
+}
+
 /* Toast Message */
 .toast {
   position: absolute;
