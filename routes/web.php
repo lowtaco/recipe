@@ -72,3 +72,5 @@ Route::post('/unsubscribe-to-user', [UsersController::class, 'unsubscribeToUser'
 Route::post('/upload-image', [PhotoUploadController::class, 'store']);
 
 Route::post('/get-comments', [CommentsController::class, 'getComments']);
+Route::post('/add-comment', [CommentsController::class, 'addComment']);
+Route::post('/add-reply', [CommentsController::class, 'addReply']);

@@ -1,6 +1,6 @@
 <template>
   <div class="comments-viewer">
-    <comment-item :comment="comment" v-for="comment in comments"/>
+    <comment-item :user="user" :comment="comment" v-for="comment in comments"/>
   </div>
 </template>
 <script>
@@ -27,6 +27,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 }
 
 </style>

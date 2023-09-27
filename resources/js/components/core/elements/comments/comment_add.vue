@@ -1,7 +1,7 @@
 <template>
   <div class="comment-add">
-    <auto-textarea v-model="comment" placeholder="Ответить"/>
-    <div class="send-btn">
+    <auto-textarea v-model="comment" :placeholder="placeholder"/>
+    <div class="send-btn" @click="sendComment">
       <icon icon="send"/>
     </div>
   </div>
@@ -9,7 +9,7 @@
 <script>
 
 export default {
-  props: ['user', 'comments'],
+  props: ['user', 'comments', 'placeholder'],
   components: {
   },
   data() {
@@ -21,8 +21,15 @@ export default {
    
   },
   mounted() {
-
+    
   },
+  methods: {
+    sendComment() {
+      if(this.comment) {
+        this.$emit('addComment', this.comment);
+      }
+    }
+  }
 };
 </script>
 

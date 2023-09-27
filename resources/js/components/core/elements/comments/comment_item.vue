@@ -2,15 +2,18 @@
   <div class="comment">
     <div class="comment-content">
       <div class="author-avatar">
-        <img :src="author.picture">
+        <img :src="author.picture" v-if="author.picture">
       </div>
 
       <div class="box">
-        <div class="author-name">
-          <span>@{{ author.nickname }}</span>
+        <div class="author-name" v-if="author.first_name && author.last_name">
+          <span>{{ author.first_name + ' ' + author.last_name }}</span>
+        </div>
+        <div class="author-name" v-if="!author.first_name && !author.last_name">
+          <span>Загрузка...</span>
         </div>
         <div class="comment-body">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus illum ab, non ullam dicta autem. Molestias ad eum, iure aperiam quaerat incidunt, libero optio inventore odio illo assumenda, rerum impedit?</p>
+          <p>{{ comment.body }}</p>
         </div>
 
         <div class="statistics">
@@ -24,19 +27,24 @@
 
           <div class="likes">
             <span v-if="comment.likes_amount">{{ comment.likes_amount }}</span>
-            <icon icon="like" size="tiny"/>
+            <div class="like-btn liked" @click="like">
+              <icon icon="like" size="tiny" />
+            </div>
           </div>
         </div>
 
         <div class="add-reply" v-if="addReplyMode">
-          <comment-add />
+          <comment-add placeholder="Ответить" @addComment="addReply"/>
         </div>
       </div>
     </div>
     
     <div class="replies" v-if="repliesViewingMode">
       <div class="reply-divider"></div>
-      <comments-viewer :comments="comment.replies"/>
+      <div class="replies-loader-box" v-if="replies_loading">
+        <loader />
+      </div>
+      <comments-viewer :comments="replies" :user="user" v-if="!replies_loading"/>
     </div>
     
   </div>
@@ -55,24 +63,70 @@ export default {
       author: {},
       addReplyMode: false,
       repliesViewingMode: false,
+      replies: null,
+      replies_loading: false
     }
   },
   watch: {
+    repliesViewingMode() {
+      if(this.repliesViewingMode) {
+        this.addReplyMode = false;
+        this.getReplies();
+      }
+    },
+    addReplyMode() {
+      if(this.addReplyMode) {
+        this.repliesViewingMode = false;
+      }
+    }
    
   },
   async mounted() {
     await this.getAuthorInfo();
+    
   },
   methods: {
     async getAuthorInfo() {
       try {
         const response = await axios.post('/get-user-info', {id: this.comment.author_id});
         this.author = response.data[0];
-        console.log(this.author);
       } catch (e) {
         console.log(e);
       }
     },
+    async getReplies() {
+      this.replies_loading = true;
+      try {
+        const response = await axios.post('/get-comments', {
+          post_id: this.comment.id
+        })
+        this.replies = response.data;
+
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.replies_loading = false;
+      }
+    },
+    async addReply(body) {
+      try {
+        await axios.post('/add-reply', {
+          is_reply: 1,
+          post_id: this.comment.id,
+          author_id: this.user.id,
+          body: body,
+        })
+        this.comment.replies_amount += 1;
+        this.addReplyMode = false;
+        this.getReplies();
+        this.repliesViewingMode = true;
+      } catch(e) {
+        console.log(e)
+      }
+    },
+    like() {
+      console.log('test')
+    }
   }
 };
 </script>
@@ -110,6 +164,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 }
 
 .author-name {
@@ -161,6 +216,13 @@ export default {
   gap: 8px;
 }
 
+.replies-loader-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 56px;
+}
+
 .reply-divider {
   display: block;
   width: 2px;
@@ -168,6 +230,10 @@ export default {
   height: auto;
   background-color: grey;
   flex-shrink: 0;
+}
+
+.liked .icon svg path {
+  fill: pink
 }
 
 

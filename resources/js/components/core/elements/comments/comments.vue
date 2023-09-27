@@ -1,7 +1,7 @@
 <template>
   <h4>Комментарии</h4>
-  <comment-add />
-  <comments-viewer :comments="comments"/>
+  <comment-add placeholder="Добавить комментарий" @addComment="addComment"/>
+  <comments-viewer :comments="comments" :user="user"/>
 </template>
 <script>
 import axios from 'axios';
@@ -18,11 +18,9 @@ export default {
   },
   methods: {
     async getComments() {
-      let postID = 68;
-
       try {
         const response = await axios.post('/get-comments', {
-          post_id: postID
+          post_id: this.postID
         })
         console.log(response)
         this.comments = response.data;
@@ -32,7 +30,19 @@ export default {
       } finally {
 
       }
-
+    },
+    async addComment(body) {
+      try {
+        await axios.post('/add-comment', {
+          is_reply: 0,
+          post_id: this.postID,
+          author_id: this.user.id,
+          body: body,
+        })
+      this.getComments();
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 };
