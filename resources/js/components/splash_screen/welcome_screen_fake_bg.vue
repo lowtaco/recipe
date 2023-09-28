@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="fake-bg">
-      <div class="vector">
+      <div class="vector animated" ref="vector">
         <svg xmlns="http://www.w3.org/2000/svg" width="414" height="433" viewBox="0 0 414 433" fill="none">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M243.032 -153.917C308.597 -148.075 373.984 -120.715 416.76 -70.7023C455.433 -25.4871 440.825 41.5326 458.727 98.2659C476.387 154.235 542.446 204 520.63 258.486C498.51 313.732 418.891 311.705 364.023 334.79C323.84 351.697 284.813 362.835 243.032 375.283C179.239 394.287 116.848 451.814 55.1629 426.803C-5.61882 402.159 -13.9721 320.392 -40.3769 260.373C-70.2906 192.378 -125.831 126.348 -108.832 54.039C-91.5855 -19.3188 -19.6504 -65.4571 45.2411 -103.809C105.257 -139.279 173.586 -160.106 243.032 -153.917Z" fill="url(#paint0_linear_118_3)"/>
           <defs>
@@ -12,7 +12,7 @@
           </defs>
         </svg>
       </div>
-      <div class="img">
+      <div class="img animated" ref="img">
         <svg xmlns="http://www.w3.org/2000/svg" width="284" height="284" viewBox="0 0 284 284" fill="none">
           <g clip-path="url(#clip0_118_4)">
             <path d="M179.302 238.788C94.3511 271.398 52.233 196.339 43.5127 173.622L236.608 99.4998C240.968 110.858 264.73 205.995 179.302 238.788Z" fill="#CCD6DD"/>
@@ -43,13 +43,27 @@
 <script>
 
 export default {
-  data() {
-    return {
-
-    }
+  mounted() {
+    this.animateBg();
+    this.animateIcon();
   },
   methods: {
-  },
+    animateBg() {
+      const bg = this.$refs.vector;
+      setTimeout(() => {
+        bg.classList.remove('animated');
+      }, 100)
+    },
+    animateIcon() {
+      const img = this.$refs.img;
+      setTimeout(() => {
+        img.classList.remove('animated');
+        setTimeout(() => {
+          this.$emit('animateEnd')
+        }, 1500)
+      }, 400)
+    }
+  }
 };
 </script>
 <style scoped>
@@ -65,17 +79,31 @@ export default {
   height: 100%;
 }
 
+.vector.animated svg {
+  top: -100%;
+  scale: 2;
+}
+
 .vector svg {
   position: absolute;
     width: 100%;
     height: 100%;
     top: -189px;
+    transition: 1.5s all ease-out;
 }
 
 .img {
   position: absolute;
   right: 0;
   top: 206px;
+  transition: 1.5s all ease-out;
+}
+
+.img.animated {
+  right: -100%;
+  top: 300px;
+  opacity: 0;
+  scale: 1.5;
 }
 
 

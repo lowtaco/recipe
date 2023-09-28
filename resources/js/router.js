@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 import Debug from "./components/Debug";
 
-import Splash from './components/splash_screen/splash_screen'
+import Welcome from './components/splash_screen/welcome_screen'
 
 import Home from './components/pages/Home.vue'
 import Ideas from "./components/pages/Ideas";
@@ -33,7 +33,7 @@ export default createRouter({
     {path: '/account', component: Account},
 
     // Authorize
-    {path: '/auth', component: Splash},
+    {path: '/auth', component: Welcome},
 
     // Recipes
     {path: '/add-recipe', component: AddRecipe},

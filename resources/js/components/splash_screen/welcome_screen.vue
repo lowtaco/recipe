@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <welcome_screen_fake_bg />
+    <welcome_screen_fake_bg @animateEnd="startAnimate"/>
     <div class="text-box">
       <div class="header">
         <h1>recipe</h1>
@@ -9,23 +9,8 @@
         </div>
       </div>
 
-      <div class="body">
-        <div class="quotes">
-          <div class="quote">
-            <span><b>Создавайте</b> и сохраняйте собственные рецепты</span>
-          </div>
-          <div class="quote">
-            <span><b>Ищите</b> рецепты по названию, ингредиентам или типу блюда</span>
-          </div>
-          <div class="quote">
-            <span><b>Получайте</b> рекомендации рецептов и статей</span>
-          </div>
-        </div>
-        <div class="next-btn">
-          <button class="square big">
-            <icon icon="next"/>
-          </button>
-        </div>
+      <div class="body animated" ref="auth_welcome_body">
+        <authorization @authorized="$emit('authorized')"/>
       </div>
     </div>
 
@@ -34,17 +19,32 @@
 <script>
 
 import welcome_screen_fake_bg from './welcome_screen_fake_bg';
+import authorization from './authorization';
 
 export default {
   components: {
-    welcome_screen_fake_bg
+    welcome_screen_fake_bg,
+    authorization
   },
   data() {
     return {
-
+      AuthShow: false
     }
   },
+  mounted() {
+    this.$emit("hideMenu", true);
+  },
+  unmounted() {
+    this.$emit("hideMenu", false);
+  },
   methods: {
+    startAnimate() {
+      this.AuthShow = true
+      const body = this.$refs.auth_welcome_body;
+      setTimeout(() => {
+        body.classList.remove('animated')
+      }, 400)
+    }
   },
 };
 </script>
@@ -76,7 +76,9 @@ export default {
 }
 
 .header-quote {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .header-quote h4 {
@@ -85,29 +87,15 @@ export default {
 }
 
 .body {
+  display: flex;
   padding: 24px;
   height: 40%;
   box-sizing: border-box;
+  transition: .8s all ease;
 }
 
-.quotes {
-display: flex;
-flex-direction: column;
-gap: 20px;
-}
-
-.quote {
-  font-size: 20px;
-}
-
-.quote b {
-  color: #ffa62b;
-}
-
-.next-btn {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
+.body.animated {
+  opacity: 0;
 }
 
 </style>

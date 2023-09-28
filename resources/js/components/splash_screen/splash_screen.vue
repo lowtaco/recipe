@@ -1,20 +1,10 @@
 <template>
   <div class="splash-screen">
 
-    <div class="screens" v-touch:swipe.left="swipeLeft" v-touch:swipe.right="swipeRight">
-      <div class="screen" v-if="screenId == 0">
-        <welcome_screen />
-      </div>
-      <div class="screen" v-if="screenId == 1">
-        <h1>2</h1>
-      </div>
-      <div class="screen" v-if="screenId == 2">
-        <authorization />
-      </div>
+    <div class="screens">
+      <div class="screen">
 
-    </div>
-    <div class="paginate">
-      <div :class="{active: screenId == index}" class="paginate-item" v-for="(pag, index) in total" @click="screenId = index"></div>
+      </div>
     </div>
 
   </div>
@@ -22,18 +12,12 @@
   
 </template>
 <script>
-import welcome_screen from './welcome_screen';
-import authorization from './authorization';
 
 export default {
   components: {
-    welcome_screen,
-    authorization
   },
   data() {
     return {
-      screenId: 2,
-      total: 3
     }
   },
   mounted() {
@@ -43,16 +27,6 @@ export default {
     this.$emit("hideMenu", false);
   },
   methods: {
-    swipeLeft() {
-      if(this.screenId < this.total - 1) {
-        this.screenId += 1;
-      }
-    },
-    swipeRight() {
-      if(this.screenId > 0) {
-        this.screenId -= 1;
-      }
-    }
   },
 };
 </script>

@@ -8,6 +8,7 @@
         @hideMenu="hideMenu"
         @addRecipe="page = 'AddRecipe'"
         @goBackHome="page = 'Home'"
+        @authorized="authCallback"
       />
     </div>
 
@@ -53,7 +54,7 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     //! Fix Mobile Chrome 100vh
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -63,26 +64,7 @@ export default {
     });
 
     //! Check authorization data
-    let token = localStorage.getItem('token');
-    let user = JSON.parse(localStorage.getItem('user'));
-    if(token && user) {
-      this.logged = true;
-      this.user = user;
-
-      axios.post('/get-user-info', {
-        id: this.user.id
-      }).then((response) => {
-        if(response.data[0]) {
-          localStorage.setItem('user', JSON.stringify(response.data[0]))
-        }
-      })
-
-    } else {
-      this.logged = false;
-      this.$router.push('/auth')
-      this.isMenuHidden = true;
-    }
-    console.log("Авторизован:", this.logged)
+    await this.checkAuthorizationData()
   },
   methods: {
     mobileMenuHandler(page) {
@@ -90,6 +72,35 @@ export default {
     },
     hideMenu(value) {
       this.isMenuHidden = value;
+    },
+
+    async authCallback(token, user) {
+      location.reload();
+    },
+
+    async checkAuthorizationData() {
+      let token = localStorage.getItem('token');
+      let user = JSON.parse(localStorage.getItem('user'));
+
+      if(token && user) {
+        this.logged = true;
+        this.user = user;
+
+        const user = await axios.post('/get-user-info', {
+          id: this.user.id
+        })
+        if(user.data[0]) {
+          localStorage.setItem('user', JSON.stringify(user.data[0]))
+        }
+      
+
+      } else {
+        this.logged = false;
+        this.$router.push('/auth')
+        this.isMenuHidden = true;
+      }
+      console.log("Авторизован:", this.logged)
+
     }
   }
 
