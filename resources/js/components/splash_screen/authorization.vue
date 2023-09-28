@@ -1,7 +1,7 @@
 <template>
   <div class="page auth" v-if="!registrationMode">
     
-    <div class="page-header">
+    <div class="page-header no-border">
       <h1>{{ $strings.pages.authorization.title }}</h1>
     </div>
 
