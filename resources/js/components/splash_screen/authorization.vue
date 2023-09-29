@@ -19,29 +19,31 @@
 
   </div>
 
-  <div class="page registration" v-if="registrationMode">
-    
-    <div class="page-header no-border">
-      <div class="header-w-button">
-        <div class="goBackButton" @click="$router.back()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.578 17.137a.625.625 0 0 1-.882-.058l-5.833-6.667a.625.625 0 0 1 0-.823l5.833-6.667a.625.625 0 1 1 .94.823l-4.925 5.63h11.956a.625.625 0 0 1 0 1.25H4.711l4.926 5.63a.625.625 0 0 1-.058.882Z" fill="#030D45"/></svg></div>
-        <h1>Регистрация</h1>
+  <Transition name="slide-bottom">
+    <div class="page registration" v-if="registrationMode">
+      
+      <div class="page-header no-border">
+        <div class="header-w-button">
+          <div class="goBackButton" @click="registrationMode = false"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.578 17.137a.625.625 0 0 1-.882-.058l-5.833-6.667a.625.625 0 0 1 0-.823l5.833-6.667a.625.625 0 1 1 .94.823l-4.925 5.63h11.956a.625.625 0 0 1 0 1.25H4.711l4.926 5.63a.625.625 0 0 1-.058.882Z" fill="#030D45"/></svg></div>
+          <h1>Регистрация</h1>
+        </div>
       </div>
-    </div>
 
-    <div class="page-content">
-      <div class="page-wrapper">
-        <photo-uploader v-model="registration.picture" type="avatar" path="recipes"/>
-        <span>Имя</span>
-        <input v-model="registration.first_name" type="text" placeholder="Ваше имя">
-        <span>Фамилия</span>
-        <input v-model="registration.last_name" type="text" placeholder="Ваша фамилия">
-        <span>Придумайте псевдоним</span>
-        <input v-model="registration.nickname" type="text" placeholder="Придумайте никнейм">
-        <button @click="registerUser">Сохранить</button>
+      <div class="page-content">
+        <div class="page-wrapper">
+          <photo-uploader v-model="registration.picture" type="avatar" path="recipes"/>
+          <span>Имя</span>
+          <input v-model="registration.first_name" type="text" placeholder="Ваше имя">
+          <span>Фамилия</span>
+          <input v-model="registration.last_name" type="text" placeholder="Ваша фамилия">
+          <span>Придумайте псевдоним</span>
+          <input v-model="registration.nickname" type="text" placeholder="Придумайте никнейм">
+          <button @click="registerUser">Сохранить</button>
+        </div>
       </div>
-    </div>
 
-  </div>
+    </div>
+  </Transition>
 
 </template>
 <script>
@@ -52,9 +54,9 @@ export default {
     return {
       debugMode: false,
       user: {
-        email: "",
-        name: "",
-        picture: ""
+        email: '',
+        name: '',
+        picture: ''
       },
       registration: {
         nickname: '',
@@ -67,9 +69,12 @@ export default {
       debEmail: ''
     }
   },
+  mounted() {
+    this.checkAuthorizationData();
+  },
   methods: {
     debugModeSwitcher() {
-      this.debugMode = !this.debugMode
+      this.debugMode = !this.debugMode;
     },
     googleCallback(response) {
       if(response.credential) {
@@ -88,13 +93,13 @@ export default {
 
     async authorize(email, userInfo) {
       try {
-        const response = await axios.post('/auth', {email: email})
+        const response = await axios.post('/auth', {email: email});
         if(response.data[0]) {
           // Записываем токен и информацию о пользователе в localStorage
-          localStorage.setItem('token', this.token)
-          localStorage.setItem('user', JSON.stringify(response.data[0]))
-          this.$emit('authorized', this.token, response.data[0]);
-          this.$router.push('/')
+          localStorage.setItem('token', this.token);
+          localStorage.setItem('user', JSON.stringify(response.data[0]));
+          this.$router.push('/');
+          location.reload();
         } else {
           // Открываем регистрацию
           if(userInfo) {
@@ -105,7 +110,7 @@ export default {
           this.registrationMode = true;
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     },
 
@@ -116,23 +121,46 @@ export default {
           email: this.user.email,
           first_name: this.registration.first_name,
           last_name: this.registration.last_name,
-        })
+        });
         const avatar_url = await axios.post('/upload-image', {
           image: this.registration.picture,
           type: утилиты.decodeImageType(this.registration.picture),
           folder: 'users_avatars',
           name: user_id.data
-        })
+        });
         await axios.post('/updateUserAvatar', {
           user_id: user_id.data,
           picture: avatar_url.data
-        }).then(() => {
-          this.authorize(this.user.email);
-        })
+        });
+        this.authorize(this.user.email);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     },
+    checkAuthorizationData() {
+      let token = localStorage.getItem('token');
+      let user = JSON.parse(localStorage.getItem('user'));
+
+      if(token && user) {
+        
+        this.getUserInfo(user);
+
+      }
+    },
+
+    async getUserInfo(user) {
+      try {
+        const user_finded = await axios.post('/get-user-info', {
+          id: user.id
+        });
+        if(user_finded.data[0]) {
+          this.$router.push('/');
+        } 
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     writeDebug() {
       this.user.email = this.debEmail;
       this.token = 'debug'

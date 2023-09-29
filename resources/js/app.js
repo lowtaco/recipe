@@ -46,6 +46,8 @@ const app = createApp({});
 
 app.use(GoogleIdentity, {
   clientId: "762182711837-3i1gve5ivqa9d5q6j8kduk190u602p9s.apps.googleusercontent.com",
+  prompt: false,
+  buttonConfiguration: {},
 });
 
 app.use(Vue3TouchEvents);

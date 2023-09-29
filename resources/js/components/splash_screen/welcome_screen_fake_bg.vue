@@ -37,7 +37,6 @@
         </svg>
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -52,16 +51,16 @@ export default {
       const bg = this.$refs.vector;
       setTimeout(() => {
         bg.classList.remove('animated');
-      }, 100)
+      }, 100);
     },
     animateIcon() {
       const img = this.$refs.img;
       setTimeout(() => {
         img.classList.remove('animated');
         setTimeout(() => {
-          this.$emit('animateEnd')
-        }, 1500)
-      }, 400)
+          this.$emit('animateEnd');
+        }, 1500);
+      }, 400);
     }
   }
 };

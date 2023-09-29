@@ -10,14 +10,12 @@
       </div>
 
       <div class="body animated" ref="auth_welcome_body">
-        <authorization @authorized="$emit('authorized')"/>
+        <authorization/>
       </div>
     </div>
-
   </div>
 </template>
 <script>
-
 import welcome_screen_fake_bg from './welcome_screen_fake_bg';
 import authorization from './authorization';
 
@@ -39,17 +37,16 @@ export default {
   },
   methods: {
     startAnimate() {
-      this.AuthShow = true
+      this.AuthShow = true;
       const body = this.$refs.auth_welcome_body;
       setTimeout(() => {
-        body.classList.remove('animated')
-      }, 400)
-    }
+        body.classList.remove('animated');
+      }, 400);
+    },
   },
 };
 </script>
 <style scoped>
-
 .text-box {
   display: flex;
   flex-direction: column;

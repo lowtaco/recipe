@@ -34,7 +34,7 @@
   <div class="photo-uploader-single avatar" v-if="type == 'avatar'">
 
     <div class="preview">
-      <img :src="previewImage" class="uploading-image">
+      <img :src="previewImage" class="uploading-image" v-if="previewImage">
     </div>
 
     <div class="uploader-form">
@@ -130,6 +130,7 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  background-color: #eaeaea;
 }
 
 .preview img {
