@@ -24,7 +24,7 @@
           <div class="swipe-trigger"></div>
           <div class="recipe-info">
             <info_header :name="recipe.name" :kitchen="recipe.kitchen" @like="" @save=""/>
-            <author_info v-if="recipe.author" @subscribe="subscribe" @unsubscribe="unsubscribe" :subscribeStatus="subscribeStatus" :picture="recipe.author.picture" :nickname="recipe.author.nickname" :first_name="recipe.author.first_name" :last_name="recipe.author.last_name"/>
+            <author_info v-if="recipe.author" @subscribe="subscribe" @unsubscribe="unsubscribe" :subscribeStatus="subscribeStatus" :author="recipe.author"/>
             <difficulty-spiciness-viewer :total="5" :spiciness="recipe.spiciness" :difficulty="recipe.difficulty"/>
             <additional_info :description="recipe.description" :cooking_time="recipe.cooking_time" :kitchen_time="recipe.kitchen_time" :meal="meal_string" :cooking_methods='cooking_methods_string' :dishes="dishes_string"/>
             <cpaf :kcal="recipe.kcal" :protein="recipe.protein" :fat="recipe.fat" :carbs="recipe.carbs" :startDelay="loading"/>

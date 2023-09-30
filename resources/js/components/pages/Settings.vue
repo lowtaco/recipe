@@ -12,7 +12,7 @@
       <div class="page-wrapper no-gap no-padding">
         <div class="divider"><span>Личное</span></div>
         <button class="line">Понравившееся рецепты</button>
-        <button class="line">Мои рецепты</button>
+        <button class="line">Понравившееся комментарии</button>
         <div class="divider"><span>Меню</span></div>
         <div class="switchbox" @click="settings.mobile_menu.labels = !settings.mobile_menu.labels">
           <span>Отображать названия пунктов меню</span>

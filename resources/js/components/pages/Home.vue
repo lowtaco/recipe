@@ -11,12 +11,12 @@
               </div>
             </div>
           </div>
-          <p>Война войной, а обед — по <i>расписанию</i></p>
+          <p>Для поиска <i>вдохновения</i><br> в каждом блюде!</p>
         </div>
 
         <div class="home-content">
           <search-bar :filters="true"/>
-          <mp-categories />
+          <mp-categories v-if="cat" />
           <mp-slider v-model="category"/>
           <feed :category="category"/>
 

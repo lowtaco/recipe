@@ -1,12 +1,12 @@
 <template>
   <div class="author">
     <div class="info">
-      <div class="picture" @click="">
-        <img :src="picture" >
+      <div class="picture" @click="openProfile">
+        <img :src="author.picture" >
       </div>
-      <div class="name">
-        <h4>{{ first_name }} {{ last_name }}</h4>
-        <span>@{{ nickname }}</span>
+      <div class="name" @click="openProfile">
+        <h4>{{ author.first_name }} {{ author.last_name }}</h4>
+        <span>@{{ author.nickname }}</span>
       </div>
     </div>
 
@@ -23,6 +23,11 @@
 <script>
 
 export default {
-  props: ['picture', 'nickname', 'first_name', 'last_name', 'subscribeStatus'],
+  props: ['author', 'subscribeStatus'],
+  methods: {
+    openProfile() {
+      this.$router.push('/profile/' + this.author.id)
+    }
+  }
 };
 </script>

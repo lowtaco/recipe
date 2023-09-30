@@ -89,12 +89,15 @@ export default {
   },
   methods: {
     async getUserRecipes(offset = 0) {
-      axios.post('/get-user-recipes', {
-        offset: offset,
-        user_id: this.user.id
-      }).then((response) => {
-        this.recipes = this.recipes.concat(response.data) 
-      })
+      try {
+        const recipes = await axios.post('/get-user-recipes', {
+          offset: offset,
+          user_id: this.user.id
+        });
+        this.recipes = this.recipes.concat(recipes.data);
+      } catch (e) {
+        console.log(e)
+      }
     },
 
     scrollHandler() {

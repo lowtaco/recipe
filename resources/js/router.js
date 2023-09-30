@@ -21,6 +21,8 @@ import ProfileViewer from './components/pages/profile/ProfileViewer.vue';
 import AddRecipe from "./components/pages/recipe/AddRecipe";
 import RecipeViewer from "./components/pages/recipe/RecipeViewer"
 
+import ArticleEditor from './components/pages/articles/article_editor.vue'
+
 import stories from "./components/core/stories_engine/stories.vue"
 
 export default createRouter({
@@ -49,6 +51,8 @@ export default createRouter({
     // Account
     {path: '/account-editor', component: AccountEditor},
     {path: '/profile/:profileID', component: ProfileViewer,  props: true},
+
+    {path: '/article-editor', component: ArticleEditor},
 
     {path: '/stories', component: stories},
 
