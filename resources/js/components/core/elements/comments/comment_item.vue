@@ -51,6 +51,8 @@
 
 </template>
 <script>
+import axios from 'axios';
+
 
 
 export default {
@@ -124,8 +126,19 @@ export default {
         console.log(e)
       }
     },
-    like() {
-      console.log('test')
+    async like() {
+      console.log(this.user)
+      console.log(this.comment)
+      console.log('test');
+      try {
+        const response = await axios.post('/like-comment', {
+          user_id: this.user.id,
+          comment_id: this.comment.id
+        })
+        console.log(response)
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 };

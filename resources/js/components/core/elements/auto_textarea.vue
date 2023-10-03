@@ -20,12 +20,12 @@ export default {
   mounted() {
     const tx = document.getElementsByTagName("textarea");
     for (let i = 0; i < tx.length; i++) {
-      tx[i].setAttribute("style", "height:" + 68 + "px;overflow-y:hidden;");
+      tx[i].setAttribute("style", "height:" + 56 + "px;overflow-y:hidden;");
       tx[i].addEventListener("input", OnInput, false);
     }
 
     function OnInput() {
-      this.style.height = 68;
+      this.style.height = 56;
       this.style.height = (this.scrollHeight) + "px";
     }
   },

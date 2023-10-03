@@ -25,6 +25,7 @@
           <div class="recipe-info">
             <info_header :name="recipe.name" :kitchen="recipe.kitchen" @like="" @save=""/>
             <author_info v-if="recipe.author" @subscribe="subscribe" @unsubscribe="unsubscribe" :subscribeStatus="subscribeStatus" :author="recipe.author"/>
+            <recipe_tags />
             <difficulty-spiciness-viewer :total="5" :spiciness="recipe.spiciness" :difficulty="recipe.difficulty"/>
             <additional_info :description="recipe.description" :cooking_time="recipe.cooking_time" :kitchen_time="recipe.kitchen_time" :meal="meal_string" :cooking_methods='cooking_methods_string' :dishes="dishes_string"/>
             <cpaf :kcal="recipe.kcal" :protein="recipe.protein" :fat="recipe.fat" :carbs="recipe.carbs" :startDelay="loading"/>
@@ -39,6 +40,7 @@
 </template>
 <script>
 import axios from 'axios';
+import recipe_tags from './recipe_tags'
 import info_header from './info_header';
 import author_info from './author_info';
 import difficulty_spiciness from './difficulty_spiciness'
@@ -58,6 +60,7 @@ export default {
     }
   },
   components: {
+    recipe_tags,
     info_header,
     author_info,
     difficulty_spiciness,
