@@ -38,15 +38,15 @@
         </div>
       </div>
     </div>
-    
-    <div class="replies" v-if="repliesViewingMode">
-      <div class="reply-divider"></div>
-      <div class="replies-loader-box" v-if="replies_loading">
-        <loader />
-      </div>
-      <comments-viewer :comments="replies" :user="user" v-if="!replies_loading"/>
+
+  </div>
+
+  <div class="replies" v-if="repliesViewingMode">
+    <div class="reply-divider"></div>
+    <div class="replies-loader-box" v-if="replies_loading">
+      <loader />
     </div>
-    
+    <comments-viewer :comments="replies" :user="user" v-if="!replies_loading"/>
   </div>
 
 </template>
@@ -226,6 +226,10 @@ export default {
 
 .replies {
   display: inline-flex;
+  margin-left: 40px;
+}
+
+.replies:first-child {
   gap: 8px;
 }
 
@@ -238,7 +242,7 @@ export default {
 
 .reply-divider {
   display: block;
-  width: 2px;
+  width: 0px;
   border-radius: 5px;
   height: auto;
   background-color: grey;
